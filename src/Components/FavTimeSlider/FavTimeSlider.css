@@ -1,0 +1,28 @@
+.favtime-container {
+  position: relative;
+  width: 100%;
+}
+
+.time-btn {
+  width: 100%;
+  background: none;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  border:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.time-btn:hover {
+  background: #eee;
+}
+
+.time-btn.active {
+  background: var(--MainColor);
+  color: white;
+}
+

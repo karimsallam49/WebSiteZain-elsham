@@ -1,0 +1,35 @@
+.custom-nav-btn {
+  width: 25px;
+  height: 25px;
+  background-color: black;
+  border-radius: 50%;
+  color: blue;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute; 
+}
+
+.swiper-button-prev.custom-nav-btn {
+  left: -25px; 
+}
+
+.swiper-button-next.custom-nav-btn {
+  right: -25px; 
+}
+
+.swiper-button-prev.custom-nav-btn::after,
+.swiper-button-next.custom-nav-btn::after {
+  font-size: 12px;
+  color: white;
+}
+
+
+.swiper-button-disabled {
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}

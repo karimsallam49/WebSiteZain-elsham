@@ -1,0 +1,24 @@
+.offcanvas,
+.offcanvas-lg,
+.offcanvas-md,
+.offcanvas-sm,
+.offcanvas-xl,
+.offcanvas-xxl {
+  --bs-offcanvas-width: 619px !important;
+  border-radius: 20px 20px 0 0 !important;
+  overflow-y: auto;
+  height: 100vh;
+  
+}
+
+
+html[dir="rtl"] .offcanvas,
+html[dir="rtl"] .offcanvas-lg,
+html[dir="rtl"] .offcanvas-md,
+html[dir="rtl"] .offcanvas-sm,
+html[dir="rtl"] .offcanvas-xl,
+html[dir="rtl"] .offcanvas-xxl {
+  --bs-offcanvas-width: 619px !important;
+  border-radius: 20px 20px 0 0 !important;
+  overflow: hidden;
+}

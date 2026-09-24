@@ -1,0 +1,92 @@
+/* الحاوية الأساسية للأوفكانفاس */
+.offcanvas-bottom {
+  background: #fff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, visibility 0.3s;
+}
+
+/* الشريط الرمادي الصغير في الأعلى */
+.offcanvas-bottom::before {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 5px;
+  background: #ccc;
+  border-radius: 5px;
+  margin: 10px auto;
+}
+
+/* العنوان */
+.offcanvas-header {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 20px;
+}
+
+.offcanvas-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1a1a;
+}
+
+/* العناصر داخل القائمة */
+.mobile-category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.mobile-category-item:hover {
+  background: #f8f9fa;
+}
+
+.mobile-category-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #002147;
+}
+
+.mobile-category-view {
+  font-size: 0.9rem;
+  color: #e63946;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.mobile-category-icon {
+  color: #666;
+  transition: transform 0.3s;
+}
+
+.mobile-category-item.open .mobile-category-icon {
+  transform: rotate(180deg);
+}
+
+/* الجسم القابل للتمرير */
+.offcanvas-body {
+  padding: 0;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+/* الخلفية الشفافة عند الفتح */
+.offcanvas-backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* تحسين الموبايل */
+@media (max-width: 480px) {
+  .offcanvas-title {
+    font-size: 0.95rem;
+  }
+
+  .mobile-category-name {
+    font-size: 0.95rem;
+  }
+}

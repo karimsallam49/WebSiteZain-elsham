@@ -1,0 +1,42 @@
+.ongoing-orders-container {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.pagination-btn {
+  background-color: var(--MainColor);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover {
+  background-color: #444;
+  transform: translateY(-2px);
+}
+
+.pagination-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.page-indicator {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}

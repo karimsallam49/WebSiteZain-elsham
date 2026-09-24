@@ -1,0 +1,23 @@
+.custom-radio-fav .form-check-input:checked {
+  background-color: var(--MainColor)!important; 
+  border-color: var(--MainColor)!important;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.4);
+}
+.custom-radio-fav .form-check-input {
+  border-color: var(--MainColor)!important;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.4);
+}
+.custom-radio .form-check-input {
+  border: 2px solid #e7dcdcff;
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+  
+  transition: all 0.3s ease;
+}
+.custom-radio .form-check-label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #c2b5b5ff;
+  margin-left: 0.5rem;
+}

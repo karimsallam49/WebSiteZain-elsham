@@ -1,0 +1,7 @@
+@media (max-width: 992px) {
+  .cuisine-page {
+    height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 5rem !important;
+  }
+}

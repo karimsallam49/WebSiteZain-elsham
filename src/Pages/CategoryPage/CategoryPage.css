@@ -1,0 +1,66 @@
+.category-banner {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 250px;
+  border-radius: 10px;
+  text-align: start;
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+
+.subcategory-tabs {
+  gap: 10px;
+}
+
+.subcategory-tab-btn {
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.subcategory-tab-btn.active {
+  color: #fff;
+  font-weight: 600;
+  background-color: var(--MainColor) !important;
+}
+
+.subcategory-tab-btn:hover {
+  background-color: #f0f0f0;
+}
+.subcategory-tabs-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: start;
+}
+
+.subcategory-tab-btn {
+  flex: 1 1 calc(33.333% - 10px);
+  text-align: center;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.subcategory-tab-btn:hover {
+  background: #e9ecef;
+}
+
+
+@media screen and (min-width:900px) {
+  .category-page-container{
+    max-height: unset !important;
+  }
+  
+}

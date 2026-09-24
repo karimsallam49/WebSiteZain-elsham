@@ -1,0 +1,47 @@
+.bottomNav{
+
+    bottom:0%;
+    height:60px;
+    display:flex;
+    z-index:1000
+
+    
+}
+
+.mobile-cart-container{
+    left:50%;
+    z-index:100;
+    bottom:30%;
+    padding:1rem;
+    transform: translateX(-50%);
+    border-radius:50%
+    
+}
+
+.mobile-nav-contain-right,.mobile-nav-contain-left {
+    padding: 1rem;
+    max-width: 36%;
+  background: white;            
+}
+.mobile-nav-contain-right{
+
+
+}
+.mobile-nav-contain-left{
+
+
+}
+.bottomNav-container::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;                    
+  transform: translateX(-50%);
+  width: 30%;                 
+  height: 100%;                 
+  background: white;            
+  z-index: 1;
+  border-radius: 1px 1px 0 0;         
+  -webkit-mask: radial-gradient(circle at 50% 6px, transparent 0 42px, black 43px);
+  mask: radial-gradient(circle at 50% 6px, transparent 0 42px, black 43px);
+}

@@ -1,0 +1,46 @@
+.acc-des{
+  width: 100%;
+  border: none !important;
+}
+.acc-des >*{
+  border: none !important;
+}
+/* CategoriesSideList.css */
+
+.accordion-button img {
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: red;
+  margin-right: 10px; 
+
+}
+
+.accordion-button .category-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.accordion-button .category-name {
+  font-weight: 600;
+  text-align: start;
+}
+
+.accordion-button .category-arrow {
+display: none;
+}
+.accordion-button:focus,
+.accordion-button:active,
+.accordion-button:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: transparent !important;
+}
+.subcategory-count {
+  width:100%;
+  text-align: start; 
+}

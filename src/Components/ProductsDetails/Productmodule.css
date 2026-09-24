@@ -1,0 +1,126 @@
+/* تعديل مكان المودال */
+.bottom-sheet-modal {
+  position: fixed !important;
+   bottom: 0;
+  transform: translateX(-50%);
+  margin: 0;
+  width: 100%;
+  height: 70vh;
+  pointer-events: all;
+  transition: transform 0.3s ease-out;
+  z-index: 1055;
+  display: flex;
+  justify-content: center;
+  max-height:800px;  
+}
+
+.bottom-sheet-modal .modal-content {
+  border-radius: 16px 16px 0 0;
+  animation: slideUp 0.3s ease-out;
+}
+
+.bottom-sheet-content{
+  width: 70% !important;
+  max-width:900px;
+
+
+}
+.product-info-body{
+
+ overflow-y: scroll;
+}
+
+.addition {
+  
+
+  padding-right: 8px;
+}
+
+/* Scrollbar track */
+.product-info-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar background */
+.product-info-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Scrollbar thumb (the part that moves) */
+.product-info-body::-webkit-scrollbar-thumb {
+  background:var(--MainColor);
+  border-radius: 10px;
+}
+.veg-modal{
+  background-color: #4caf50; 
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+ 
+  
+}
+.modal-pic-container{
+  height:34%;
+}
+.product-info-body::-webkit-scrollbar-thumb:hover {
+  background: #a31616;
+}
+.variation-option:hover {
+  border-color: var(--MainColor);
+  background-color: rgba(238, 33, 46, 0.05);
+}
+
+.variation-option input[type="radio"] {
+  accent-color: var(--MainColor);
+  transform: scale(1.2);
+}
+
+.variation-option-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+
+.custom-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 768px) {
+  .bottom-sheet-content{
+  width: 100% !important;
+  min-height:70vh;
+}
+.bottom-sheet-modal{
+  margin: 0 !important;
+}
+}
+
+@media (min-width: 576px) {
+    .modal-dialog-product {
+        /* max-width: var(--bs-modal-width); */
+        margin-right: auto;
+        margin-left: auto;
+        max-width: unset !important;
+    }
+}
+
+@media screen and (min-width: 650px) {
+  
+  .ModalImage{
+    max-height: 400px !important;
+  }
+}

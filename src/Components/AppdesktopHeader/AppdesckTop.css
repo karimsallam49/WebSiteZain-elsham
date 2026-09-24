@@ -1,0 +1,52 @@
+.desctop-header {
+  display: none; 
+}
+
+@media (min-width: 992px) {
+  .desctop-header {
+    display: flex; 
+     max-width: 100%;
+  }
+}
+.dropdown-custom {
+  position: relative;
+}
+
+
+.dropdown-toggle-custom {
+  position: relative;
+  transition: color 0.2s ease;
+}
+.dropdown-toggle-custom:hover {
+  color: black;
+}
+
+
+.dropdown-menu-custom {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -80%;
+  min-width: 180px;
+  background: white;
+  border-radius: 8px;
+  padding: 8px 0;
+  z-index: 999;
+}
+
+
+.dropdown-custom:hover .dropdown-menu-custom {
+  display: block;
+}
+
+
+.dropdown-item-custom {
+  display: block;
+  padding: 8px 16px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item-custom:hover {
+  background: #f2f2f2;
+  color: #000;
+}

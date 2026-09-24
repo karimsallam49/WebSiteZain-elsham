@@ -1,0 +1,42 @@
+.simple-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.simple-table th,
+.simple-table td {
+  padding: 1rem;
+  font-size: 15px;
+  color: #333;
+}
+
+.simple-table th,
+.simple-table td {
+  border: none;
+}
+
+.simple-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.simple-table th {
+  font-weight: 600;
+  color: #111;
+  background-color: #fff;
+}
+
+.simple-table {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

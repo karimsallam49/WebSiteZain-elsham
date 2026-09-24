@@ -1,0 +1,18 @@
+.adress-info-cart{
+  border-bottom: 1px solid #d1cfcfff;
+}
+
+.action-adress{
+    cursor:pointer;
+    margin:5px
+}
+
+@media (max-width: 992px) {
+  .adress-info-page {
+    height: 100vh;
+    overflow-y: auto;
+    padding-top: 4rem !important;
+    padding-bottom: 5rem !important;
+    align-items: flex-start !important;
+  }
+}

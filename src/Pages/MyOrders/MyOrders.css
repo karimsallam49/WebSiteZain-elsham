@@ -1,0 +1,9 @@
+@media (max-width: 992px) {
+  .my-orders-page {
+    height: 100vh;
+    overflow-y: auto;
+    padding-top: 4rem !important;
+    padding-bottom: 5rem !important;
+    justify-content: flex-start !important;
+  }
+}

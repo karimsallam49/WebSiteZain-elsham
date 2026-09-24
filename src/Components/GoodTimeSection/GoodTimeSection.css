@@ -1,0 +1,66 @@
+.custom-swiper-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.custom-nav-btn {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--MainColor, #0d6efd);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-nav-btn:hover {
+  background-color: var(--MainColor, #0d6efd);
+  color: #fff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.swiper-button-prev.custom-nav-btn {
+  left: -15px;
+}
+
+.swiper-button-next.custom-nav-btn {
+  right: -15px;
+}
+.recommm-swiper .slick-slide > * {
+  width: 100% !important;
+  height: 100% !important;
+}
+.recommm-swiper .slick-slide  {
+ padding: 0 10px !important;
+ height: 100% !important;
+}
+
+.recommm-swiper > div{
+    height: 100% !important;
+
+}
+.recommm-swiper .slick-track{
+  height: 100% !important;
+}
+
+.recommm-swiper .custom-nav-btn{
+  max-height: 38px;
+}
+
+.recommm-swiper{
+  min-width: 900px;
+}
+/* إخفاء الأسهم على الموبايل */
+@media (max-width: 576px) {
+  .custom-nav-btn {
+    display: none;
+  }
+}

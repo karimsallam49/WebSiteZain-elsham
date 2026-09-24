@@ -1,0 +1,74 @@
+@font-face {
+  font-family: 'Cairo';
+  src: url('/src/assets/fonts/Cairo-Regular.ttf') format('truetype'),
+       url('/src/assets/fonts/Cairo-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+
+body {
+  font-family: 'cairo', sans-serif;
+  overflow-x: hidden;
+  font-size: medium;
+
+}
+* {
+  font-family: 'cairo', sans-serif !important;
+  --MainColor: #722914;
+
+}
+
+
+
+
+.TextMainColor {
+  color: var(--MainColor) !important;
+}
+.backgroundMainColor {
+  background-color: var(--MainColor) !important;
+}
+.BorderMainColor{
+  border:1px solid var(--MainColor) !important;
+}
+
+.categorybox-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  height: 100px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.categorybox-item:hover {
+  transform: scale(1.03);
+}
+
+.categorybox-img {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.categorybox-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+  padding: 6px 10px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 0 0 10px 10px;
+}
+
+.categorybox-overlay span {
+  font-size: medium;
+}

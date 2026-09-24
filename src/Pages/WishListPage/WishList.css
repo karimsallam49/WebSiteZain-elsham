@@ -1,0 +1,8 @@
+@media (max-width: 992px) {
+  .wishlist-page {
+    height: 100vh;
+    overflow-y: auto;
+    padding-top: 4rem !important;
+    padding-bottom: 5rem !important;
+  }
+}

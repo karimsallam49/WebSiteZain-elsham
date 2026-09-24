@@ -1,0 +1,57 @@
+.branch-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent !important;
+  border-radius: 15px;
+}
+
+.branch-card:hover {
+  transform: translateY(-4px);
+}
+
+.branch-card.selected {
+  border: 2px solid #5e2b1d !important; /* لون البوردر */
+  background-color: #fff1ee; /* خلفية خفيفة */
+  box-shadow: 0 0 10px rgba(94, 43, 29, 0.25);
+}
+
+.branch-img-wrapper {
+  height: 180px;
+  overflow: hidden;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.branch-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ✅ الزرار */
+.go-home-btn {
+  background-color: #5e2b1d !important;
+  border: none !important;
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  opacity: 0.5;
+}
+
+.go-home-btn:disabled {
+  cursor: not-allowed;
+}
+
+.go-home-btn:not(:disabled) {
+  opacity: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(94, 43, 29, 0.3);
+}
+
+@media (max-width: 992px) {
+  .select-branch-page {
+    height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 5rem !important;
+  }
+}

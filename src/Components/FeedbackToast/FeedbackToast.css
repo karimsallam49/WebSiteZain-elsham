@@ -1,0 +1,23 @@
+/* src/Components/FeedbackToast/FeedbackToast.css */
+.feedback-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 100000;
+}
+
+.feedback-toast.error {
+  background-color: #dc3545;
+}
+
+.feedback-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
