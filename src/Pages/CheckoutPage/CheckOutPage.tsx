@@ -17,6 +17,7 @@ import { DeleteCard } from "../../store/Cart/CartSlice";
 import React from "react";
 import i18n from "../../i18n";
 import FeedbackToast from "../../Components/FeedbackToast/FeedbackToast";
+import { getItemUnitPrice } from "../../utilities/cartPricing";
 
 const CheckOutPage = () => {
   const dispatch = useAppDispatch();
@@ -42,7 +43,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   const [ChangeAmount, SetChangeAmount] = useState(0);
   const { itemsPrice, totalAmount, currentAreaCharge, isFreeDelivery } = useMemo(() => {
     const itemsPrice = CartData.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+      (sum, item) => sum + getItemUnitPrice(item) * item.quantity,
       0
     );
 
@@ -53,7 +54,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     const setup = deliverfeeData?.delivery_charge_setup;
     const isFreeDelivery =
       setup?.free_delivery_over_status === 1 &&
-      setup.free_delivery_over_amount > 0 &&
+      setup.free_delivery_over_amount >= 0 &&
       itemsPrice >= setup.free_delivery_over_amount;
 
     const deliveryCharge = isFreeDelivery ? 0 : currentArea?.delivery_charge ?? 0;

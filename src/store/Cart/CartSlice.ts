@@ -40,7 +40,7 @@ const CartSlice = createSlice({
 
       if (existingItem) {
        
-        existingItem.quantity = quantity;
+        Object.assign(existingItem, products, { quantity });
       } else {
         
         state.CartData.push({ ...products, quantity });

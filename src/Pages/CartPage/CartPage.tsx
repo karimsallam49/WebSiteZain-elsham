@@ -23,6 +23,11 @@ import PromoCodePopup from "../../Components/PromoCodePopup/PromoCodePopup";
 import coupon_svg from "../../assets/svg/coupon_icon.svg";
 import { useTranslation } from "react-i18next"; 
 import FeedbackToast from "../../Components/FeedbackToast/FeedbackToast";
+import {
+  getItemVariationsTotal,
+  getItemAddonsTotal,
+  getItemUnitPrice,
+} from "../../utilities/cartPricing";
 
 const CartPage = () => {
   const { t } = useTranslation(); 
@@ -54,6 +59,12 @@ const addonsPrice = CartData.reduce((sum, item) => {
   return sum + itemAddonsTotal * item.quantity;
 }, 0);
 
+const variationsPrice = CartData.reduce((sum, item) => {
+  const itemVariationsTotal = getItemVariationsTotal(item);
+  if (itemVariationsTotal === 0) return sum;
+  return sum + itemVariationsTotal * item.quantity;
+}, 0);
+
 const discount = CouponVerifyData ? CouponVerifyData.discount : 0;
 const tax = 0;
 const StartTime = CurrentBranch?.preparation_time;
@@ -61,10 +72,11 @@ const EndTime = (StartTime ?? 1) + 10;
 
 const appliedDiscount =
   CouponVerifyData?.discount_type === "percent"
-    ? ((itemsPrice + addonsPrice) * discount) / 100
+    ? ((itemsPrice + addonsPrice + variationsPrice) * discount) / 100
     : discount;
 
-const totalAmount = itemsPrice + addonsPrice - appliedDiscount + tax;
+const totalAmount =
+  itemsPrice + addonsPrice + variationsPrice - appliedDiscount + tax;
 
   const handleCheckout=()=>{
     if(!OTPToken){
@@ -132,7 +144,13 @@ const totalAmount = itemsPrice + addonsPrice - appliedDiscount + tax;
               </div>
             </Card>
 
-            {CartData.map((item) => (
+            {CartData.map((item) => {
+              const itemUnitPrice = getItemUnitPrice(item);
+              const itemUnitOriginal =
+                (Number(item.original_price) || 0) +
+                getItemVariationsTotal(item) +
+                getItemAddonsTotal(item);
+              return (
               <Card
                 key={item.id}
                 className="p-3 border-0 shadow-sm mb-3 rounded-4"
@@ -172,12 +190,12 @@ const totalAmount = itemsPrice + addonsPrice - appliedDiscount + tax;
                     className="d-flex justify-content-between align-items-center mt-3 mt-md-0"
                   >
                     <div className="fw-bold" style={{ color: "var(--MainColor)" }}>
-                      {item.original_price && Number(item.original_price) !== Number(item.price) && (
+                      {itemUnitOriginal > itemUnitPrice && (
                         <del className="text-secondary small me-2">
-                          {Number(item.original_price).toFixed(2)} EGP
+                          {itemUnitOriginal.toFixed(2)} EGP
                         </del>
                       )}
-                      {Number(item.price).toFixed(2)} EGP
+                      {itemUnitPrice.toFixed(2)} EGP
                     </div>
 
                     <div className="d-flex align-items-center gap-2">
@@ -203,7 +221,8 @@ const totalAmount = itemsPrice + addonsPrice - appliedDiscount + tax;
                   </Col>
                 </Row>
               </Card>
-            ))}
+              );
+            })}
           </Col>
 
           <Col lg={4}>
@@ -235,7 +254,9 @@ const totalAmount = itemsPrice + addonsPrice - appliedDiscount + tax;
               <div className="small text-muted mb-2 "style={{ padding:"0 5px" }}>
                 <div className="d-flex justify-content-between">
                   <span>{t("itemsPrice")}</span>
-                  <span>{itemsPrice} EGP</span>
+                  <span>
+                    {(itemsPrice + addonsPrice + variationsPrice).toFixed(2)} EGP
+                  </span>
                 </div>
                 <div className="d-flex justify-content-between">
                   <span>{t("discount")}</span>
@@ -249,7 +270,7 @@ const totalAmount = itemsPrice + addonsPrice - appliedDiscount + tax;
                 <div className="d-flex justify-content-between fw-semibold">
                   <span>{t("totalAmount")}</span>
                   <span style={{ color: "var(--MainColor)" }}>
-                    {totalAmount} EGP
+                    {totalAmount.toFixed(2)} EGP
                   </span>
                 </div>
               </div>

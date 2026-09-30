@@ -140,12 +140,10 @@ const addonsTotal = adoons?.selected_addons?.reduce(
   0
 ) || 0;
 
-const variationsTotal = selectedVariations.reduce((sum, v) => {
-  const value = product.variations
-    ?.find((vr: any) => vr.name === v.name)
-    ?.values.find((val: any) => val.label === v.values.label[0]);
-  return sum + (Number(value?.optionPrice) || 0);
-}, 0);
+const variationsTotal = selectedVariations.reduce(
+  (sum, v) => sum + (Number(v.optionPrice) || 0),
+  0
+);
 
 const originalPrice = Number(product.price) || 0;
 const discountAmount =
@@ -329,6 +327,7 @@ const totalPrice = (discountedPrice + variationsTotal + addonsTotal) * (Number(q
                 label: variation.name,
                 ar_label: variation.ar_name,
                 values: { label: [value.label] },
+                optionPrice: value.optionPrice,
               };
               setSelectedVariations(updated);
             }}
@@ -346,7 +345,7 @@ const totalPrice = (discountedPrice + variationsTotal + addonsTotal) * (Number(q
 
               {i18n.language === "ar" ? value.ar_label : value.label}
             </div>
-             {value.optionPrice && (
+             {Number(value.optionPrice) > 0 && (
               <div
                 className={`fw-semibod ${isSelected ? "text-light" : "text-muted"}`}
                 style={{margin:"0 .3rem"}}
