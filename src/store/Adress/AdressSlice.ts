@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { actAddadress } from "./actAddAdress";
+import { actUpdateAdress } from "./actUpdateAdress";
 import type { AddressDTO } from "../../DTO/AdressDTO";
 import { actGetadress } from "./actGetAddress";
 
@@ -50,6 +51,20 @@ const CouponSlice = createSlice({
        
       })
       .addCase(actAddadress.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || "حدث خطأ أثناء تحميل الإشعارات";
+      });
+    builder
+      .addCase(actUpdateAdress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(actUpdateAdress.fulfilled, (state) => {
+        state.loading = false;
+       
+      })
+      .addCase(actUpdateAdress.rejected, (state, action) => {
         state.loading = false;
         state.error =
           (action.payload as string) || "حدث خطأ أثناء تحميل الإشعارات";

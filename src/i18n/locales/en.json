@@ -77,7 +77,8 @@
     "enter_floor_number": "Enter floor number",
     "street_name": "Street / Road",
     "enter_street_name": "Enter street name",
-    "save_button": "Save"
+    "save_button": "Save",
+    "save_error": "Failed to save address"
   },
   "payment": {
     "choose_method": "Choose Payment Method",
@@ -214,7 +215,13 @@
     "select_your_area": "Select your area",
        "favorite_time": "Favorite Time",
     "today": "Today",
-    "tomorrow": "Tomorrow"
+    "tomorrow": "Tomorrow",
+    "complete_address": "Please complete your delivery address details to place the order.",
+    "address_updated": "Address updated successfully",
+    "select_area_first": "Please select your delivery area",
+    "select_pickup_branch": "Select pickup branch",
+    "select_branch_first": "Please select the pickup branch",
+    "pickup_branch": "Pickup branch"
   },
     "deliveryInformation": "Delivery information",
   "updateInfo": "Update info"

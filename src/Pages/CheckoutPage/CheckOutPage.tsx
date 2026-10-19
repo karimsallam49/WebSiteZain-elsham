@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
-import { Card, Row, Col, Form } from "react-bootstrap";
+import { Card, Row, Col, Form, Modal } from "react-bootstrap";
 import "./CheckOutPage.css";
 import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router";
@@ -14,9 +14,11 @@ import ButtonComponent from "../../Components/Button/ButtonComponent";
 import type { PlaceOrderDTO } from "../../DTO/CheckouDTO";
 import { actPlaceOrder } from "../../store/PlaceOrder/actPlaceOrder";
 import { DeleteCard } from "../../store/Cart/CartSlice";
+import { editeAdressAction } from "../../store/Adress/AdressSlice";
 import React from "react";
 import i18n from "../../i18n";
 import FeedbackToast from "../../Components/FeedbackToast/FeedbackToast";
+import AddressForm from "../../Components/AdressForm/AdressForm";
 import { getItemUnitPrice } from "../../utilities/cartPricing";
 
 const CheckOutPage = () => {
@@ -30,6 +32,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   const { CouponData } = useAppSelector((state) => state.CouponSlice);
   const { deliverfeeData } = useAppSelector((state) => state.DeliveryFeeSlice);
   const { selectedAdress } = useAppSelector((state) => state.adressSlice);
+  const { resturantdata } = useAppSelector((state) => state.restaurantSettingsSlice);
 
   const [CurrentedArea, setCurrentedArea] = useState<number | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<string>("");
@@ -41,6 +44,25 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   const [UserSelectedDate, SetUserselectedDate] = useState("");
   const [Loading, setLoading] = useState(false);
   const [ChangeAmount, SetChangeAmount] = useState(0);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [areaError, setAreaError] = useState(false);
+  const [selectedBranchId, setSelectedBranchId] = useState<number | null>(null);
+  const [showBranchModal, setShowBranchModal] = useState(false);
+
+  const selectedBranch = useMemo(
+    () => resturantdata?.branches?.find((b) => b.id === selectedBranchId) ?? null,
+    [resturantdata, selectedBranchId]
+  );
+
+  const requiredFields = useMemo(() => {
+    const missing: string[] = [];
+    if (!selectedAdress?.contact_person_name?.trim()) missing.push("contact_person_name");
+    if (!selectedAdress?.contact_person_number?.trim()) missing.push("contact_person_number");
+    if (!selectedAdress?.address?.trim()) missing.push("address");
+    if (!selectedAdress?.house?.trim()) missing.push("house");
+    if (!selectedAdress?.floor?.trim()) missing.push("floor");
+    return missing;
+  }, [selectedAdress]);
   const { itemsPrice, totalAmount, currentAreaCharge, isFreeDelivery } = useMemo(() => {
     const itemsPrice = CartData.reduce(
       (sum, item) => sum + getItemUnitPrice(item) * item.quantity,
@@ -137,13 +159,14 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       coupon_code: CouponData?.available[0]?.code ?? "",
       delivery_time: UserSelectedTime,
       delivery_date: UserSelectedDate,
-      branch_id: 1,
+      branch_id: selectedBranchId ?? 1,
       selected_delivery_area: CurrentedArea ?? 0,
       is_partial: "0",
       is_cutlery_required: "0",
       bring_change_amount: ChangeAmount,
       distance: 0,
       delivery_address: selectedAdress,
+      order_source: "web",
     };
   }, [
     CartData,
@@ -157,11 +180,45 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     CurrentedArea,
     ChangeAmount,
     selectedAdress,
+    selectedBranchId,
   ]);
 
   const handleCheckout = useCallback(async () => {
     if (!paymentMethod) {
       alert(t("checkout.select_payment_method"));
+      return;
+    }
+
+    if (
+      selectedType === "delivery" &&
+      (deliverfeeData?.delivery_charge_by_area?.length ?? 0) > 0 &&
+      !CurrentedArea
+    ) {
+      setAreaError(true);
+      setToastMessage(t("checkout.select_area_first"));
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
+    if (
+      selectedType === "take_away" &&
+      (resturantdata?.branches?.length ?? 0) > 0 &&
+      !selectedBranchId
+    ) {
+      setToastMessage(t("checkout.select_branch_first"));
+      setToastType("error");
+      setToastVisible(true);
+      setShowBranchModal(true);
+      return;
+    }
+
+    if (selectedType === "delivery" && requiredFields.length > 0) {
+      dispatch(editeAdressAction(selectedAdress ?? null));
+      setToastMessage(t("checkout.complete_address"));
+      setToastType("error");
+      setToastVisible(true);
+      setShowAddressModal(true);
       return;
     }
 
@@ -186,7 +243,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     } finally {
       setLoading(false);
     }
-  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t]);
+  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t, selectedType, requiredFields, selectedAdress, deliverfeeData, CurrentedArea, resturantdata, selectedBranchId]);
 
   return (
     <div className="cart-page  overflow-auto container py-4">
@@ -195,9 +252,48 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
           <UserInformation />
 
           <PlaceOrderDeliverType
-            setOnselec={setCurrentedArea}
-            SetOnSelectedType={setSelectedType}
+            setOnselec={(area) => {
+              setCurrentedArea(area);
+              setAreaError(false);
+            }}
+            SetOnSelectedType={(type) => {
+              setSelectedType(type);
+              setAreaError(false);
+              if (type === "take_away" && (resturantdata?.branches?.length ?? 0) > 0) {
+                setShowBranchModal(true);
+              }
+            }}
+            areaInvalid={areaError}
           />
+
+          {selectedType === "take_away" && (
+            <div className="w-100 mb-4">
+              <h4 className="mb-3 fw-semibold">{t("checkout.pickup_branch")}</h4>
+              {selectedBranch ? (
+                <div className="d-flex justify-content-between align-items-center border rounded p-3">
+                  <div>
+                    <div className="fw-semibold">{selectedBranch.name}</div>
+                    <div className="small text-muted">{selectedBranch.address}</div>
+                  </div>
+                  <span
+                    className="text-primary fw-semibold"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowBranchModal(true)}
+                  >
+                    {t("change")}
+                  </span>
+                </div>
+              ) : (
+                <div
+                  className="border rounded p-3 text-muted"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setShowBranchModal(true)}
+                >
+                  {t("checkout.select_branch_first")}
+                </div>
+              )}
+            </div>
+          )}
 
           <FavTimeSelectForOrder
             SetSelectedDeliveryDate={SetUserselectedDate}
@@ -276,6 +372,77 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
         onClose={() => setToastVisible(false)}
         type={toastType}
       />
+      <Modal
+        show={showAddressModal}
+        onHide={() => setShowAddressModal(false)}
+        size="lg"
+        centered
+        scrollable
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{t("updateInfo")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-2 p-md-3">
+          {showAddressModal && (
+            <AddressForm
+              requiredFields={requiredFields}
+              onSaved={() => {
+                setShowAddressModal(false);
+                setToastMessage(t("checkout.address_updated"));
+                setToastType("success");
+                setToastVisible(true);
+              }}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showBranchModal}
+        onHide={() => setShowBranchModal(false)}
+        size="lg"
+        centered
+        scrollable
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{t("checkout.select_pickup_branch")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row className="g-3">
+            {resturantdata?.branches?.map((branch) => (
+              <Col key={branch.id} xs={12} md={6}>
+                <Card
+                  className={`h-100 ${
+                    selectedBranchId === branch.id ? "border-primary border-2" : ""
+                  }`}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setSelectedBranchId(branch.id);
+                    setShowBranchModal(false);
+                  }}
+                >
+                  {branch.image && (
+                    <Card.Img
+                      variant="top"
+                      src={`${resturantdata?.base_urls?.branch_image_url}/${branch.image}`}
+                      style={{ height: 120, objectFit: "cover" }}
+                    />
+                  )}
+                  <Card.Body className="text-center">
+                    <Card.Title className="fw-bold fs-6">{branch.name}</Card.Title>
+                    <Card.Text className="text-muted small mb-1">
+                      {branch.address}
+                    </Card.Text>
+                    <div className="text-secondary small">
+                      ⏱️ {branch.preparation_time} {t("SelectBranch.preparation_time")}
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

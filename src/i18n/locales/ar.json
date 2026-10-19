@@ -61,7 +61,8 @@
     "enter_floor_number": "ادخل رقم الطابق",
     "street_name": "الشارع / الطريق",
     "enter_street_name": "ادخل اسم الشارع",
-    "save_button": "تعديل"
+    "save_button": "تعديل",
+    "save_error": "فشل حفظ العنوان"
   }, "payment": {
     "choose_method": "اختر طريقة الدفع",
     "cash_on_delivery": "الدفع عند الاستلام",
@@ -196,7 +197,13 @@
     "select_your_area": "اختر منطقتك",
        "favorite_time": "Favorite Time",
     "today": "Today",
-    "tomorrow": "Tomorrow"
+    "tomorrow": "Tomorrow",
+    "complete_address": "من فضلك أكمل بيانات عنوان التوصيل عشان تقدر تكمل الطلب",
+    "address_updated": "تم تحديث العنوان بنجاح",
+    "select_area_first": "من فضلك اختر منطقة التوصيل",
+    "select_pickup_branch": "اختر فرع الاستلام",
+    "select_branch_first": "من فضلك اختر فرع الاستلام",
+    "pickup_branch": "فرع الاستلام"
   },
   "deliveryInformation": "معلومات التوصيل",
   "updateInfo": "تحديث البيانات",

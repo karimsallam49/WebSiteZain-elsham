@@ -3,7 +3,7 @@ import DeleteIcone from "../../assets/image/icons8-delete-30.png";
 import EdtieLocation from "../../assets/image/icons8-edit-location-24.png";
 import "./adressinfostyle.css";
 import { actDeleteadress } from "../../store/Adress/actDeleteAdress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConfirmPopup from "../../Components/confirmPopup/ConfirmPopup";
 import { editeAdressAction } from "../../store/Adress/AdressSlice";
 import { useNavigate } from "react-router";
@@ -19,6 +19,10 @@ const AdressPageInfo = () => {
   const [selectedId, setSelectedId] = useState<any | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    Setfilterdadress(AdressData);
+  }, [AdressData]);
 
   const Deleteaction = (id: any) => {
     dispatch(actDeleteadress(id))
@@ -42,7 +46,7 @@ const AdressPageInfo = () => {
       <div className="adress-info-container d-flex flex-column align-items-center justify-content-center w-100">
         <Button
           className="backgroundMainColor border-0 mb-4 align-self-end d-flex align-items-center gap-2"
-          onClick={() => navigate("/AdressPage")}
+          onClick={() => navigate("/AdressPage", { state: { isNew: true } })}
         >
           <Plus size={18} />
           {t("add_new_address")}

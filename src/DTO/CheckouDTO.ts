@@ -51,6 +51,7 @@ export interface PlaceOrderDTO {
   is_partial: "0" | "1";
   is_cutlery_required: "0" | "1";
   bring_change_amount: number;
+  order_source?: string;
 }
 export type OrderResponse = {
   message: string;

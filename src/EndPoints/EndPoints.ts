@@ -35,6 +35,7 @@ export const PlaceOrderUrl=`${baseUrl}api/v1/customer/order/place`
 export const GeOrderDetailsUrl=`${baseUrl}api/v1/customer/order/list`
 export const TrackordersUrl=`${baseUrl}api/v1/customer/order/`
 export const AddAdressURL=`${baseUrl}api/v1/customer/address/add`
+export const UpdateAdressURL=`${baseUrl}api/v1/customer/address/update/`
 export const DeleteAdress=`${baseUrl}api/v1/customer/address/delete?`
 export const CancellOrderURl=`${baseUrl}api/v1/customer/order/cancel`
 export const GetHeaderBackGrounImagesURl=`${baseUrl}api/v1/branch/show`

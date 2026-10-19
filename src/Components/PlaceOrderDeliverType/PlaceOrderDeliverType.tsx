@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Card, Form } from "react-bootstrap";
 import { useAppSelector } from "../../Hooks/hooks";
 import React from "react";
@@ -8,11 +8,13 @@ import "../../App.css";
 type PlaceOrderProps = {
   setOnselec: (Areanumber: number) => void;
   SetOnSelectedType: (Type: "delivery" | "take_away" | "dine_in") => void;
+  areaInvalid?: boolean;
 };
 
-const PlaceOrderDeliverType = React.memo(({ setOnselec, SetOnSelectedType }: PlaceOrderProps) => {
+const PlaceOrderDeliverType = React.memo(({ setOnselec, SetOnSelectedType, areaInvalid }: PlaceOrderProps) => {
   const [selectedType, setSelectedType] = useState<"delivery" | "take_away" | "dine_in">("delivery");
   const [selectedArea, setSelectedArea] = useState<number | null>(null);
+  const areaSelectRef = useRef<HTMLSelectElement>(null);
 
   const { resturantdata } = useAppSelector((state) => state.restaurantSettingsSlice);
   const { deliverfeeData } = useAppSelector((state) => state.DeliveryFeeSlice);
@@ -35,6 +37,13 @@ const PlaceOrderDeliverType = React.memo(({ setOnselec, SetOnSelectedType }: Pla
     setSelectedArea(value);
     setOnselec(value);
   }, [setOnselec]);
+
+  useEffect(() => {
+    if (areaInvalid && selectedType === "delivery") {
+      areaSelectRef.current?.focus();
+      (areaSelectRef.current as any)?.showPicker?.();
+    }
+  }, [areaInvalid, selectedType]);
 
   const areaOptions = useMemo(() => {
     return deliverfeeData?.delivery_charge_by_area?.map((area) => (
@@ -137,9 +146,11 @@ const PlaceOrderDeliverType = React.memo(({ setOnselec, SetOnSelectedType }: Pla
         <div className="w-100 mb-4">
           <h4 className="mb-3 fw-semibold">{t("checkout.zip_or_area")}</h4>
           <Form.Select
+            ref={areaSelectRef}
             aria-label="Select Delivery Area"
             value={selectedArea ?? ""}
             onChange={handleSelectArea}
+            isInvalid={areaInvalid}
           >
             <option value="">{t("checkout.select_your_area")}</option>
             {areaOptions}
