@@ -1,16 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
 import { setLocation } from "../../store/User/userSlice";
 import { addadress } from "../../store/Adress/AdressSlice";
 import type { AddressDTO } from "../../DTO/AdressDTO";
-import { reverseGeocode } from "../../utilities/leaflet";
+import { reverseGeocode } from "../../utilities/geocode";
 
 const Geolocation = () => {
   const dispatch = useAppDispatch();
   const { UserData } = useAppSelector((state) => state.UserInfoSLice);
+  const requestedRef = useRef(false);
 
   useEffect(() => {
+    if (requestedRef.current) return;
     if (!navigator.geolocation) return;
+
+    requestedRef.current = true;
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {

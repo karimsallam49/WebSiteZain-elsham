@@ -19,6 +19,8 @@ import MobilePageHeader from "../MobilePageHeader/MobilePageHeader";
 import Footer from "../Footer/Footer";
 import BottomNav from "../BottomNav/BottomNav";
 import AdressInfo from "../AdressInfo/AdressInfo";
+import DesignPickerModal from "../DesignPicker/DesignPickerModal";
+import DesignToggle from "../DesignPicker/DesignToggle";
 import "./MainLayoutstyle.css";
 import i18n from "../../i18n";
 import { actBanner } from "../../store/Banner/aCtBanner";
@@ -30,8 +32,10 @@ const Mainlayout = () => {
   const { OTPToken } = useAppSelector((state) => state.OTPauthconfigration);
   const { AdressData } = useAppSelector((state) => state.adressSlice);
 const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
+const { designVersion } = useAppSelector((state) => state.themeSlice);
 
   const HideBottom = location.pathname !== "/selectBranch";
+  const isV2Home = designVersion === "v2" && location.pathname === "/";
 
 
   useEffect(() => {
@@ -44,6 +48,7 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
       })
       .catch((err) => {
         console.error("Error fetching restaurant settings:", err);
+        dispatch(selectAbranch(1));
       });
 
 
@@ -53,13 +58,29 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
     }
   }, []);
   useEffect(()=>{
-    if(!selectedBranch) return  
+    if(!selectedBranch) return
     dispatch(actBanner())
-    dispatch(actDeliveryFee());
-    dispatch(actGetadress());
-    dispatch(FetchPages());
     dispatch(actGetBranch());
+
+    const defer = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 800));
+    defer(() => {
+      dispatch(actDeliveryFee());
+      dispatch(FetchPages());
+    });
   },[selectedBranch])
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = designVersion;
+
+    if (designVersion === "v2" && !document.getElementById("v2-fonts")) {
+      const link = document.createElement("link");
+      link.id = "v2-fonts";
+      link.rel = "stylesheet";
+      link.href =
+        "https://fonts.googleapis.com/css2?family=Marcellus&family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600&family=Almarai:wght@300;400;700;800&display=swap";
+      document.head.appendChild(link);
+    }
+  }, [designVersion]);
 
   useEffect(() => {
     i18n.changeLanguage(currentLanguage);
@@ -85,11 +106,13 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
       <MobilePageHeader />
 
       <div className="w-100 container position-relative all-container" style={{ minHeight: "100vh" }}>
-        <div className="adress-desktop-only w-100">
-          <AdressInfo />
-        </div>
+        {!isV2Home && (
+          <div className="adress-desktop-only w-100">
+            <AdressInfo />
+          </div>
+        )}
 
-        <AppdesckTopHeader />
+        {!isV2Home && <AppdesckTopHeader />}
         <Outlet />
       </div>
 
@@ -98,6 +121,9 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
       <div className="d-none d-lg-block">
         <Footer />
       </div>
+
+      <DesignPickerModal />
+      <DesignToggle />
     </div>
   );
 };

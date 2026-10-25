@@ -5,7 +5,7 @@ import { ProductModal } from "../ProductsDetails/ProductModal";
 import type { ProductDTO } from "../../DTO/ProductsDTO";
 import type { Category } from "../../DTO/CategoriesDTO";
 import { useAppSelector } from "../../Hooks/hooks";
-import { throttle } from "lodash";
+import { throttle } from "../../utilities/throttle";
 
 interface Props {
   category?: Category | null;

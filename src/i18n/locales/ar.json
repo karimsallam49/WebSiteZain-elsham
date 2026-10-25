@@ -327,7 +327,32 @@
     "my_orders": "طلباتي",
     "order_completed": "اكتمل الطلب",
     "payment": "الدفع"
+  },
+  "designPicker": {
+    "title": "اختار تجربتك",
+    "subtitle": "جدّدنا شكل زين الشام. اختار التصميم اللي يناسبك — وتقدر تبدّل في أي وقت.",
+    "newDesign": "التصميم الجديد",
+    "newDesignDesc": "ثيم فاخر غامق — كحلي وذهبي وخط كلاسيكي أنيق.",
+    "classicDesign": "التصميم الكلاسيكي",
+    "classicDesignDesc": "الشكل الأصلي اللي متعود عليه.",
+    "confirm": "كمّل",
+    "switchToNew": "جرّب التصميم الجديد",
+    "switchToClassic": "ارجع للتصميم الكلاسيكي"
+  },
+  "v2": {
+    "brandSub": "مطبخ شامي أصيل",
+    "backToSite": "العودة للموقع",
+    "deliveryTo": "التوصيل إلى",
+    "searchPlaceholder": "جعان؟ ابحث هنا…",
+    "heroEyebrow": "زين الشام",
+    "all": "الكل",
+    "itemsCount": "أصناف",
+    "ourMenu": "القائمة",
+    "endOfMenu": "نهاية القائمة",
+    "viewCart": "سلة الطلبات",
+    "viewAll": "عرض الكل",
+    "offer": "عرض",
+    "loadingDishes": "جاري التحميل…",
+    "marquee": "زين الشام • مطبخ شامي أصيل • القاهرة"
   }
-
-
 }

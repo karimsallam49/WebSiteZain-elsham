@@ -1,0 +1,117 @@
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Slider from "react-slick";
+import { useAppSelector } from "../../Hooks/hooks";
+import type { BannerDTO } from "../../DTO/BannerDTO";
+import type { ProductDTO } from "../../DTO/ProductsDTO";
+import { ProductModal } from "../ProductsDetails/ProductModal";
+import BannerSkeleton from "../../scelton/BannerSkeleton";
+
+const V2HeroSlider = () => {
+  const { BannerData, BannerLoading } = useAppSelector(
+    (state) => state.bannerSlice
+  );
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const direction = i18n.language === "ar";
+
+  const [slides, setSlides] = useState<BannerDTO[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<ProductDTO | null>(
+    null
+  );
+  const [showModal, setShowModal] = useState(false);
+
+  const banners = useMemo(
+    () => BannerData?.filter((b) => b.banner_type === "banner") ?? [],
+    [BannerData]
+  );
+
+  useEffect(() => {
+    const update = () => {
+      const isMobile = window.innerWidth < 968;
+      setSlides(
+        banners.filter((b) =>
+          isMobile
+            ? b.dimension_type === "mobile"
+            : b.dimension_type === "desktop"
+        )
+      );
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [banners]);
+
+  const handleBannerSelected = (banner: BannerDTO) => {
+    if (banner.category_id) {
+      navigate(`/category/${banner.category_id}/${banner.title}`);
+    } else {
+      setSelectedProduct(banner.product);
+      setShowModal(true);
+    }
+  };
+
+  if (BannerLoading) return <BannerSkeleton />;
+  if (slides.length === 0) return null;
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    lazyLoad: "ondemand" as const,
+    speed: 700,
+    autoplay: true,
+    autoplaySpeed: 4500,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    rtl: direction,
+    fade: false,
+  };
+
+  return (
+    <section className="v2-hero">
+      <span className="v2-corner tl" />
+      <span className="v2-corner tr" />
+      <span className="v2-corner bl" />
+      <span className="v2-corner br" />
+
+      <Slider {...settings}>
+        {slides.map((banner) => (
+          <div key={banner.id} className="v2-hero-slide">
+            <img
+              loading="lazy"
+              src={
+                direction
+                  ? banner.image_ar_url ?? banner.image_url
+                  : banner.image_url
+              }
+              alt={banner.title}
+            />
+            <div className="veil-layer" />
+            {banner.title && (
+              <div
+                className="v2-hero-caption"
+                onClick={() => handleBannerSelected(banner)}
+                role="button"
+              >
+                <span className="v2-hero-eyebrow">{t("v2.heroEyebrow")}</span>
+                <h2 className="v2-hero-title">{banner.title}</h2>
+              </div>
+            )}
+          </div>
+        ))}
+      </Slider>
+
+      {showModal && selectedProduct && (
+        <ProductModal
+          show={showModal}
+          handleClose={() => setShowModal(false)}
+          product={selectedProduct}
+        />
+      )}
+    </section>
+  );
+};
+
+export default V2HeroSlider;

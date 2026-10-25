@@ -14,6 +14,7 @@ import AdressInfo from "../../Components/AdressInfo/AdressInfo";
 import GoodTimeSection from "../../Components/GoodTimeSection/GoodTimeSection";
 import LanguageSwitcher from "../../Components/LanguageSwitchButton/LanguageSwitcher";
 import PromotComponent from "../../Components/PromotComponent/PromotComponent";
+import LazyRender from "../../Components/LazyRender/LazyRender";
 
 const MenuPage = () => {
   const [CurrentCategory, setCurrentCategory] = useState<Category>();
@@ -68,32 +69,44 @@ const MenuPage = () => {
 
             <BannerComponent BannerType="banner" />
             <CategoriesBoxs />
-            <GoodTimeSection/>
-            <RecommindationSection />
-            <BannerComponent BannerType="ads" />
 
-            <div className="menu-categories-mobile w-100">
-              <CategoriesComponents
-                toggleGrid={settoggleView}
-                onSelectCategory={(category) => setCurrentCategory(category)}
-              />
-            </div>
+            <LazyRender minHeight={360}>
+              <GoodTimeSection/>
+            </LazyRender>
 
-            <div className="w-100 d-flex justify-content-center">
-              <div className="menu-categories-descktop">
+            <LazyRender minHeight={360}>
+              <RecommindationSection />
+            </LazyRender>
+
+            <LazyRender minHeight={160}>
+              <BannerComponent BannerType="ads" />
+            </LazyRender>
+
+            <LazyRender minHeight={400} className="d-lg-none">
+              <div className="menu-categories-mobile w-100">
                 <CategoriesComponents
                   toggleGrid={settoggleView}
                   onSelectCategory={(category) => setCurrentCategory(category)}
                 />
               </div>
+            </LazyRender>
 
-              
-              <CategorisHomePage
-                isGrid={ToggleView}
-                category={CurrentCategory}
-                scrollRef={scrollRef}
-              />
-            </div>
+            <LazyRender minHeight={500}>
+              <div className="w-100 d-flex justify-content-center">
+                <div className="menu-categories-descktop">
+                  <CategoriesComponents
+                    toggleGrid={settoggleView}
+                    onSelectCategory={(category) => setCurrentCategory(category)}
+                  />
+                </div>
+
+                <CategorisHomePage
+                  isGrid={ToggleView}
+                  category={CurrentCategory}
+                  scrollRef={scrollRef}
+                />
+              </div>
+            </LazyRender>
 
           </div>
         </div>

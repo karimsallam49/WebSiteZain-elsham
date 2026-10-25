@@ -17,8 +17,8 @@ export const useFetch = <T>(currrentlang:"ar"|"en",url: string,options?: { enabl
   };
 
   return useQuery<T>({
-    queryKey: ["fetch", url, currrentlang],
+    queryKey: ["fetch", url, currrentlang, selectedBranch],
     queryFn: fetchData,
-    enabled: options?.enabled ?? true,
+    enabled: (options?.enabled ?? true) && !!selectedBranch,
   });
 };

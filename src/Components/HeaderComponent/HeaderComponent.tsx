@@ -29,7 +29,7 @@ const HeaderComponentBase = () => {
 <div className={`d-flex flex-row align-items-center  ${flexDirection}`} style={{ position:"absolute",right:"5%",top:"-100px",gap:"10px" }}>
 
 
-      <div style={{ width:"160px" ,border:"5px solid #722914",height:"160px" }} className="resturant-logo rounded-circle d-flex justify-content-center align-items-center overflow-hidden ">
+      <div style={{ width:"160px" ,border:"5px solid var(--MainColor)",height:"160px" }} className="resturant-logo rounded-circle d-flex justify-content-center align-items-center overflow-hidden ">
 
       <img
       loading="lazy"

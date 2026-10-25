@@ -1,0 +1,1160 @@
+/* ============================================================
+   Zain El Sham — Theme V2 "Dark Luxe"
+   مستوحى من الديزاين الجديد: navy غامق + ذهبي نحاسي + خط serif
+   كل القواعد scoped تحت html[data-theme="v2"] — V1 متأثرش خالص
+   ============================================================ */
+
+:root {
+  --v2-ink: #0b1420;
+  --v2-ink-deep: #070d16;
+  --v2-navy: #162638;
+  --v2-gold: #af915f;
+  --v2-gold-bright: #d4b273;
+  --v2-cream: #fce1b6;
+  --v2-cream-dim: rgba(252, 225, 182, 0.65);
+  --v2-hairline: rgba(175, 145, 95, 0.3);
+  --v2-font-display: "Marcellus", "Amiri", serif;
+  --v2-font-body: "Inter", "Almarai", "Cairo", sans-serif;
+}
+
+/* --MainColor متعرف أصلًا على * فلازم نستهدف html + كل العناصر جواه */
+html[data-theme="v2"],
+html[data-theme="v2"] * {
+  --MainColor: #af915f; /* كل اللي بيستخدم الـ var هيتحوّل ذهبي تلقائيًا */
+}
+
+/* ---------- Base ---------- */
+
+html[data-theme="v2"] body {
+  background-color: var(--v2-ink);
+  color: rgba(255, 255, 255, 0.9);
+  transition: background-color 0.4s ease;
+}
+
+html[data-theme="v2"] * {
+  font-family: var(--v2-font-body) !important;
+}
+
+html[data-theme="v2"] h1,
+html[data-theme="v2"] h2,
+html[data-theme="v2"] h3,
+html[data-theme="v2"] h4,
+html[data-theme="v2"] h5,
+html[data-theme="v2"] h6,
+html[data-theme="v2"] .resturant-logo,
+html[data-theme="v2"] .card-titl {
+  font-family: var(--v2-font-display) !important;
+  color: var(--v2-cream);
+}
+
+html[data-theme="v2"] a {
+  color: inherit;
+}
+
+html[data-theme="v2"] ::selection {
+  background: var(--v2-gold);
+  color: var(--v2-ink);
+}
+
+html[data-theme="v2"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+html[data-theme="v2"] ::-webkit-scrollbar-track {
+  background: var(--v2-ink-deep);
+}
+html[data-theme="v2"] ::-webkit-scrollbar-thumb {
+  background: rgba(175, 145, 95, 0.45);
+}
+html[data-theme="v2"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--v2-gold);
+}
+
+/* ---------- Surfaces ---------- */
+
+html[data-theme="v2"] .all-layout,
+html[data-theme="v2"] .all-container,
+html[data-theme="v2"] .menu-page-content,
+html[data-theme="v2"] .menu-products,
+html[data-theme="v2"] .menu-home-body {
+  background-color: var(--v2-ink);
+}
+
+/* البانل الأبيض المقوّس فوق الـ hero — في V2 بيبقى غامق وحاد الزوايا */
+html[data-theme="v2"] .menu-content {
+  background-color: var(--v2-ink);
+  border-radius: 0 !important;
+  border-top: 1px solid var(--v2-hairline);
+}
+
+/* veil فوق صورة الـ hero زي الديزاين */
+html[data-theme="v2"] .banner-conatiner .img-container {
+  position: relative;
+}
+html[data-theme="v2"] .banner-conatiner .img-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(11, 20, 32, 0.96),
+    rgba(11, 20, 32, 0.35) 45%,
+    rgba(11, 20, 32, 0.2)
+  );
+  pointer-events: none;
+}
+html[data-theme="v2"] .banner-conatiner {
+  border-bottom: 1px solid var(--v2-hairline);
+}
+
+/* ---------- Header / nav ---------- */
+
+html[data-theme="v2"] .adress-container {
+  background-color: var(--v2-ink-deep) !important;
+  border-bottom: 1px solid var(--v2-hairline) !important;
+  color: var(--v2-cream);
+}
+html[data-theme="v2"] .adress-container span,
+html[data-theme="v2"] .adress-container .text-dark {
+  color: var(--v2-cream-dim) !important;
+}
+
+html[data-theme="v2"] .mobile-page-topbar {
+  background-color: rgba(7, 13, 22, 0.92) !important;
+  backdrop-filter: blur(12px);
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--v2-hairline);
+  color: var(--v2-cream);
+}
+html[data-theme="v2"] .mobile-back-btn {
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .mobile-back-btn:hover {
+  background-color: rgba(175, 145, 95, 0.12) !important;
+}
+
+html[data-theme="v2"] .dropdown-menu-custom {
+  background: var(--v2-navy);
+  border: 1px solid var(--v2-hairline);
+  border-radius: 0;
+}
+html[data-theme="v2"] .dropdown-item-custom {
+  color: rgba(255, 255, 255, 0.85);
+}
+html[data-theme="v2"] .dropdown-item-custom:hover {
+  background: rgba(175, 145, 95, 0.12);
+  color: var(--v2-gold-bright);
+}
+html[data-theme="v2"] .dropdown-toggle-custom:hover {
+  color: var(--v2-gold);
+}
+
+/* ---------- BottomNav ---------- */
+
+html[data-theme="v2"] .mobile-nav-contain-right,
+html[data-theme="v2"] .mobile-nav-contain-left {
+  background: var(--v2-ink-deep);
+}
+html[data-theme="v2"] .bottomNav-container::before {
+  background: var(--v2-ink-deep);
+}
+html[data-theme="v2"] .bottomNav {
+  border-top: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .bottomNav a,
+html[data-theme="v2"] .bottomNav .Grarcolor {
+  color: var(--v2-cream-dim) !important;
+}
+html[data-theme="v2"] .bottomNav .mobile-cart-container {
+  box-shadow: 0 0 0 4px var(--v2-ink);
+}
+
+/* ---------- Cards ---------- */
+
+html[data-theme="v2"] .card,
+html[data-theme="v2"] .product-card {
+  background-color: var(--v2-navy) !important;
+  border: 1px solid var(--v2-hairline) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.9);
+}
+html[data-theme="v2"] .product-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--v2-gold) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45) !important;
+}
+html[data-theme="v2"] .card-titl,
+html[data-theme="v2"] .card-text,
+html[data-theme="v2"] .card-bod {
+  color: var(--v2-cream);
+}
+html[data-theme="v2"] .price-place del {
+  color: rgba(252, 225, 182, 0.45) !important;
+}
+html[data-theme="v2"] .product-price {
+  color: var(--v2-gold) !important;
+}
+
+/* زرار الـ + على الكارت — ذهبي بنص غامق زي btn-solid */
+html[data-theme="v2"] .card-bottom {
+  border-radius: 0 !important;
+  color: var(--v2-ink) !important;
+  font-weight: 700;
+}
+
+/* ---------- Buttons ---------- */
+
+html[data-theme="v2"] .btn,
+html[data-theme="v2"] button {
+  border-radius: 0 !important;
+}
+html[data-theme="v2"] .backgroundMainColor {
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .btn-primary,
+html[data-theme="v2"] .btn-danger {
+  background-color: var(--v2-gold) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .btn-outline-danger,
+html[data-theme="v2"] .btn-outline-secondary {
+  color: var(--v2-gold) !important;
+  border-color: var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .btn-outline-danger:hover,
+html[data-theme="v2"] .btn-outline-secondary:hover {
+  background-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .btn-close {
+  filter: invert(0.8) sepia(0.4) saturate(3) hue-rotate(5deg);
+}
+html[data-theme="v2"] .btn-link {
+  color: var(--v2-gold) !important;
+}
+
+/* ---------- Categories ---------- */
+
+html[data-theme="v2"] .categorybox-item {
+  border-radius: 0;
+  border: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .categorybox-img {
+  border-radius: 0;
+}
+html[data-theme="v2"] .categorybox-overlay {
+  background: linear-gradient(transparent, rgba(7, 13, 22, 0.92));
+  color: var(--v2-cream);
+  border-radius: 0;
+  font-family: var(--v2-font-display) !important;
+  letter-spacing: 0.08em;
+}
+
+/* Accordion (قائمة الأقسام الجانبية) */
+html[data-theme="v2"] .accordion-item {
+  background-color: var(--v2-navy);
+  border: 1px solid var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .accordion-button {
+  background-color: var(--v2-navy);
+  color: var(--v2-cream);
+  border-radius: 0 !important;
+}
+html[data-theme="v2"] .accordion-button:not(.collapsed) {
+  background-color: var(--v2-navy);
+  color: var(--v2-gold);
+  box-shadow: none;
+}
+html[data-theme="v2"] .accordion-button::after {
+  filter: invert(0.75) sepia(0.5) saturate(3);
+}
+html[data-theme="v2"] .accordion-button:focus {
+  box-shadow: none;
+  border-color: var(--v2-gold);
+}
+html[data-theme="v2"] .category-name {
+  color: var(--v2-cream);
+}
+html[data-theme="v2"] .subcategory-count,
+html[data-theme="v2"] .list-group-item {
+  background-color: var(--v2-navy);
+  color: var(--v2-cream-dim);
+  border-color: var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .list-group-item:hover {
+  color: var(--v2-gold-bright);
+}
+
+/* ---------- Offcanvas / mobile categories ---------- */
+
+html[data-theme="v2"] .offcanvas,
+html[data-theme="v2"] .offcanvas-bottom {
+  background: var(--v2-ink-deep) !important;
+  color: rgba(255, 255, 255, 0.9);
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-top: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .offcanvas-bottom::before {
+  background: var(--v2-hairline);
+}
+html[data-theme="v2"] .offcanvas-header {
+  border-bottom-color: var(--v2-hairline);
+}
+html[data-theme="v2"] .offcanvas-title {
+  color: var(--v2-cream);
+  font-family: var(--v2-font-display) !important;
+}
+html[data-theme="v2"] .mobile-category-item {
+  border-bottom-color: var(--v2-hairline);
+}
+html[data-theme="v2"] .mobile-category-item:hover {
+  background: rgba(175, 145, 95, 0.08);
+}
+html[data-theme="v2"] .mobile-category-name {
+  color: var(--v2-cream);
+}
+html[data-theme="v2"] .mobile-categories-container h4 {
+  color: var(--v2-cream);
+  font-family: var(--v2-font-display) !important;
+}
+
+/* ---------- Modals / popups ---------- */
+
+html[data-theme="v2"] .modal-content {
+  background-color: var(--v2-navy);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--v2-hairline);
+  border-radius: 0;
+}
+html[data-theme="v2"] .modal-header {
+  border-bottom-color: var(--v2-hairline);
+}
+html[data-theme="v2"] .modal-footer {
+  border-top-color: var(--v2-hairline);
+}
+html[data-theme="v2"] .modal-title {
+  color: var(--v2-cream);
+  font-family: var(--v2-font-display) !important;
+}
+html[data-theme="v2"] .promo-card {
+  border: 1px solid var(--v2-gold);
+}
+html[data-theme="v2"] .toast {
+  background-color: var(--v2-navy);
+  color: var(--v2-cream);
+  border: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .dropdown-menu {
+  background-color: var(--v2-navy);
+  border: 1px solid var(--v2-hairline);
+  border-radius: 0;
+}
+html[data-theme="v2"] .dropdown-item {
+  color: rgba(255, 255, 255, 0.85);
+}
+html[data-theme="v2"] .dropdown-item:hover,
+html[data-theme="v2"] .dropdown-item:focus {
+  background-color: rgba(175, 145, 95, 0.12);
+  color: var(--v2-gold-bright);
+}
+
+/* ---------- Forms ---------- */
+
+html[data-theme="v2"] .form-control,
+html[data-theme="v2"] .form-select,
+html[data-theme="v2"] input[type="text"],
+html[data-theme="v2"] input[type="tel"],
+html[data-theme="v2"] input[type="email"],
+html[data-theme="v2"] input[type="password"],
+html[data-theme="v2"] input[type="number"],
+html[data-theme="v2"] textarea {
+  background-color: var(--v2-ink-deep) !important;
+  border: 1px solid var(--v2-hairline) !important;
+  border-radius: 0 !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .form-control::placeholder,
+html[data-theme="v2"] input::placeholder,
+html[data-theme="v2"] textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+html[data-theme="v2"] .form-control:focus,
+html[data-theme="v2"] .form-select:focus,
+html[data-theme="v2"] input:focus {
+  background-color: var(--v2-ink-deep);
+  border-color: var(--v2-gold) !important;
+  box-shadow: 0 0 0 1px var(--v2-gold) !important;
+  color: var(--v2-cream);
+}
+html[data-theme="v2"] .form-check-input {
+  background-color: var(--v2-ink-deep);
+  border-color: var(--v2-hairline);
+}
+html[data-theme="v2"] .form-check-input:checked {
+  background-color: var(--v2-gold);
+  border-color: var(--v2-gold);
+}
+html[data-theme="v2"] .form-label,
+html[data-theme="v2"] label {
+  color: var(--v2-cream-dim);
+}
+html[data-theme="v2"] .form-select {
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23af915f' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* ---------- Text utilities ---------- */
+
+html[data-theme="v2"] .text-muted,
+html[data-theme="v2"] .text-secondary {
+  color: var(--v2-cream-dim) !important;
+}
+html[data-theme="v2"] .text-dark {
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .text-light,
+html[data-theme="v2"] .text-white {
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .bg-white,
+html[data-theme="v2"] .bg-light {
+  background-color: var(--v2-navy) !important;
+}
+html[data-theme="v2"] .border,
+html[data-theme="v2"] .border-bottom,
+html[data-theme="v2"] .border-top,
+html[data-theme="v2"] hr {
+  border-color: var(--v2-hairline) !important;
+  opacity: 1;
+}
+html[data-theme="v2"] .shadow-sm,
+html[data-theme="v2"] .shadow {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+html[data-theme="v2"] .badge.bg-danger {
+  background-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .badge.bg-success {
+  background-color: transparent !important;
+  color: #7bc98b !important;
+  border: 1px solid rgba(123, 201, 139, 0.5);
+}
+html[data-theme="v2"] .spinner-border,
+html[data-theme="v2"] .spinner-grow {
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .table {
+  --bs-table-bg: var(--v2-navy);
+  --bs-table-color: rgba(255, 255, 255, 0.9);
+  --bs-table-border-color: var(--v2-hairline);
+}
+html[data-theme="v2"] .nav-link {
+  color: var(--v2-cream-dim);
+}
+html[data-theme="v2"] .nav-link.active {
+  color: var(--v2-gold);
+}
+
+/* ---------- Slick slider ---------- */
+
+html[data-theme="v2"] .slick-prev:before,
+html[data-theme="v2"] .slick-next:before {
+  color: var(--v2-gold);
+}
+html[data-theme="v2"] .slick-dots li button:before {
+  color: var(--v2-gold);
+  opacity: 0.35;
+}
+html[data-theme="v2"] .slick-dots li.slick-active button:before {
+  color: var(--v2-gold-bright);
+  opacity: 1;
+}
+
+/* ---------- Footer ---------- */
+
+html[data-theme="v2"] .footer-Container {
+  box-shadow: inset 0 0 0 2000px rgba(7, 13, 22, 0.85);
+  border-top: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .footer-Container h4 {
+  color: var(--v2-gold);
+  font-family: var(--v2-font-display) !important;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+html[data-theme="v2"] .footerText {
+  border-top: 1px solid var(--v2-hairline);
+  color: var(--v2-cream-dim) !important;
+}
+
+/* ---------- Luxe utilities (للاستخدام في الكومبوننتس) ---------- */
+
+html[data-theme="v2"] .label-luxe {
+  font-family: var(--v2-font-display) !important;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--v2-gold) !important;
+}
+
+html[data-theme="v2"] .hairline {
+  border: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .hairline-b {
+  border-bottom: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .hairline-t {
+  border-top: 1px solid var(--v2-hairline);
+}
+
+html[data-theme="v2"] .veil {
+  background: linear-gradient(
+    to top,
+    rgba(11, 20, 32, 0.96),
+    rgba(11, 20, 32, 0.55) 45%,
+    rgba(11, 20, 32, 0.35)
+  );
+}
+
+/* زرار بأنيميشن رسم الإطار — نفس روح الديزاين الجديد */
+html[data-theme="v2"] .btn-draw {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2.25rem;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-family: var(--v2-font-body) !important;
+  color: var(--v2-cream) !important;
+  background: transparent !important;
+  cursor: pointer;
+  transition: color 0.45s ease, background 0.45s ease;
+  isolation: isolate;
+}
+html[data-theme="v2"] .btn-draw::before,
+html[data-theme="v2"] .btn-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--v2-gold);
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+html[data-theme="v2"] .btn-draw::before {
+  top: 0;
+  transform: scaleX(1);
+  transform-origin: right;
+}
+html[data-theme="v2"] .btn-draw::after {
+  bottom: 0;
+  transform: scaleX(1);
+  transform-origin: left;
+}
+html[data-theme="v2"] .btn-draw:hover {
+  color: var(--v2-ink) !important;
+  background: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .btn-draw:hover::after,
+html[data-theme="v2"] .btn-draw:hover::before {
+  transform: scaleX(0);
+}
+html[data-theme="v2"] .btn-draw.btn-solid {
+  background: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .btn-draw.btn-solid:hover {
+  background: var(--v2-gold-bright) !important;
+}
+
+/* ---------- Design picker & toggle (شكلهم ثابت على الثيمين) ---------- */
+
+.design-picker-modal .modal-content {
+  background: var(--v2-ink-deep);
+  border: 1px solid var(--v2-hairline);
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+.design-picker-card {
+  border: 1px solid var(--v2-hairline);
+  background: var(--v2-navy);
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.design-picker-card:hover {
+  border-color: var(--v2-gold);
+  transform: translateY(-3px);
+}
+.design-picker-card.selected {
+  border-color: var(--v2-gold);
+  box-shadow: 0 0 0 1px var(--v2-gold);
+}
+.design-picker-preview {
+  height: 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+.design-fab {
+  position: fixed;
+  bottom: 5.2rem;
+  inset-inline-end: 1rem;
+  z-index: 1050;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--v2-hairline);
+  background: rgba(7, 13, 22, 0.85);
+  color: var(--v2-cream);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.design-fab:hover {
+  border-color: var(--v2-gold);
+  transform: translateY(-2px);
+  color: var(--v2-gold-bright);
+}
+@media (min-width: 992px) {
+  .design-fab {
+    bottom: 1.5rem;
+  }
+}
+
+/* ---------- Picker internals ---------- */
+
+.design-picker-modal .modal-body {
+  font-family: "Inter", "Almarai", "Cairo", sans-serif;
+}
+.picker-eyebrow {
+  font-family: "Marcellus", "Amiri", serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: var(--v2-gold);
+}
+.picker-title {
+  font-family: "Marcellus", "Amiri", serif;
+  color: var(--v2-cream);
+  margin: 0.5rem 0 0.35rem;
+  font-size: 1.6rem;
+}
+.picker-sub {
+  color: rgba(252, 225, 182, 0.6);
+  font-size: 0.85rem;
+}
+.picker-name {
+  font-family: "Marcellus", "Amiri", serif;
+  color: var(--v2-cream);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+}
+.picker-desc {
+  display: block;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72rem;
+  margin-top: 0.3rem;
+  line-height: 1.5;
+}
+.picker-check {
+  color: var(--v2-gold-bright);
+}
+.picker-hint-icon {
+  color: rgba(175, 145, 95, 0.6);
+}
+.design-picker-card {
+  padding: 0;
+  text-align: start;
+}
+.design-picker-card.selected .picker-name {
+  color: var(--v2-gold-bright);
+}
+
+/* mock previews */
+.preview-v2 {
+  background: var(--v2-ink);
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 10px;
+}
+.preview-v2 .pv2-line {
+  position: absolute;
+  top: 10px;
+  inset-inline-start: 10px;
+  width: 42px;
+  height: 4px;
+  background: var(--v2-gold);
+}
+.preview-v2 .pv2-bar {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 22px;
+  background: var(--v2-ink-deep);
+  border-bottom: 1px solid var(--v2-hairline);
+}
+.preview-v2 .pv2-card {
+  flex: 1;
+  height: 34px;
+  background: var(--v2-navy);
+  border: 1px solid var(--v2-hairline);
+}
+.preview-v1 {
+  background: #f5f5f5;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 10px;
+}
+.preview-v1 .pv1-line {
+  position: absolute;
+  top: 10px;
+  inset-inline-start: 10px;
+  width: 42px;
+  height: 4px;
+  background: #722914;
+}
+.preview-v1 .pv1-bar {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 22px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+.preview-v1 .pv1-card {
+  flex: 1;
+  height: 34px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+}
+
+.picker-confirm {
+  padding: 0.9rem;
+  border: none;
+  background: var(--v2-gold);
+  color: var(--v2-ink);
+  font-family: "Inter", "Almarai", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transition: background 0.3s ease;
+}
+.picker-confirm:hover {
+  background: var(--v2-gold-bright);
+}
+
+/* دخول ناعم للكروت */
+.design-picker-card {
+  animation: picker-fade-up 0.5s ease both;
+}
+.design-picker-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+@keyframes picker-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   ENFORCEMENT — Bootstrap 5.3 utilities كلها !important
+   فلازم نكسرها بـ !important هنا عشان الصفحات الداخلية
+   والمودالات تبقى غامقة فعلًا
+   ============================================================ */
+
+html[data-theme="v2"] .bg-white,
+html[data-theme="v2"] .bg-light,
+html[data-theme="v2"] .bg-body,
+html[data-theme="v2"] .bg-body-secondary,
+html[data-theme="v2"] .bg-body-tertiary {
+  background-color: var(--v2-navy) !important;
+  color: var(--v2-cream) !important;
+}
+
+html[data-theme="v2"] .card {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+  border-radius: 0 !important;
+}
+
+html[data-theme="v2"] .text-dark {
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .text-muted,
+html[data-theme="v2"] .text-secondary {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+html[data-theme="v2"] .text-white {
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .text-light {
+  color: var(--v2-cream-dim) !important;
+}
+html[data-theme="v2"] .text-danger {
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .text-success,
+html[data-theme="v2"] .text-primary {
+  color: var(--v2-gold) !important;
+}
+
+html[data-theme="v2"] .bg-danger,
+html[data-theme="v2"] .bg-success {
+  background-color: rgba(175, 145, 95, 0.18) !important;
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .bg-primary,
+html[data-theme="v2"] .bg-warning {
+  background-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .bg-secondary,
+html[data-theme="v2"] .bg-info {
+  background-color: var(--v2-navy) !important;
+  color: var(--v2-cream-dim) !important;
+}
+html[data-theme="v2"] .bg-dark {
+  background-color: var(--v2-ink-deep) !important;
+  color: var(--v2-cream) !important;
+}
+
+html[data-theme="v2"] .border,
+html[data-theme="v2"] .border-top,
+html[data-theme="v2"] .border-bottom,
+html[data-theme="v2"] .border-start,
+html[data-theme="v2"] .border-end {
+  border-color: var(--v2-hairline) !important;
+}
+
+html[data-theme="v2"] .btn-light {
+  background-color: transparent !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .btn-light:hover {
+  background-color: rgba(175, 145, 95, 0.15) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-gold-bright) !important;
+}
+html[data-theme="v2"] .btn-primary {
+  background-color: var(--v2-gold) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .btn-primary:hover {
+  background-color: var(--v2-gold-bright) !important;
+  border-color: var(--v2-gold-bright) !important;
+}
+html[data-theme="v2"] .btn-danger,
+html[data-theme="v2"] .btn-success,
+html[data-theme="v2"] .btn-warning,
+html[data-theme="v2"] .btn-info {
+  background-color: var(--v2-gold) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .btn-outline-primary,
+html[data-theme="v2"] .btn-outline-danger,
+html[data-theme="v2"] .btn-outline-success,
+html[data-theme="v2"] .btn-outline-secondary,
+html[data-theme="v2"] .btn-outline-dark {
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-gold) !important;
+  background-color: transparent !important;
+}
+html[data-theme="v2"] .btn-outline-primary:hover,
+html[data-theme="v2"] .btn-outline-danger:hover,
+html[data-theme="v2"] .btn-outline-success:hover,
+html[data-theme="v2"] .btn-outline-secondary:hover,
+html[data-theme="v2"] .btn-outline-dark:hover {
+  background-color: rgba(175, 145, 95, 0.15) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-gold-bright) !important;
+}
+html[data-theme="v2"] .btn-close {
+  filter: invert(1) sepia(0.3) saturate(2) hue-rotate(-10deg);
+  opacity: 0.8;
+}
+
+/* المودالات — Dark Luxe */
+html[data-theme="v2"] .modal-content {
+  background-color: var(--v2-ink) !important;
+  border: 1px solid var(--v2-hairline) !important;
+  border-radius: 0 !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .modal-header {
+  border-bottom-color: var(--v2-hairline) !important;
+  background-color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .modal-body {
+  background-color: var(--v2-ink) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .modal-footer {
+  border-top-color: var(--v2-hairline) !important;
+  background-color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .modal-title {
+  color: var(--v2-cream) !important;
+  font-family: var(--v2-font-display) !important;
+}
+html[data-theme="v2"] .ModalImage {
+  border-radius: 0 !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .modal-pic-container {
+  background: var(--v2-navy) !important;
+}
+html[data-theme="v2"] .modal-content .rounded-circle.bg-light {
+  background-color: var(--v2-ink-deep) !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .modal-content .rounded-4,
+html[data-theme="v2"] .modal-content .shadow-sm,
+html[data-theme="v2"] .modal-content .shadow {
+  background-color: var(--v2-navy) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--v2-hairline) !important;
+  border-radius: 0 !important;
+}
+html[data-theme="v2"] .product-info-body {
+  color: var(--v2-cream-dim) !important;
+}
+
+/* الفورمز */
+html[data-theme="v2"] .form-control,
+html[data-theme="v2"] .form-select,
+html[data-theme="v2"] .form-check-input {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+  border-radius: 0 !important;
+}
+html[data-theme="v2"] .form-control:focus,
+html[data-theme="v2"] .form-select:focus {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-cream) !important;
+  box-shadow: 0 0 0 0.2rem rgba(175, 145, 95, 0.2) !important;
+}
+html[data-theme="v2"] .form-check-input:checked {
+  background-color: var(--v2-gold) !important;
+  border-color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .input-group-text {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+
+/* الجداول */
+html[data-theme="v2"] .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--v2-cream);
+  --bs-table-border-color: var(--v2-hairline);
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .table > :not(caption) > * > * {
+  background-color: transparent !important;
+  color: var(--v2-cream) !important;
+  border-color: var(--v2-hairline) !important;
+}
+
+/* list-group */
+html[data-theme="v2"] .list-group-item {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+
+/* accordion */
+html[data-theme="v2"] .accordion-item {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .accordion-button {
+  background-color: var(--v2-navy) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .accordion-button:not(.collapsed) {
+  background-color: rgba(175, 145, 95, 0.12) !important;
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .accordion-button::after {
+  filter: invert(1) sepia(0.4) saturate(3);
+}
+html[data-theme="v2"] .accordion-body {
+  background-color: var(--v2-navy) !important;
+  color: var(--v2-cream-dim) !important;
+}
+
+/* offcanvas */
+html[data-theme="v2"] .offcanvas {
+  background-color: var(--v2-ink) !important;
+  color: var(--v2-cream) !important;
+  border-color: var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .offcanvas-header {
+  border-bottom: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .offcanvas-title {
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .offcanvas-body {
+  color: var(--v2-cream) !important;
+}
+
+/* dropdown */
+html[data-theme="v2"] .dropdown-menu {
+  background-color: var(--v2-ink) !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .dropdown-item {
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .dropdown-item:hover,
+html[data-theme="v2"] .dropdown-item:focus {
+  background-color: rgba(175, 145, 95, 0.12) !important;
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .dropdown-divider {
+  border-color: var(--v2-hairline) !important;
+}
+
+/* pagination */
+html[data-theme="v2"] .page-link {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .page-item.active .page-link {
+  background-color: var(--v2-gold) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .page-link:hover {
+  background-color: rgba(175, 145, 95, 0.15) !important;
+  color: var(--v2-gold) !important;
+}
+
+/* toast + alert */
+html[data-theme="v2"] .toast {
+  background-color: var(--v2-ink) !important;
+  border: 1px solid var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .toast-header {
+  background-color: var(--v2-navy) !important;
+  border-bottom: 1px solid var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .alert {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+  border-radius: 0 !important;
+}
+html[data-theme="v2"] .alert-danger {
+  background-color: rgba(175, 145, 95, 0.12) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-gold) !important;
+}
+
+/* nav tabs */
+html[data-theme="v2"] .nav-tabs {
+  border-bottom-color: var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .nav-link {
+  color: var(--v2-cream-dim) !important;
+}
+html[data-theme="v2"] .nav-link.active {
+  background-color: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .nav-tabs .nav-link.active {
+  background-color: transparent !important;
+  color: var(--v2-gold) !important;
+  border-color: var(--v2-hairline) var(--v2-hairline) var(--v2-ink) !important;
+}
+
+/* spinner */
+html[data-theme="v2"] .spinner-border,
+html[data-theme="v2"] .spinner-grow {
+  color: var(--v2-gold) !important;
+}
+
+/* ---------- catch-all للـ inline light backgrounds ----------
+   بعض الكومبوننتس بتحط backgroundColor بيضا inline —
+   بنمسك الـ style attribute نفسه */
+html[data-theme="v2"] [style*="background-color: white"],
+html[data-theme="v2"] [style*="background-color:white"],
+html[data-theme="v2"] [style*="background-color: rgb(255, 255, 255)"],
+html[data-theme="v2"] [style*="background-color: #fff"],
+html[data-theme="v2"] [style*="background-color:#fff"],
+html[data-theme="v2"] [style*="background-color: #f8f9fa"],
+html[data-theme="v2"] [style*="background-color:#f8f9fa"],
+html[data-theme="v2"] [style*="background-color: rgb(248, 249, 250)"],
+html[data-theme="v2"] [style*="background-color: #f5f5f5"],
+html[data-theme="v2"] [style*="background-color:#f5f5f5"],
+html[data-theme="v2"] [style*="background-color: rgb(245, 245, 245)"],
+html[data-theme="v2"] [style*="background-color: #ecd1cdff"],
+html[data-theme="v2"] [style*="background-color:#ecd1cdff"],
+html[data-theme="v2"] [style*="background-color: #e7f1ff"],
+html[data-theme="v2"] [style*="background-color:#e7f1ff"],
+html[data-theme="v2"] [style*="background: white"],
+html[data-theme="v2"] [style*="background:white"] {
+  background-color: var(--v2-navy) !important;
+  color: var(--v2-cream) !important;
+}
+
+/* عناصر معروفة بالاسم */
+html[data-theme="v2"] .adress-container {
+  background-color: var(--v2-ink) !important;
+  border-bottom-color: var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .adress-container .text-muted {
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .profile-page .shadow-sm,
+html[data-theme="v2"] .profile-page .rounded-3 {
+  box-shadow: none !important;
+  border: 1px solid var(--v2-hairline) !important;
+  border-top-color: var(--v2-gold) !important;
+  border-radius: 0 !important;
+}
+html[data-theme="v2"] .profileheader {
+  background-color: var(--v2-navy) !important;
+}
+html[data-theme="v2"] .profile-page .form-control[readonly] {
+  color: var(--v2-cream-dim) !important;
+}
+
+/* أيقونة القلب في مودال المنتج */
+html[data-theme="v2"] .modal-content svg {
+  color: var(--v2-gold);
+}

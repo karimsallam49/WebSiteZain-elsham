@@ -147,7 +147,7 @@ setMergedList((prev) => {
         {isLoading && (
           <div className="d-flex justify-content-center align-items-center mt-4 mb-5">
             <div className="spinner-border" role="status"
-              style={{ width: "2.5rem", height: "2.5rem", color: "#722914" }}
+              style={{ width: "2.5rem", height: "2.5rem", color: "var(--MainColor)" }}
             />
           </div>
         )}

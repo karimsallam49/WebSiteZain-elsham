@@ -45,6 +45,6 @@
 .product-price {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #722914;
+  color: var(--MainColor);
   align-self: flex-end;
 }

@@ -5,8 +5,6 @@ import { useFetch } from "../../Hooks/useFetch";
 import { GoodTimeProductUrL } from "../../EndPoints/EndPoints";
 import type { ProductListResponse } from "../../DTO/ProductsDTO";
 import "./GoodTimeSection.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../Hooks/hooks";
 import ProductsSliderSection from "../ProductsSliderSection/ProductsSliderSection";
@@ -25,6 +23,7 @@ const GoodTimeSection = memo(() => {
     () => ({
       dots: false,
       infinite: totalProducts > 1,
+      lazyLoad: "ondemand" as const,
       speed: 800,
       slidesToShow: totalProducts > 4 ? 5 : totalProducts+1|| 1,
       slidesToScroll: 1,

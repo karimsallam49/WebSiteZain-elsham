@@ -6,7 +6,7 @@ import { GetProductByNameAPI } from "../../EndPoints/EndPoints";
 import { useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../Hooks/hooks";
-import { throttle } from "lodash";
+import { throttle } from "../../utilities/throttle";
 import "./SearchResalutage.css";
 
 const SearchResalutage = () => {

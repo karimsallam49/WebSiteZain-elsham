@@ -7,9 +7,9 @@ export const SectionName = ({ title }: SectionNameProps) => {
   return (
     <h4  style={{
      display: "inline-block",
-     borderBottom: "3px solid #722914",
+     borderBottom: "3px solid var(--MainColor)",
      padding: "10px 0",
-     color: "#722914"
+     color: "var(--MainColor)"
    }} className="text-center m-2   fw-bold"> {title}</h4>
   )
 }

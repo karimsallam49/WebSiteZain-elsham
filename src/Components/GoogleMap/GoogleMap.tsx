@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { LocateFixed } from "lucide-react";
 import { Spinner } from "react-bootstrap";
-import L, { reverseGeocode } from "../../utilities/leaflet";
+import L from "../../utilities/leaflet";
+import { reverseGeocode } from "../../utilities/geocode";
 import i18n from "../../i18n";
 
 interface GoogleMapProps {

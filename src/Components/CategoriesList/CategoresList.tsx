@@ -1,3 +1,4 @@
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./CategoriesSideList.css";
 import type { Category } from "../../DTO/CategoriesDTO";
 import { FaChevronRight } from "react-icons/fa";
@@ -17,18 +18,25 @@ export const CategoriesSideList = ({ categories, onSelectCategory }: Props) => {
     [categories]
   );
 
+  const subCategoriesMap = useMemo(() => {
+    const map = new Map<string, Category[]>();
+    parentCategories.forEach((category) => {
+      const subs =
+        category?.childes?.length > 0
+          ? category.childes
+          : categories.filter(
+              (sub) => sub.parent_id?.toString() === category.id.toString()
+            );
+      map.set(category.id.toString(), subs);
+    });
+    return map;
+  }, [parentCategories, categories]);
+
   return (
     <div className="accordion acc-des" id="categoriesAccordion">
       {parentCategories.map((category) => {
-        const subCategories = useMemo(() => {
-          if (category?.childes?.length > 0) {
-            return category.childes;
-          } else {
-            return categories.filter(
-              (sub) => sub.parent_id?.toString() === category.id.toString()
-            );
-          }
-        }, [categories, category]);
+        const subCategories =
+          subCategoriesMap.get(category.id.toString()) ?? [];
 
         return (
           <div className="accordion-item" key={category.id}>

@@ -57,6 +57,7 @@ const BannerComponent = ({ BannerType }: { BannerType: "ads" | "promot" | string
   const settings = {
     dots: true,
     infinite: true,
+    lazyLoad: "ondemand" as const,
     speed: 800,
     autoplay: true,
     autoplaySpeed: 3000,

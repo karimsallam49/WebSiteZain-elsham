@@ -24,6 +24,7 @@ import OrderdetailsSlice from"./OrderDetails/OrderDetailsSlice"
 import PagesSlice from "./Pages/PagesSlice"
 import BranchImages from "./Branch/BranchSlice"
 import bannerSlice from "./Banner/BannerSlice"
+import themeSlice from "./Theme/ThemeSlice"
 // import oTPauthSlice from "./Auth/OTP/LoginSlice"
 const authconfigration={
   key:"Authslice",
@@ -56,6 +57,13 @@ const cartconfigration={
 
 }
 
+const themeconfigration={
+  key:"theme",
+  storage,
+  whitelist:["designVersion","hasChosenDesign"]
+
+}
+
 
 
 const rootpersistconfgritaion={
@@ -83,6 +91,7 @@ const rootreducer= combineReducers({
     OrderdetailsSlice,
     DeliveryFeeSlice,
     UserInfoSLice:persistReducer(UserInfoConfiqration,UserInfoSLice),
+    themeSlice:persistReducer(themeconfigration,themeSlice),
     LanguageSlice
 //   cartslices:persistReducer(cartconfigration,cartslices),
   

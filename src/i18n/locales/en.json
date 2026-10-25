@@ -332,5 +332,32 @@
     "my_orders": "My Orders",
     "order_completed": "Order Completed",
     "payment": "Payment"
+  },
+  "designPicker": {
+    "title": "Choose Your Experience",
+    "subtitle": "We've redesigned Zain El Sham. Pick the look you prefer — you can switch anytime.",
+    "newDesign": "New Design",
+    "newDesignDesc": "Dark luxe theme — navy, gold and elegant serif type.",
+    "classicDesign": "Classic Design",
+    "classicDesignDesc": "The original look you already know.",
+    "confirm": "Continue",
+    "switchToNew": "Switch to new design",
+    "switchToClassic": "Back to classic design"
+  },
+  "v2": {
+    "brandSub": "Authentic Levantine",
+    "backToSite": "Back to site",
+    "deliveryTo": "Deliver to",
+    "searchPlaceholder": "Hungry? Search here…",
+    "heroEyebrow": "Zain El Sham",
+    "all": "All",
+    "itemsCount": "items",
+    "ourMenu": "The Menu",
+    "endOfMenu": "End of menu",
+    "viewCart": "View cart",
+    "viewAll": "View all",
+    "offer": "Offer",
+    "loadingDishes": "Loading…",
+    "marquee": "Zain El Sham • Authentic Levantine Kitchen • Cairo"
   }
 }

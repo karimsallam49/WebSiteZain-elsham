@@ -11,8 +11,17 @@ import "slick-carousel/slick/slick-theme.css";
 import AppRouter from './AppRoutes/AppRoutes';
 import Geolocation from './Components/Geolocation/Geolocation';
 // import AppdesckTopHeader from './Components/AppdesktopHeader/AppdesckTopHeader';
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60_000,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
 function App() {
-const queryClient = new QueryClient();
   const { i18n } = useTranslation();
 
   useEffect(() => {

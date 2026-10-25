@@ -10,7 +10,7 @@ import "./CategoryPage.css";
 import imageplaceholder from "../../assets/BackGround.png";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../Hooks/hooks";
-import { throttle } from "lodash";
+import { throttle } from "../../utilities/throttle";
 
 const CuisineProductsPage = () => {
   const { t } = useTranslation();
