@@ -19,11 +19,7 @@ import PromoCodePopup from "../../Components/PromoCodePopup/PromoCodePopup";
 import coupon_svg from "../../assets/svg/coupon_icon.svg";
 import { useTranslation } from "react-i18next"; 
 import FeedbackToast from "../../Components/FeedbackToast/FeedbackToast";
-import {
-  getItemVariationsTotal,
-  getItemAddonsTotal,
-  getItemUnitPrice,
-} from "../../utilities/cartPricing";
+import { getItemVariationsTotal } from "../../utilities/cartPricing";
 
 const CartPage = () => {
   const { t } = useTranslation(); 

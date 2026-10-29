@@ -110,7 +110,7 @@
 
 .profile-name {
   margin: 0.85rem 0 0.2rem;
-  font-family: var(--v2-font-display, "Marcellus", "Amiri", serif);
+  font-family: var(--v2-font-display, "Cairo", sans-serif);
   font-size: 1.35rem;
   letter-spacing: 0.04em;
   color: var(--v2-cream, #fce1b6);
@@ -144,7 +144,7 @@
   justify-content: center;
   gap: 0.9rem;
   margin: 0.4rem 0 0.4rem;
-  font-family: var(--v2-font-display, "Marcellus", "Amiri", serif);
+  font-family: var(--v2-font-display, "Cairo", sans-serif);
   font-size: 0.72rem;
   letter-spacing: 0.32em;
   text-transform: uppercase;

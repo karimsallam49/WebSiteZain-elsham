@@ -382,7 +382,9 @@
     "hhDiscountAmount": "خصم {{value}}",
     "hhHours": "ساعة",
     "hhMinutes": "دقيقة",
-    "hhSeconds": "ثانية"
+    "hhSeconds": "ثانية",
+    "typeToSearch": "اكتب اسم الأكلة اللي نفسك فيها",
+    "noResults": "مفيش نتايج — جرّب كلمة تانية"
   },
   "spinWin": {
     "title": "عجلة الحظ",

@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import type { Category } from "../../DTO/CategoriesDTO";
@@ -13,22 +13,43 @@ interface Props {
 
 const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) => {
   const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
   const parents = categories.filter((c) => c.parent_id?.toString() === "0");
 
   if (parents.length === 0) return null;
 
+  const handleAll = () => {
+    if (expanded) {
+      // الـ grid مفتوح → الضغط على "الكل" بيفلتر على كل المنتجات ويقفل الـ grid
+      onSelect(null);
+      setExpanded(false);
+    } else {
+      // مغلق → يفتح الـ grid بأنيميشن ويعرض كل الأقسام
+      setExpanded(true);
+    }
+  };
+
+  const handleSelect = (cat: Category) => {
+    onSelect(cat);
+    setExpanded(false);
+  };
+
   return (
-    <div className="v2-cat-rail" role="list">
+    <div
+      key={expanded ? "grid" : "rail"}
+      className={expanded ? "v2-cat-grid" : "v2-cat-rail"}
+      role="list"
+    >
       <div
         className={`v2-cat-tile ${allActive ? "active" : ""}`}
         style={{ "--i": 0 } as CSSProperties}
-        onClick={() => onSelect(null)}
+        onClick={handleAll}
         role="listitem"
         tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && onSelect(null)}
+        onKeyDown={(e) => e.key === "Enter" && handleAll()}
       >
         <span className="v2-tile-name">{t("v2.all")}</span>
-        <LayoutGrid size={18} className="v2-tile-icon" />
+        <LayoutGrid size={22} className="v2-tile-icon" />
       </div>
 
       {parents.map((cat, idx) => {
@@ -39,10 +60,10 @@ const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) =>
             key={cat.id}
             className={`v2-cat-tile ${activeId === cat.id ? "active" : ""}`}
             style={{ "--i": idx + 1 } as CSSProperties}
-            onClick={() => onSelect(cat)}
+            onClick={() => handleSelect(cat)}
             role="listitem"
             tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && onSelect(cat)}
+            onKeyDown={(e) => e.key === "Enter" && handleSelect(cat)}
           >
             <span className="v2-tile-name">{cat.name}</span>
             {img && <img src={img} alt={cat.name} loading="lazy" />}

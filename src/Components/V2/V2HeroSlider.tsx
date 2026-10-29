@@ -13,7 +13,7 @@ const V2HeroSlider = () => {
   const { BannerData, BannerLoading } = useAppSelector(
     (state) => state.bannerSlice
   );
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const navigate = useNavigate();
   const direction = i18n.language === "ar";
 
@@ -48,7 +48,7 @@ const V2HeroSlider = () => {
   const handleBannerSelected = (banner: BannerDTO) => {
     if (banner.category_id) {
       navigate(`/category/${banner.category_id}/${banner.title}`);
-    } else {
+    } else if (banner.product) {
       setSelectedProduct(banner.product);
       setShowModal(true);
     }
@@ -79,30 +79,28 @@ const V2HeroSlider = () => {
       <span className="v2-corner br" />
 
       <Slider ref={sliderRef} {...settings}>
-        {slides.map((banner) => (
-          <div key={banner.id} className="v2-hero-slide">
-            <img
-              loading="lazy"
-              src={
-                direction
-                  ? banner.image_ar_url ?? banner.image_url
-                  : banner.image_url
-              }
-              alt={banner.title}
-            />
-            <div className="veil-layer" />
-            {banner.title && (
-              <div
-                className="v2-hero-caption"
-                onClick={() => handleBannerSelected(banner)}
-                role="button"
-              >
-                <span className="v2-hero-eyebrow">{t("v2.heroEyebrow")}</span>
-                <h2 className="v2-hero-title">{banner.title}</h2>
-              </div>
-            )}
-          </div>
-        ))}
+        {slides.map((banner) => {
+          const linked = Boolean(banner.category_id) || Boolean(banner.product);
+          return (
+            <div
+              key={banner.id}
+              className="v2-hero-slide"
+              role={linked ? "button" : undefined}
+              style={linked ? { cursor: "pointer" } : undefined}
+              onClick={() => linked && handleBannerSelected(banner)}
+            >
+              <img
+                loading="lazy"
+                src={
+                  direction
+                    ? banner.image_ar_url ?? banner.image_url
+                    : banner.image_url
+                }
+                alt={banner.title}
+              />
+            </div>
+          );
+        })}
       </Slider>
 
       {slides.length > 1 && (

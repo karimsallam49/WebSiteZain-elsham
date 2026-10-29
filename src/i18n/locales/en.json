@@ -387,7 +387,9 @@
     "hhDiscountAmount": "{{value}} off",
     "hhHours": "hrs",
     "hhMinutes": "min",
-    "hhSeconds": "sec"
+    "hhSeconds": "sec",
+    "typeToSearch": "Type a dish name to search the menu",
+    "noResults": "No dishes found — try another word"
   },
   "spinWin": {
     "title": "Spin & Win",

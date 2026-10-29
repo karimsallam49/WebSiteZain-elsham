@@ -13,8 +13,8 @@
   --v2-cream: #fce1b6;
   --v2-cream-dim: rgba(252, 225, 182, 0.65);
   --v2-hairline: rgba(175, 145, 95, 0.3);
-  --v2-font-display: "Marcellus", "Amiri", serif;
-  --v2-font-body: "Inter", "Almarai", "Cairo", sans-serif;
+  --v2-font-display: "Cairo", sans-serif;
+  --v2-font-body: "Cairo", sans-serif;
 }
 
 /* --MainColor متعرف أصلًا على * فلازم نستهدف html + كل العناصر جواه */
@@ -25,10 +25,25 @@ html[data-theme="v2"] * {
 
 /* ---------- Base ---------- */
 
+html[data-theme="v2"],
 html[data-theme="v2"] body {
-  background-color: var(--v2-ink);
+  background-color: var(--v2-ink) !important;
   color: rgba(255, 255, 255, 0.9);
   transition: background-color 0.4s ease;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* .all-layout عنده height:100vh + overflow:hidden على الموبايل —
+   في V2 الصفحة كلها بتعمل scroll عادي على الـ window في كل الصفحات
+   (مش بس الهوم — v2.css بتتحمل lazy مع HomePageV2) */
+html[data-theme="v2"] .all-layout {
+  height: auto !important;
+  /* clip مش hidden — clip مش بيعمل scroll container فالـ sticky بيفضل شغال
+     وبيقصّ أي عنصر أعرض من الشاشة (زي slick-track بتاع الـ hero) */
+  overflow-x: hidden !important; /* fallback للمتصفحات الأقدم */
+  overflow-x: clip !important;
+  overflow-y: visible !important;
 }
 
 html[data-theme="v2"] * {
@@ -411,7 +426,8 @@ html[data-theme="v2"] .text-muted,
 html[data-theme="v2"] .text-secondary {
   color: var(--v2-cream-dim) !important;
 }
-html[data-theme="v2"] .text-dark {
+html[data-theme="v2"] .text-dark,
+html[data-theme="v2"] .text-black {
   color: var(--v2-cream) !important;
 }
 html[data-theme="v2"] .text-light,
@@ -425,6 +441,8 @@ html[data-theme="v2"] .bg-light {
 html[data-theme="v2"] .border,
 html[data-theme="v2"] .border-bottom,
 html[data-theme="v2"] .border-top,
+html[data-theme="v2"] .border-dark,
+html[data-theme="v2"] .border-secondary,
 html[data-theme="v2"] hr {
   border-color: var(--v2-hairline) !important;
   opacity: 1;
@@ -636,17 +654,17 @@ html[data-theme="v2"] .btn-draw.btn-solid:hover {
 /* ---------- Picker internals ---------- */
 
 .design-picker-modal .modal-body {
-  font-family: "Inter", "Almarai", "Cairo", sans-serif;
+  font-family: "Cairo", sans-serif;
 }
 .picker-eyebrow {
-  font-family: "Marcellus", "Amiri", serif;
+  font-family: "Cairo", sans-serif;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.35em;
   color: var(--v2-gold);
 }
 .picker-title {
-  font-family: "Marcellus", "Amiri", serif;
+  font-family: "Cairo", sans-serif;
   color: var(--v2-cream);
   margin: 0.5rem 0 0.35rem;
   font-size: 1.6rem;
@@ -656,7 +674,7 @@ html[data-theme="v2"] .btn-draw.btn-solid:hover {
   font-size: 0.85rem;
 }
 .picker-name {
-  font-family: "Marcellus", "Amiri", serif;
+  font-family: "Cairo", sans-serif;
   color: var(--v2-cream);
   font-size: 0.95rem;
   letter-spacing: 0.06em;
@@ -750,7 +768,7 @@ html[data-theme="v2"] .btn-draw.btn-solid:hover {
   border: none;
   background: var(--v2-gold);
   color: var(--v2-ink);
-  font-family: "Inter", "Almarai", sans-serif;
+  font-family: "Cairo", sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -801,7 +819,8 @@ html[data-theme="v2"] .card {
   border-radius: 0 !important;
 }
 
-html[data-theme="v2"] .text-dark {
+html[data-theme="v2"] .text-dark,
+html[data-theme="v2"] .text-black {
   color: var(--v2-cream) !important;
 }
 html[data-theme="v2"] .text-muted,
@@ -1122,6 +1141,9 @@ html[data-theme="v2"] [style*="background-color: rgb(248, 249, 250)"],
 html[data-theme="v2"] [style*="background-color: #f5f5f5"],
 html[data-theme="v2"] [style*="background-color:#f5f5f5"],
 html[data-theme="v2"] [style*="background-color: rgb(245, 245, 245)"],
+html[data-theme="v2"] [style*="background-color: #faf9f8"],
+html[data-theme="v2"] [style*="background-color:#faf9f8"],
+html[data-theme="v2"] [style*="background-color: rgb(250, 249, 248)"],
 html[data-theme="v2"] [style*="background-color: #ecd1cdff"],
 html[data-theme="v2"] [style*="background-color:#ecd1cdff"],
 html[data-theme="v2"] [style*="background-color: #e7f1ff"],
