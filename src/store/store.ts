@@ -16,6 +16,7 @@ import CategoriesSlice from "./categories/CategoriesSlice"
 import notificationsSlice from "./Notificatons/NotificationsSLice"
 import wishlistSlice from "./WishList/WishListSlice"
 import cartSlice from "./Cart/CartSlice"
+import serverCartSlice from "./Cart/serverCartSlice"
 import DeliveryFeeSlice from "./DeliveyFee/DeliveryFeeSlice"
 import UserInfoSLice from "./User/userSlice"
 import CouponSlice from "./Coupon/CouponSlice"
@@ -79,6 +80,7 @@ const rootreducer= combineReducers({
   Authslice:persistReducer(authconfigration,LoginSlice),
     OTPauthconfigration:persistReducer(OTPauthconfigration,OTPLoginSlice),
     cartSlice:persistReducer(cartconfigration,cartSlice),
+    serverCartSlice,
     restaurantSettingsSlice:persistReducer(ResturantConfiq,restaurantSettingsSlice),
     CategoriesSlice,
     notificationsSlice,

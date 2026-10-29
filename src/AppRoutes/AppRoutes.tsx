@@ -3,9 +3,7 @@ import { lazy, Suspense } from "react";
 import Mainlayout from "../Components/layout/Mainlayout";
 import ProtectedRoutes from "../Components/ProtectedRoutes/ProtectedRoutes";
 import LoadingPage from "../Components/LoadingPage/LoadingPage";
-import { useAppSelector } from "../Hooks/hooks";
 
-const HomePage = lazy(() => import("../Pages/HomePage/HomePage"));
 const HomePageV2 = lazy(() => import("../Pages/HomePageV2/HomePageV2"));
 const AllCuisinePage = lazy(() => import("../Pages/CuisinePage/CuisinePage"));
 const CuisineProductsPage = lazy(() => import("../Pages/cuisineProductsPage/CuisineProductsPage"));
@@ -40,11 +38,6 @@ const RegisterWithOTP = lazy(() => import("../Pages/OTPLogin/OTPLoginPage"));
 
 const Loader = () => <LoadingPage/>;
 
-const HomePageSwitch = () => {
-  const { designVersion } = useAppSelector((state) => state.themeSlice);
-  return designVersion === "v2" ? <HomePageV2 /> : <HomePage />;
-};
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -54,7 +47,7 @@ const router = createBrowserRouter([
         index: true,
         element: (
           <Suspense fallback={<Loader />}>
-            <HomePageSwitch />
+            <HomePageV2 />
           </Suspense>
         ),
       },

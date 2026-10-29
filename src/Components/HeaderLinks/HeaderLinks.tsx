@@ -5,12 +5,13 @@ import {
 
 } from "lucide-react";
 import { useAppSelector } from '../../Hooks/hooks';
+import { useCart } from '../../Hooks/useCart';
 import { Link } from 'react-router';
 
 const HeaderLinks = () => {
   const { notificationsData } = useAppSelector((state) => state.notificationsSlice);
   const { wishlistData } = useAppSelector((state) => state.wishlistSlice);
-  const { CartData } = useAppSelector((state) => state.cartSlice);
+  const { count: cartCount } = useCart();
 
   return (
     <div
@@ -31,7 +32,7 @@ const HeaderLinks = () => {
             minHeight: "14px",
           }}
         >
-          {CartData.length}
+          {cartCount}
         </span>
       </div>
 

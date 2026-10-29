@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "react-bootstrap";
 import {
   Heart,
@@ -33,6 +34,13 @@ const MobileSideBare = () => {
   const dispatch = useAppDispatch();
 
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
+
+  // الـ topbar بتاع V2 بيبعت event يفتح الـ drawer
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener("v2:open-sidebar", open);
+    return () => window.removeEventListener("v2:open-sidebar", open);
+  }, []);
 
   // ✅ تنفيذ تسجيل الخروج
   const handleLogout = () => {
@@ -69,11 +77,14 @@ const MobileSideBare = () => {
         ☰
       </Button>
 
-      {/* Overlay */}
-      {isOpen && <div className="overlay" onClick={() => setIsOpen(false)} />}
-
-      {/* القائمة الجانبية */}
-      <div className={`mobile-sidebar ${dir} ${isOpen ? "open" : ""}`}>
+      {/* الـ overlay + الـ drawer بيترندروا على الـ body عشان ميتحبسوش
+          جوه الـ stacking context بتاع الـ bottomNav */}
+      {createPortal(
+        <>
+          {isOpen && (
+            <div className="overlay" onClick={() => setIsOpen(false)} />
+          )}
+          <div className={`mobile-sidebar ${dir} ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header text-light p-4 backgroundMainColor">
           <div className="d-flex text-light justify-content-between align-items-center">
             <h5 className="m-0 text-capitalize text-light ">
@@ -140,9 +151,11 @@ const MobileSideBare = () => {
           )
           }
         </div>
-      </div>
+          </div>
+        </>,
+        document.body
+      )}
 
-      
       <ConfirmPopup
         show={showLogoutConfirm}
     message={t("Are_you_sure_you_want_to_log_out?")}

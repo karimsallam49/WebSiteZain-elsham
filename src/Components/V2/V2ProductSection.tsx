@@ -10,9 +10,11 @@ interface Props {
   title: string;
   url: string;
   limit?: number;
+  /** استبعد منتجات بـ offer_source معين — مثلًا "happy_hour" عشان ميتكررش مع سكشن ساعة السعادة */
+  excludeOfferSource?: "happy_hour" | "product";
 }
 
-const V2ProductSection = ({ title, url, limit = 6 }: Props) => {
+const V2ProductSection = ({ title, url, limit = 6, excludeOfferSource }: Props) => {
   const { t } = useTranslation();
   const { currentLanguage } = useAppSelector((state) => state.LanguageSlice);
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +27,12 @@ const V2ProductSection = ({ title, url, limit = 6 }: Props) => {
     url
   );
 
-  const products = data?.products?.filter((p) => p.status === 1) ?? [];
+  const products =
+    data?.products?.filter(
+      (p) =>
+        p.status === 1 &&
+        (!excludeOfferSource || p.offer_source !== excludeOfferSource)
+    ) ?? [];
 
   const openProduct = (p: ProductDTO) => {
     setSelectedProduct(p);

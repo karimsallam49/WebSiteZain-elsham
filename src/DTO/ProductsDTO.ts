@@ -35,6 +35,7 @@ export interface ProductDTO {
   popularity_count: number;
   product_type: "veg" | "non_veg" | string;
   is_recommended: number;
+  offer_source?: "happy_hour" | "product" | null;
   rating: any[];
   branch_product: BranchProductDTO | null;
   translations: any[];

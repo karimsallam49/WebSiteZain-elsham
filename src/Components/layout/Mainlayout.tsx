@@ -19,11 +19,11 @@ import MobilePageHeader from "../MobilePageHeader/MobilePageHeader";
 import Footer from "../Footer/Footer";
 import BottomNav from "../BottomNav/BottomNav";
 import AdressInfo from "../AdressInfo/AdressInfo";
-import DesignPickerModal from "../DesignPicker/DesignPickerModal";
-import DesignToggle from "../DesignPicker/DesignToggle";
+import ChatMealFab from "../ChatMeal/ChatMealFab";
 import "./MainLayoutstyle.css";
 import i18n from "../../i18n";
 import { actBanner } from "../../store/Banner/aCtBanner";
+import { loadServerCart } from "../../store/Cart/serverCartSlice";
 
 const Mainlayout = () => {
   const dispatch = useAppDispatch();
@@ -32,10 +32,9 @@ const Mainlayout = () => {
   const { OTPToken } = useAppSelector((state) => state.OTPauthconfigration);
   const { AdressData } = useAppSelector((state) => state.adressSlice);
 const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
-const { designVersion } = useAppSelector((state) => state.themeSlice);
 
   const HideBottom = location.pathname !== "/selectBranch";
-  const isV2Home = designVersion === "v2" && location.pathname === "/";
+  const isV2Home = location.pathname === "/";
 
 
   useEffect(() => {
@@ -70,9 +69,9 @@ const { designVersion } = useAppSelector((state) => state.themeSlice);
   },[selectedBranch])
 
   useEffect(() => {
-    document.documentElement.dataset.theme = designVersion;
+    document.documentElement.dataset.theme = "v2";
 
-    if (designVersion === "v2" && !document.getElementById("v2-fonts")) {
+    if (!document.getElementById("v2-fonts")) {
       const link = document.createElement("link");
       link.id = "v2-fonts";
       link.rel = "stylesheet";
@@ -80,7 +79,7 @@ const { designVersion } = useAppSelector((state) => state.themeSlice);
         "https://fonts.googleapis.com/css2?family=Marcellus&family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600&family=Almarai:wght@300;400;700;800&display=swap";
       document.head.appendChild(link);
     }
-  }, [designVersion]);
+  }, []);
 
   useEffect(() => {
     i18n.changeLanguage(currentLanguage);
@@ -98,6 +97,7 @@ const { designVersion } = useAppSelector((state) => state.themeSlice);
     dispatch(actNotifications());
     dispatch(actGetCopoun(GetPromoUrl));
     dispatch(actGetadress());
+    dispatch(loadServerCart({}));
   }, [OTPToken]);
 
   return (
@@ -118,12 +118,13 @@ const { designVersion } = useAppSelector((state) => state.themeSlice);
 
       {HideBottom && <BottomNav />}
 
-      <div className="d-none d-lg-block">
-        <Footer />
-      </div>
+      {!isV2Home && (
+        <div className="d-none d-lg-block">
+          <Footer />
+        </div>
+      )}
 
-      <DesignPickerModal />
-      <DesignToggle />
+      <ChatMealFab />
     </div>
   );
 };

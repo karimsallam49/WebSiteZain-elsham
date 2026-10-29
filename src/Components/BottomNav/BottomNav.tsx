@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../Hooks/hooks";
+import { useCart } from "../../Hooks/useCart";
 import MobileSideBare from "../MobileSideBare/MobileSideBare";
 import CartImage from "../../assets/icon/shopping-cart.png";
 import { Heart, Home, User } from "lucide-react";
@@ -7,7 +8,7 @@ import "./BottomNavStyle.css";
 
 const BottomNav = () => {
   const location = useLocation();
-  const { CartData } = useAppSelector((state) => state.cartSlice);
+  const { count: cartCount } = useCart();
   const { wishlistData } = useAppSelector((state) => state.wishlistSlice);
 
 
@@ -78,7 +79,7 @@ const BottomNav = () => {
                       right: "-25px",
                     }}
                   >
-                    {CartData.length}
+                    {cartCount}
                   </span>
                 </Link>
               )}

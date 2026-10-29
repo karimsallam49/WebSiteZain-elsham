@@ -9,13 +9,13 @@ const V2AddressSearch = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { userLocation } = useAppSelector((state) => state.UserInfoSLice);
+  const { selectedAdress } = useAppSelector((state) => state.adressSlice);
   const [showPopup, setShowPopup] = useState(false);
 
-  const displayLocation = userLocation
-    ? userLocation.includes(",")
-      ? userLocation.split(",")[1]?.trim() || userLocation
-      : userLocation
-    : t("no_location_address_message");
+  const displayLocation =
+    userLocation ||
+    selectedAdress?.address ||
+    t("no_location_address_message");
 
   return (
     <>

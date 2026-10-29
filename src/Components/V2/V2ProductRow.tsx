@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import type { ProductDTO } from "../../DTO/ProductsDTO";
 import { ImageUrl } from "../../EndPoints/EndPoints";
 import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14.jpeg";
-import { useAppSelector } from "../../Hooks/hooks";
-import {
-  addToCart,
-  increaseQuantity,
-  decreaseQuantity,
-} from "../../store/Cart/CartSlice";
+import { useCart } from "../../Hooks/useCart";
 import FeedbackToast from "../FeedbackToast/FeedbackToast";
 
 interface Props {
@@ -19,11 +13,10 @@ interface Props {
 
 const V2ProductRow = ({ product, onOpen }: Props) => {
   const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
-  const { CartData } = useAppSelector((state) => state.cartSlice);
+  const { findItem, add, increase, decrease } = useCart();
   const [showToast, setShowToast] = useState(false);
 
-  const cartItem = CartData.find((el) => el.id === product.id);
+  const cartItem = findItem(product.id);
 
   const originalPrice = Number(product.price) || 0;
   const discountAmount =
@@ -38,15 +31,13 @@ const V2ProductRow = ({ product, onOpen }: Props) => {
       onOpen(product);
       return;
     }
-    dispatch(
-      addToCart({
-        products: {
-          ...product,
-          price: discountedPrice,
-          original_price: originalPrice,
-        },
-        quantity: 1,
-      })
+    add(
+      {
+        ...product,
+        price: discountedPrice,
+        original_price: originalPrice,
+      },
+      1
     );
     setShowToast(true);
   };
@@ -78,7 +69,11 @@ const V2ProductRow = ({ product, onOpen }: Props) => {
           <span className="v2-product-name">
             {product.name}
             {product.discount > 0 && (
-              <span className="v2-product-badge">{t("v2.offer")}</span>
+              <span className="v2-product-badge">
+                {product.discount_type === "percent"
+                  ? `-${Math.round(Number(product.discount))}%`
+                  : `-${Number(product.discount).toFixed(0)} ${t("currency")}`}
+              </span>
             )}
             {product.product_type === "veg" && (
               <span className="v2-product-badge">{t("diet")}</span>
@@ -119,7 +114,7 @@ const V2ProductRow = ({ product, onOpen }: Props) => {
               <button
                 type="button"
                 aria-label="decrease"
-                onClick={() => dispatch(decreaseQuantity(product.id))}
+                onClick={() => decrease(cartItem)}
               >
                 −
               </button>
@@ -127,7 +122,7 @@ const V2ProductRow = ({ product, onOpen }: Props) => {
               <button
                 type="button"
                 aria-label="increase"
-                onClick={() => dispatch(increaseQuantity(product.id))}
+                onClick={() => increase(cartItem)}
               >
                 +
               </button>

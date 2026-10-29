@@ -6,8 +6,7 @@ import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14
 import "./ProductCardStyle.css";
 import { Badge } from "react-bootstrap";
 import { useAppSelector } from "../../Hooks/hooks";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/Cart/CartSlice";
+import { useCart } from "../../Hooks/useCart";
 import FeedbackToast from "../FeedbackToast/FeedbackToast"; 
 import i18n from "../../i18n";
 
@@ -21,7 +20,7 @@ type ProductsCardProps = {
 const ProductsCardComponent = ({ records, setProductInfo, setopen,onAddToCartSuccess }: ProductsCardProps) => {
   const { t } = useTranslation();
   const { currentLanguage } = useAppSelector((state) => state.LanguageSlice);
-  const dispatch = useDispatch();
+  const { add } = useCart();
 
   const [showToast, setShowToast] = useState(false);
 
@@ -49,13 +48,12 @@ const ProductsCardComponent = ({ records, setProductInfo, setopen,onAddToCartSuc
   }, [records, setProductInfo, setopen]);
 
   const handleAddToCart = (products: ProductDTO) => {
-    const quantity = 1;
     const productsWithDiscount = {
       ...products,
       price: discountedPrice,
       original_price: originalPrice,
     };
-    dispatch(addToCart({ products: productsWithDiscount, quantity }));
+    add(productsWithDiscount, 1);
     setShowToast(true); 
     if (onAddToCartSuccess) onAddToCartSuccess(); 
   };

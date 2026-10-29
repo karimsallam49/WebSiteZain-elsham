@@ -86,7 +86,28 @@
     "cash_on_delivery_desc": "Pay when you receive your order",
     "show_more": "Show More",
     "enter_change_amount": "Enter the amount of change if needed",
-    "online_payment": "Online Payment"
+    "online_payment": "Online Payment",
+    "wallet": "Wallet",
+    "wallet_balance": "Your balance",
+    "wallet_partial_hint": "less than the order total (partial payment)",
+    "use_wallet_partial": "Pay from your wallet and the rest with the selected method"
+  },
+  "cart": {
+    "coupon": "Coupon",
+    "referral": "Referral discount",
+    "first_order": "First order discount",
+    "loyalty": "Loyalty points",
+    "spin_prizes": "Spin & Win prizes",
+    "free_delivery_spin": "🚚 Free delivery from Spin & Win",
+    "pending_prizes": "Pending prizes 🎁",
+    "prize": "Prize",
+    "free_prize": "🎁 Free",
+    "remaining": "remaining",
+    "prize_eligible": "Eligible",
+    "prize_locked": "Not unlocked yet",
+    "prize_min_order": "Minimum order",
+    "prize_order_type": "Order type",
+    "prize_expires": "Expires"
   },  "history_orders": {
     "columns": {
       "order_details": "Order Details",
@@ -358,6 +379,114 @@
     "viewAll": "View all",
     "offer": "Offer",
     "loadingDishes": "Loading…",
-    "marquee": "Zain El Sham • Authentic Levantine Kitchen • Cairo"
+    "marquee": "Zain El Sham • Authentic Levantine Kitchen • Cairo",
+    "orderAgain": "Order Again",
+    "happyHour": "Happy Hour",
+    "offers": "Offers",
+    "hhDiscountPercent": "{{value}}% off",
+    "hhDiscountAmount": "{{value}} off",
+    "hhHours": "hrs",
+    "hhMinutes": "min",
+    "hhSeconds": "sec"
+  },
+  "spinWin": {
+    "title": "Spin & Win",
+    "promoText": "Spin the wheel and win discounts & prizes 🎁",
+    "spin": "Spin now",
+    "spinning": "Spinning…",
+    "spinsLeft": "Spins left",
+    "buySpin": "Buy a spin for {{cost}} points",
+    "noSpins": "No spins left — come back tomorrow or place an order",
+    "loginToSpin": "Log in first to spin the wheel and win prizes",
+    "yourPrizes": "Your pending prizes",
+    "expiresAt": "Expires",
+    "pointsAdded": "Points were added to your balance instantly",
+    "noLuck": "Better luck next time 🍀",
+    "unavailable": "The wheel isn't available right now",
+    "loadError": "Failed to load the wheel",
+    "spinError": "Spin failed — try again",
+    "buyError": "Couldn't buy a spin"
+  },
+  "chatMeal": {
+    "title": "Zain's Chef",
+    "subtitle": "Let me pick for you",
+    "fabHints": [
+      "Confused? 🤔",
+      "Need help choosing?",
+      "Hungry? Let me decide 😋",
+      "Can't pick? I got you!"
+    ],
+    "greet": [
+      "Hey! I'm your chef for today 👋 Let me help you pick something delicious.",
+      "Welcome! Can't decide? Answer a couple of quick questions and I'll choose for you 😄",
+      "Hi there! Hungry but not sure what to order? I'm on it 👨‍🍳"
+    ],
+    "q_diet": [
+      "On a diet or eating freely today? 🥗",
+      "Counting calories, or cheat day? 😄",
+      "Diet mode, or going all in?"
+    ],
+    "q_spicy": [
+      "How do you feel about spicy? 🌶️",
+      "Can you handle the heat, or keep it mild?",
+      "Spicy or not spicy — what's your vibe?"
+    ],
+    "q_hungry": [
+      "Nice! How many calories for this meal? 🥗",
+      "What's your calorie limit today?",
+      "How light should it be? 😋"
+    ],
+    "q_cat": [
+      "What are you in the mood for —",
+      "Where's your appetite going —",
+      "What's your heart set on —"
+    ],
+    "or": "or",
+    "result_intro": [
+      "How about this? 🤩",
+      "I found something perfect for you!",
+      "Here's my pick — trust me on this one 👌"
+    ],
+    "result_ask": [
+      "What do you think?",
+      "Looks good, right?",
+      "Your call — want it?"
+    ],
+    "no_match": [
+      "Hmm, nothing matches those filters 😅 Want me to loosen them up?",
+      "No luck with that combo — want to try without filters?",
+      "Couldn't find a match — let's ease the filters a bit?"
+    ],
+    "closed": [
+      "Kitchen's not serving right now 😔 But something good is coming…",
+      "Nothing on the menu at this hour — but hang tight!",
+      "We're between shifts 😅 Next window is coming up…"
+    ],
+    "opensIn": "{{term}} opens in {{time}}",
+    "moreCats": "Sure — here's the rest 👇",
+    "hours": "h",
+    "minutes": "min",
+    "priceOnSelection": "Price on selection",
+    "error": "Oops, something went wrong 😅 Try again?",
+    "opts": {
+      "dietYes": "Diet 🥗",
+      "dietNo": "Not today 😄",
+      "somethingElse": "Something else?",
+      "any": "Anything works",
+      "spicy": "Spicy 🌶️",
+      "mild": "Mild",
+      "light": "Light (<400 cal)",
+      "medium": "Medium (<700 cal)",
+      "heavy": "Very hungry 🍔",
+      "surprise": "Just pick for me 🎲"
+    },
+    "actions": {
+      "add": "Add to cart",
+      "details": "See details",
+      "retry": "Try another 🔄",
+      "restart": "Start over",
+      "resetFilters": "Clear my filters",
+      "close": "Got it, thanks"
+    }
   }
 }

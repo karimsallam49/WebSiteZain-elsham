@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFetch } from "../../Hooks/useFetch";
 import { useAppSelector } from "../../Hooks/hooks";
@@ -59,6 +59,23 @@ const V2MenuList = ({ category }: Props) => {
   const totalSize = data?.total_size ?? 0;
   const hasMore = items.length < totalSize;
 
+  // تحميل تلقائي — أول ما آخر القايمة يقرب من الشاشة يجيب الصفحة اللي بعدها
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || !hasMore) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetching) {
+          setOffset((o) => o + 1);
+        }
+      },
+      { rootMargin: "320px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore, isFetching]);
+
   const openProduct = (p: ProductDTO) => {
     setSelectedProduct(p);
     setShowModal(true);
@@ -80,15 +97,8 @@ const V2MenuList = ({ category }: Props) => {
         )}
 
         {hasMore && (
-          <div className="v2-loadmore-wrap">
-            <button
-              type="button"
-              className="v2-loadmore"
-              disabled={isFetching}
-              onClick={() => setOffset((o) => o + 1)}
-            >
-              {isFetching ? t("v2.loadingDishes") : t("v2.viewAll")}
-            </button>
+          <div ref={sentinelRef} className="v2-loading-row">
+            {isFetching ? t("v2.loadingDishes") : ""}
           </div>
         )}
 

@@ -206,7 +206,7 @@ html[data-theme="v2"] .card-bottom {
 /* ---------- Buttons ---------- */
 
 html[data-theme="v2"] .btn,
-html[data-theme="v2"] button {
+html[data-theme="v2"] button:not([class*="chat-"]) {
   border-radius: 0 !important;
 }
 html[data-theme="v2"] .backgroundMainColor {
@@ -605,7 +605,7 @@ html[data-theme="v2"] .btn-draw.btn-solid:hover {
 .design-fab {
   position: fixed;
   bottom: 5.2rem;
-  inset-inline-end: 1rem;
+  right: 1rem;
   z-index: 1050;
   display: inline-flex;
   align-items: center;
@@ -1157,4 +1157,267 @@ html[data-theme="v2"] .profile-page .form-control[readonly] {
 /* أيقونة القلب في مودال المنتج */
 html[data-theme="v2"] .modal-content svg {
   color: var(--v2-gold);
+}
+
+/* ============================================================
+   SIDEBAR — إصلاح شكل السايدبار في V2
+   ============================================================ */
+
+html[data-theme="v2"] .mobile-sidebar {
+  background: var(--v2-ink) !important;
+  height: 100dvh !important;
+  top: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6) !important;
+}
+/* زرار الـ ☰ على اليمين → الـ drawer يفتح من اليمين في اللغتين */
+html[data-theme="v2"] .mobile-sidebar.rtl,
+html[data-theme="v2"] .mobile-sidebar.ltr {
+  right: -100%;
+  left: auto;
+  border-left: 1px solid var(--v2-hairline);
+  border-right: none;
+}
+html[data-theme="v2"] .mobile-sidebar.rtl.open,
+html[data-theme="v2"] .mobile-sidebar.ltr.open {
+  right: 0;
+  left: auto;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-header {
+  background: var(--v2-navy) !important;
+  border-bottom: 1px solid var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-header h5,
+html[data-theme="v2"] .mobile-sidebar .sidebar-header .text-light,
+html[data-theme="v2"] .mobile-sidebar .sidebar-header .text-dark {
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-header small {
+  color: var(--v2-cream-dim) !important;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-header .Grarcolor {
+  color: var(--v2-gold) !important;
+  stroke: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-links {
+  border-bottom: none !important;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-link {
+  color: var(--v2-cream-dim) !important;
+  border-bottom: 1px solid rgba(175, 145, 95, 0.15) !important;
+  padding: 0.7rem 0;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-link svg {
+  color: var(--v2-gold);
+  flex-shrink: 0;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-link:hover,
+html[data-theme="v2"] .mobile-sidebar .sidebar-link:hover svg {
+  color: var(--v2-gold-bright) !important;
+}
+html[data-theme="v2"] .mobile-sidebar .sidebar-link.text-danger {
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .mobile-sidebar .close-icon {
+  color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .mobile-sidebar .close-icon:hover {
+  color: var(--v2-gold-bright) !important;
+}
+html[data-theme="v2"] .overlay {
+  background: rgba(4, 10, 18, 0.72) !important;
+  backdrop-filter: blur(2px);
+  z-index: 1055 !important;
+}
+
+/* الهيدر بتاع السايدبار الديسكتوب + الـ tiles */
+html[data-theme="v2"] .sidebar-container {
+  color: var(--v2-cream);
+}
+html[data-theme="v2"] .hover-danger:hover {
+  background-color: rgba(175, 145, 95, 0.15) !important;
+  color: var(--v2-gold) !important;
+  border-color: var(--v2-gold) !important;
+}
+html[data-theme="v2"] .hover-danger:hover svg,
+html[data-theme="v2"] .hover-danger:hover small {
+  color: var(--v2-gold) !important;
+}
+
+/* ============================================================
+   الخلفيات الفاتحة الـ hardcoded في CSS الصفحات الداخلية
+   ============================================================ */
+
+/* Cart + Checkout */
+html[data-theme="v2"] .cart-page,
+html[data-theme="v2"] .cart-page .card,
+html[data-theme="v2"] .cart-page .delivery-header,
+html[data-theme="v2"] .cart-page .summary-card {
+  background-color: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .cart-page .card,
+html[data-theme="v2"] .cart-page .summary-card {
+  background-color: var(--v2-navy) !important;
+  border: 1px solid var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .cart-page .delivery-header {
+  background-color: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+
+/* Forms (AddressForm) */
+html[data-theme="v2"] .card-form,
+html[data-theme="v2"] .type-btn {
+  background: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .type-btn.active,
+html[data-theme="v2"] .type-btn:hover {
+  background: rgba(175, 145, 95, 0.15) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-gold) !important;
+}
+
+/* Categories menu offcanvas + mobile list */
+html[data-theme="v2"] .subcategory-list {
+  background: var(--v2-navy) !important;
+}
+html[data-theme="v2"] .mobile-category-item:hover {
+  background: rgba(175, 145, 95, 0.12) !important;
+}
+html[data-theme="v2"] .subcategory-tab-btn {
+  background: var(--v2-navy) !important;
+  color: var(--v2-cream) !important;
+  border-color: var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .subcategory-tab-btn.active,
+html[data-theme="v2"] .subcategory-tab-btn:hover {
+  background: var(--v2-gold) !important;
+  color: var(--v2-ink) !important;
+  border-color: var(--v2-gold) !important;
+}
+
+/* Orders */
+html[data-theme="v2"] .ongoing-orders-container,
+html[data-theme="v2"] .order-status-card {
+  background: var(--v2-navy) !important;
+  border: 1px solid var(--v2-hairline);
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .timeline-step .step-icon {
+  background: var(--v2-ink) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-gold) !important;
+}
+
+/* Product list cards */
+html[data-theme="v2"] .product-list-card {
+  background: var(--v2-navy) !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+
+/* Promo / coupon */
+html[data-theme="v2"] .promo-close {
+  background: var(--v2-ink) !important;
+  color: var(--v2-gold) !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .promo-container,
+html[data-theme="v2"] .promocard {
+  background: var(--v2-navy) !important;
+  border: 1px solid var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .promo-container::before {
+  background: var(--v2-hairline) !important;
+}
+
+/* Static pages + table */
+html[data-theme="v2"] .static-page {
+  background: var(--v2-ink) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .static-page p,
+html[data-theme="v2"] .static-page li,
+html[data-theme="v2"] .static-page span {
+  color: var(--v2-cream-dim) !important;
+}
+html[data-theme="v2"] .simple-table {
+  background: var(--v2-navy) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .simple-table tr:nth-child(even) {
+  background: rgba(175, 145, 95, 0.06) !important;
+}
+html[data-theme="v2"] .simple-table th {
+  background: var(--v2-ink-deep) !important;
+  color: var(--v2-gold) !important;
+}
+
+/* Branch selection */
+html[data-theme="v2"] .branch-card {
+  background: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .branch-card.selected {
+  background: rgba(175, 145, 95, 0.12) !important;
+  border-color: var(--v2-gold) !important;
+  color: var(--v2-gold) !important;
+}
+
+/* Support / map */
+html[data-theme="v2"] .map-action-btn {
+  background: var(--v2-navy) !important;
+  color: var(--v2-gold) !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+
+/* Radio مخصّص في الـ checkout */
+html[data-theme="v2"] .custom-radio {
+  background: var(--v2-navy) !important;
+  border-color: var(--v2-hairline) !important;
+  color: var(--v2-cream) !important;
+}
+html[data-theme="v2"] .custom-radio:has(input:checked) {
+  border-color: var(--v2-gold) !important;
+}
+
+/* FavTimeSlider */
+html[data-theme="v2"] .time-btn {
+  background: var(--v2-navy) !important;
+  color: var(--v2-cream-dim) !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .time-btn:hover,
+html[data-theme="v2"] .time-btn.active {
+  background: rgba(175, 145, 95, 0.15) !important;
+  color: var(--v2-gold) !important;
+}
+
+/* Menu content panel */
+html[data-theme="v2"] .menu-content {
+  background-color: var(--v2-ink) !important;
+}
+
+/* BottomNav + desktop header pieces */
+html[data-theme="v2"] .mobile-nav-contain-right,
+html[data-theme="v2"] .mobile-nav-contain-left {
+  background: var(--v2-ink) !important;
+}
+html[data-theme="v2"] .bottomNav-container::before {
+  background: var(--v2-ink) !important;
+  border-top: 1px solid var(--v2-hairline);
+}
+html[data-theme="v2"] .dropdown-menu-custom {
+  background: var(--v2-ink) !important;
+  border: 1px solid var(--v2-hairline) !important;
+}
+html[data-theme="v2"] .mobile-page-topbar {
+  background-color: var(--v2-ink) !important;
+  border-bottom: 1px solid var(--v2-hairline);
 }

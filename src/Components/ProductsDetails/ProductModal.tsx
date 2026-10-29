@@ -5,11 +5,7 @@ import { ImageUrl } from "../../EndPoints/EndPoints";
 import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14.jpeg";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
-import {
-  addToCart,
-  increaseQuantity,
-  decreaseQuantity,
-} from "../../store/Cart/CartSlice";
+import { useCart } from "../../Hooks/useCart";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { actAddTowishList } from "../../store/WishList/actAddTowishList";
 import { actRemoveFromWishList } from "../../store/WishList/actRemoveFromWishList";
@@ -22,7 +18,7 @@ import FeedbackToast from "../FeedbackToast/FeedbackToast";
 export const ProductModal = ({ show, handleClose, product }: any) => {
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
-  const { CartData } = useAppSelector((state) => state.cartSlice);
+  const { findItem, add, increase, decrease } = useCart();
   const { wishlistData } = useAppSelector((state) => state.wishlistSlice);
 const [selectedVariations, setSelectedVariations] = useState<any[]>([]);
 const [adoons, setaddons] = useState<any>();
@@ -36,7 +32,7 @@ const [toast, setToast] = useState<{
     (el) => el.id === product.id
   );
 
-  const existingProduct = CartData.find((item) => item.id === product.id);
+  const existingProduct = findItem(product.id);
   const [quantity, setQuantity] = useState(existingProduct?.quantity || 1);
   const [isFav, setIsFav] = useState(IsProductinWishList);
 
@@ -102,18 +98,18 @@ const availableTo = formatTime(product?.available_time_ends);
     variations: selectedVariations,
   };
 
-  dispatch(addToCart({ products, quantity }));
+  add(products, quantity);
   handleClose();
 };
   const handleIncrease = () => {
     setQuantity((q) => q + 1);
-    if (existingProduct) dispatch(increaseQuantity(product.id));
+    if (existingProduct) increase(existingProduct);
   };
 
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity((q) => q - 1);
-      if (existingProduct) dispatch(decreaseQuantity(product.id));
+      if (existingProduct) decrease(existingProduct);
     }
   };
 

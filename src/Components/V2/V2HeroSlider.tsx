@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Slider from "react-slick";
 import { useAppSelector } from "../../Hooks/hooks";
 import type { BannerDTO } from "../../DTO/BannerDTO";
@@ -16,6 +17,7 @@ const V2HeroSlider = () => {
   const navigate = useNavigate();
   const direction = i18n.language === "ar";
 
+  const sliderRef = useRef<Slider | null>(null);
   const [slides, setSlides] = useState<BannerDTO[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductDTO | null>(
     null
@@ -76,7 +78,7 @@ const V2HeroSlider = () => {
       <span className="v2-corner bl" />
       <span className="v2-corner br" />
 
-      <Slider {...settings}>
+      <Slider ref={sliderRef} {...settings}>
         {slides.map((banner) => (
           <div key={banner.id} className="v2-hero-slide">
             <img
@@ -102,6 +104,31 @@ const V2HeroSlider = () => {
           </div>
         ))}
       </Slider>
+
+      {slides.length > 1 && (
+        <div className="v2-hero-nav" dir="ltr">
+          <button
+            type="button"
+            className="v2-hero-arrow"
+            aria-label="previous"
+            onClick={() =>
+              direction ? sliderRef.current?.slickNext() : sliderRef.current?.slickPrev()
+            }
+          >
+            <ChevronLeft size={16} strokeWidth={2.4} />
+          </button>
+          <button
+            type="button"
+            className="v2-hero-arrow"
+            aria-label="next"
+            onClick={() =>
+              direction ? sliderRef.current?.slickPrev() : sliderRef.current?.slickNext()
+            }
+          >
+            <ChevronRight size={16} strokeWidth={2.4} />
+          </button>
+        </div>
+      )}
 
       {showModal && selectedProduct && (
         <ProductModal

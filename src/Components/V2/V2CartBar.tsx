@@ -1,25 +1,18 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
-import { useAppSelector } from "../../Hooks/hooks";
+import { useCart } from "../../Hooks/useCart";
 
 const V2CartBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { CartData } = useAppSelector((state) => state.cartSlice);
+  const { items, count, summary } = useCart();
 
-  const { count, total } = useMemo(() => {
-    return CartData.reduce(
-      (acc, item) => ({
-        count: acc.count + item.quantity,
-        total: acc.total + item.quantity * (Number(item.price) || 0),
-      }),
-      { count: 0, total: 0 }
-    );
-  }, [CartData]);
+  const total = summary
+    ? summary.payable_total
+    : items.reduce((s, i) => s + i.lineTotal, 0);
 
-  if (CartData.length === 0) return null;
+  if (items.length === 0) return null;
 
   return (
     <div

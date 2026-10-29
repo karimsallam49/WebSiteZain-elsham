@@ -4,9 +4,19 @@ export const  popularProductUrl = `${baseUrl}api/v1/products/popular`;
 export const  setMenuUrl = `${baseUrl}api/v1/products/set-menu`;
 export const  recommendedProductUrL = `${baseUrl}api/v1/products/recommended`;
 export const  GoodTimeProductUrL = `${baseUrl}api/v1/products/good-time`;
+export const offersUrl = `${baseUrl}api/v1/products/offers`;
+export const happyHoursUrl = `${baseUrl}api/v1/config/happy-hours`;
+export const spinConfigUrl = `${baseUrl}api/v1/customer/spin-and-win/config`;
+export const spinDoUrl = `${baseUrl}api/v1/customer/spin-and-win/spin`;
+export const spinBuyUrl = `${baseUrl}api/v1/customer/spin-and-win/buy-spin`;
+export const spinPrizesUrl = `${baseUrl}api/v1/customer/spin-and-win/prizes`;
+export const  termsUrl = `${baseUrl}api/v1/terms`;
+export const  termsRandomUrl = `${baseUrl}api/v1/terms/random-product`;
+export const  termsCategoriesUrl = `${baseUrl}api/v1/terms/categories`;
 export const  ALLproductUrl = `${baseUrl}api/v1/products/latest?`;
 export const ImageUrl= `${baseUrl}storage/app/public/product`;
 export const CategoryImg= `${baseUrl}storage/app/public/category`;
+export const ProfileImageUrl= `${baseUrl}storage/app/public/profile`;
 export const ResturantIMG= `${baseUrl}storage/app/public/restaurant`;
 export const categoriesurl = `${baseUrl}api/v1/categories?limit=500&offset=1&name=`;
 export const GetCategoriesProductUrl = `${baseUrl}api/v1/categories/products/`;
@@ -32,6 +42,7 @@ export const UpdateUserInfoUrl= `${baseUrl}api/v1/customer/update-profile`
 export const PromoUrl= `${baseUrl}api/v1/coupon/apply?`
 export const GetPromoUrl= `${baseUrl}api/v1/coupon/list?amount=`
 export const PlaceOrderUrl=`${baseUrl}api/v1/customer/order/place`
+export const serverCartUrl=`${baseUrl}api/v1/customer/cart`
 export const GeOrderDetailsUrl=`${baseUrl}api/v1/customer/order/list`
 export const TrackordersUrl=`${baseUrl}api/v1/customer/order/`
 export const AddAdressURL=`${baseUrl}api/v1/customer/address/add`

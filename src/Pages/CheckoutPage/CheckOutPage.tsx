@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
 import { Card, Row, Col, Form, Modal } from "react-bootstrap";
 import "./CheckOutPage.css";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next"; 
 
@@ -13,7 +13,9 @@ import ButtonComponent from "../../Components/Button/ButtonComponent";
 
 import type { PlaceOrderDTO } from "../../DTO/CheckouDTO";
 import { actPlaceOrder } from "../../store/PlaceOrder/actPlaceOrder";
+import { actGetUser } from "../../store/User/actGetUser";
 import { DeleteCard } from "../../store/Cart/CartSlice";
+import { loadServerCart, clearServerCart } from "../../store/Cart/serverCartSlice";
 import { editeAdressAction } from "../../store/Adress/AdressSlice";
 import React from "react";
 import i18n from "../../i18n";
@@ -29,7 +31,10 @@ const CheckOutPage = () => {
   const [toastMessage, setToastMessage] = useState("");
 const [toastType, setToastType] = useState<"success" | "error">("success");
   const { CartData } = useAppSelector((state) => state.cartSlice);
-  const { CouponData } = useAppSelector((state) => state.CouponSlice);
+  const { CouponVerifyData } = useAppSelector((state) => state.CouponSlice);
+  const { data: serverCart } = useAppSelector((state) => state.serverCartSlice);
+  const { OTPToken } = useAppSelector((state) => state.OTPauthconfigration);
+  const { UserData } = useAppSelector((state) => state.UserInfoSLice);
   const { deliverfeeData } = useAppSelector((state) => state.DeliveryFeeSlice);
   const { selectedAdress } = useAppSelector((state) => state.adressSlice);
   const { resturantdata } = useAppSelector((state) => state.restaurantSettingsSlice);
@@ -48,6 +53,30 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   const [areaError, setAreaError] = useState(false);
   const [selectedBranchId, setSelectedBranchId] = useState<number | null>(null);
   const [showBranchModal, setShowBranchModal] = useState(false);
+  const [isPartial, setIsPartial] = useState(false);
+  const [redeemPoints, setRedeemPoints] = useState(false);
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const loyaltyEnabled =
+    resturantdata?.loyalty_point_status === 1 && (UserData?.point ?? 0) > 0;
+
+  useEffect(() => {
+    if (!OTPToken) return;
+    if (syncTimer.current) clearTimeout(syncTimer.current);
+    syncTimer.current = setTimeout(() => {
+      dispatch(
+        loadServerCart({
+          order_type: selectedType,
+          coupon_code: CouponVerifyData?.code || undefined,
+          redeem_points: redeemPoints ? UserData?.point : undefined,
+        })
+      );
+    }, 300);
+    return () => {
+      if (syncTimer.current) clearTimeout(syncTimer.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [OTPToken, selectedType, redeemPoints, CouponVerifyData?.code]);
 
   const selectedBranch = useMemo(
     () => resturantdata?.branches?.find((b) => b.id === selectedBranchId) ?? null,
@@ -64,10 +93,13 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     return missing;
   }, [selectedAdress]);
   const { itemsPrice, totalAmount, currentAreaCharge, isFreeDelivery } = useMemo(() => {
-    const itemsPrice = CartData.reduce(
-      (sum, item) => sum + getItemUnitPrice(item) * item.quantity,
-      0
-    );
+    // لو ملخص السيرفر موجود هو المرجع (شامل الكوبونات والجوائز والضريبة)
+    const itemsPrice = serverCart
+      ? serverCart.payable_total
+      : CartData.reduce(
+          (sum, item) => sum + getItemUnitPrice(item) * item.quantity,
+          0
+        );
 
     const currentArea = deliverfeeData?.delivery_charge_by_area.find(
       (el) => el.id === CurrentedArea
@@ -75,11 +107,17 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
 
     const setup = deliverfeeData?.delivery_charge_setup;
     const isFreeDelivery =
-      setup?.free_delivery_over_status === 1 &&
-      setup.free_delivery_over_amount >= 0 &&
-      itemsPrice >= setup.free_delivery_over_amount;
+      serverCart?.discounts.spin_free_delivery === true ||
+      (setup?.free_delivery_over_status === 1 &&
+        setup.free_delivery_over_amount >= 0 &&
+        itemsPrice >= setup.free_delivery_over_amount);
 
-    const deliveryCharge = isFreeDelivery ? 0 : currentArea?.delivery_charge ?? 0;
+    const deliveryCharge =
+      selectedType === "delivery"
+        ? isFreeDelivery
+          ? 0
+          : currentArea?.delivery_charge ?? 0
+        : 0;
     const totalAmount = itemsPrice + deliveryCharge;
 
     return {
@@ -88,7 +126,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       currentAreaCharge: deliveryCharge,
       isFreeDelivery,
     };
-  }, [CartData, deliverfeeData, CurrentedArea]);
+  }, [CartData, deliverfeeData, CurrentedArea, serverCart, selectedType]);
   const areProductsAvailable = useCallback(() => {
     if (!UserSelectedTime) return true; 
 
@@ -122,46 +160,66 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       setToastVisible(true);
       return null; 
     }
-    const cartBody = CartData.map((el) => ({
-      ...el,
-      product_id: `${el.id}`,
-      price: `${el.price}`,
-      variant: [],
-      variations: el.variations?.map((v: any) => ({
-        ...v,
-        label: v.label ?? v.name,
-        ar_label: v.ar_label ?? v.ar_name,
-      })) ?? [],
-      add_ons: el.add_ons?.map((a: any) => ({
-        ...a,
-        label: a.label ?? a.name,
-      })) ?? [],
-      selected_addons: el.selected_addons?.map((a: any) => ({
-        ...a,
-        label: a.label ?? a.name,
-      })) ?? [],
-      discount_amount: el.discount ?? 0,
-      quantity: el.quantity,
-      tax_amount: el.tax ?? 0,
+    const cartBody = serverCart
+      ? // مستخدم مسجّل → ابعت سلة السيرفر زي ما هي
+        serverCart.items.map((si) => ({
+          product_id: `${si.product_id}`,
+          price: `${si.final_unit_price}`,
+          variant: [],
+          variations: si.variations ?? [],
+          add_ons: si.addons ?? [],
+          selected_addons: si.addons ?? [],
+          add_on_ids: si.add_on_ids ?? [],
+          add_on_qtys: si.add_on_qtys ?? [],
+          discount_amount: si.discount_per_unit ?? 0,
+          quantity: si.quantity,
+          tax_amount: si.tax_per_unit ?? 0,
+        }))
+      : CartData.map((el) => ({
+          ...el,
+          product_id: `${el.id}`,
+          price: `${el.price}`,
+          variant: [],
+          variations: el.variations?.map((v: any) => ({
+            ...v,
+            label: v.label ?? v.name,
+            ar_label: v.ar_label ?? v.ar_name,
+          })) ?? [],
+          add_ons: el.add_ons?.map((a: any) => ({
+            ...a,
+            label: a.label ?? a.name,
+          })) ?? [],
+          selected_addons: el.selected_addons?.map((a: any) => ({
+            ...a,
+            label: a.label ?? a.name,
+          })) ?? [],
+          discount_amount: el.discount ?? 0,
+          quantity: el.quantity,
+          tax_amount: el.tax ?? 0,
 
-    }));
+        }));
 
     return {
       cart: cartBody,
-      coupon_discount_amount: CouponData?.available[0]?.discount ?? 0,
-      coupon_discount_title: CouponData?.available[0]?.title ?? "",
+      coupon_discount_amount: CouponVerifyData?.discount ?? 0,
+      coupon_discount_title: CouponVerifyData?.title ?? "",
       order_amount: itemsPrice,
       order_type: selectedType,
       delivery_address_id: selectedAdress?.id ?? null,
       payment_method: paymentMethod,
-      payment_platform: paymentMethod === "cash_on_delivery" ? undefined : "web",
+      payment_platform:
+        paymentMethod === "cash_on_delivery" ||
+        paymentMethod === "wallet_payment"
+          ? undefined
+          : "web",
       order_note: deliveryNotes,
-      coupon_code: CouponData?.available[0]?.code ?? "",
+      coupon_code: CouponVerifyData?.code ?? "",
+      redeem_points: redeemPoints ? UserData?.point : undefined,
       delivery_time: UserSelectedTime,
       delivery_date: UserSelectedDate,
       branch_id: selectedBranchId ?? 1,
       selected_delivery_area: CurrentedArea ?? 0,
-      is_partial: "0",
+      is_partial: isPartial ? "1" : "0",
       is_cutlery_required: "0",
       bring_change_amount: ChangeAmount,
       distance: 0,
@@ -170,8 +228,10 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     };
   }, [
     CartData,
-    CouponData,
+    serverCart,
+    CouponVerifyData,
     totalAmount,
+    itemsPrice,
     selectedType,
     paymentMethod,
     deliveryNotes,
@@ -181,6 +241,9 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     ChangeAmount,
     selectedAdress,
     selectedBranchId,
+    isPartial,
+    redeemPoints,
+    UserData?.point,
   ]);
 
   const handleCheckout = useCallback(async () => {
@@ -222,6 +285,19 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       return;
     }
 
+    const unavailableItem = serverCart?.items.find((i) => i.available === false);
+    if (unavailableItem) {
+      setToastMessage(
+        unavailableItem.reason ||
+          (i18n.language === "ar"
+            ? `${unavailableItem.product_name} غير متاح حالياً`
+            : `${unavailableItem.product_name} is unavailable`)
+      );
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
     setLoading(true);
     try {
       const body = prepareOrderBody();
@@ -236,6 +312,9 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       if (res.order_id) {
         navigate(`/order-completed/${res.order_id}`);
         dispatch(DeleteCard());
+        dispatch(clearServerCart());
+        // حدّث بيانات المستخدم (رصيد المحفظة / نقاط الولاء ممكن تكون اتغيرت)
+        dispatch(actGetUser());
       }
     } catch (err) {
       console.error("Order failed:", err);
@@ -303,6 +382,8 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
           <ChangePaymentSection
             setBringChangeAmount={SetChangeAmount}
             onSelectPayment={setPaymentMethod}
+            onPartialChange={setIsPartial}
+            totalAmount={totalAmount}
           />
 
           
@@ -328,11 +409,77 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
             </div>
 
             <div className="small text-muted mb-2">
-              <div className="d-flex justify-content-between">
-                <span>{t("checkout.subtotal")}</span>
-                <span>{itemsPrice.toFixed(2)} EGP</span>
-              </div>
-              <div className="d-flex justify-content-between">
+              {serverCart ? (
+                <>
+                  <div className="d-flex justify-content-between">
+                    <span>{t("checkout.subtotal")}</span>
+                    <span>{serverCart.subtotal.toFixed(2)} EGP</span>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <span>{t("tax")}</span>
+                    <span>(+) {serverCart.total_tax.toFixed(2)} EGP</span>
+                  </div>
+                  {serverCart.discounts.coupon > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <span>{t("discount")} — {t("cart.coupon") || "كوبون"}</span>
+                      <span>(-) {serverCart.discounts.coupon.toFixed(2)} EGP</span>
+                    </div>
+                  )}
+                  {serverCart.discounts.referral > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <span>{t("cart.referral") || "خصم الإحالة"}</span>
+                      <span>(-) {serverCart.discounts.referral.toFixed(2)} EGP</span>
+                    </div>
+                  )}
+                  {serverCart.discounts.first_order > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <span>{t("cart.first_order") || "خصم أول طلب"}</span>
+                      <span>(-) {serverCart.discounts.first_order.toFixed(2)} EGP</span>
+                    </div>
+                  )}
+                  {serverCart.discounts.loyalty > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <span>{t("cart.loyalty") || "نقاط الولاء"}</span>
+                      <span>(-) {serverCart.discounts.loyalty.toFixed(2)} EGP</span>
+                    </div>
+                  )}
+                  {serverCart.discounts.spin_prize + serverCart.discounts.spin_free_product > 0 && (
+                    <div className="d-flex justify-content-between">
+                      <span>{t("cart.spin_prizes") || "جوائز عجلة الحظ"} 🎡</span>
+                      <span>
+                        (-) {(serverCart.discounts.spin_prize + serverCart.discounts.spin_free_product).toFixed(2)} EGP
+                      </span>
+                    </div>
+                  )}
+                  {serverCart.discounts.coupon_error && (
+                    <div className="text-danger small mt-1">
+                      {serverCart.discounts.coupon_error}
+                    </div>
+                  )}
+                  {serverCart.discounts.loyalty_error && (
+                    <div className="text-danger small mt-1">
+                      {serverCart.discounts.loyalty_error}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="d-flex justify-content-between">
+                  <span>{t("checkout.subtotal")}</span>
+                  <span>{itemsPrice.toFixed(2)} EGP</span>
+                </div>
+              )}
+
+              {loyaltyEnabled && (
+                <Form.Check
+                  type="checkbox"
+                  className="mt-2"
+                  checked={redeemPoints}
+                  onChange={(e) => setRedeemPoints(e.target.checked)}
+                  label={`${t("checkout.redeem_points") || "استبدل نقاط الولاء"} (${UserData?.point})`}
+                />
+              )}
+
+              <div className="d-flex justify-content-between mt-2">
                 <span>{t("checkout.delivery_fee")}</span>
                 <span>
                   {isFreeDelivery ? (
@@ -346,7 +493,15 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
               </div>
               {isFreeDelivery && (
                 <div className="text-success fw-semibold mt-1">
-                  {t("checkout.free_delivery_applied")}
+                  {serverCart?.discounts.spin_free_delivery
+                    ? t("cart.free_delivery_spin") || "🚚 توصيل مجاني من عجلة الحظ"
+                    : t("checkout.free_delivery_applied")}
+                </div>
+              )}
+              {isPartial && UserData?.wallet_balance && (
+                <div className="d-flex justify-content-between mt-2">
+                  <span>{t("payment.wallet") || "المحفظة"}</span>
+                  <span>(-) {Number(UserData.wallet_balance).toFixed(2)} EGP</span>
                 </div>
               )}
               <hr />

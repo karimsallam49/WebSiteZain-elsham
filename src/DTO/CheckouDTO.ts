@@ -52,6 +52,8 @@ export interface PlaceOrderDTO {
   is_cutlery_required: "0" | "1";
   bring_change_amount: number;
   order_source?: string;
+  redeem_points?: number;
+  use_saved_cart?: number;
 }
 export type OrderResponse = {
   message: string;

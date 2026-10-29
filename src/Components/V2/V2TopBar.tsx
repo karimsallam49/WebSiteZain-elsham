@@ -1,16 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Bell, ShoppingBag, User } from "lucide-react";
 import { setLanguage } from "../../store/Language/LanguageSlice";
 import { useAppSelector } from "../../Hooks/hooks";
+import { useCart } from "../../Hooks/useCart";
 import { LogoBaseUrl } from "../../EndPoints/EndPoints";
 
 const V2TopBar = () => {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   const dispatch = useDispatch();
   const { resturantdata } = useAppSelector(
     (state) => state.restaurantSettingsSlice
+  );
+  const { count: cartCount } = useCart();
+  const { notificationsData } = useAppSelector(
+    (state) => state.notificationsSlice
   );
   const isAr = i18n.language === "ar";
 
@@ -26,36 +31,51 @@ const V2TopBar = () => {
     ? `${LogoBaseUrl}${resturantdata.restaurant_logo}`
     : null;
 
+  const unreadCount = notificationsData?.length ?? 0;
+
   return (
     <div className="v2-topbar">
-      <button
-        type="button"
-        className="v2-lang"
-        onClick={() => switchTo(isAr ? "en" : "ar")}
-      >
-        <span className={isAr ? "active-lang" : ""}>ع</span>
-        <span className="sep">|</span>
-        <span className={!isAr ? "active-lang" : ""}>EN</span>
-      </button>
-
       <Link to="/" className="v2-brand">
-        {logo && (
+        {logo ? (
           <img
             src={logo}
-            alt=""
-            style={{ height: 26, objectFit: "contain", marginBottom: 2 }}
+            alt={resturantdata?.restaurant_name || ""}
+            className="v2-brand-logo"
           />
+        ) : (
+          <span className="v2-brand-name">
+            {resturantdata?.restaurant_name || "زين الشام"}
+          </span>
         )}
-        <span className="v2-brand-name">
-          {resturantdata?.restaurant_name || "زين الشام"}
-        </span>
-        <span className="v2-brand-sub">{t("v2.brandSub")}</span>
       </Link>
 
-      <Link to="/" className="v2-backlink">
-        {t("v2.backToSite")}
-        <ArrowLeft size={14} className="v2-back-arrow" />
-      </Link>
+      <div className="v2-topbar-actions">
+        <Link to="/notifications" className="v2-icon-btn" aria-label="notifications">
+          <Bell size={19} strokeWidth={1.8} />
+          {!!unreadCount && unreadCount > 0 && (
+            <span className="v2-icon-badge">{unreadCount}</span>
+          )}
+        </Link>
+
+        <Link to="/profile" className="v2-icon-btn" aria-label="profile">
+          <User size={19} strokeWidth={1.8} />
+        </Link>
+
+        <Link to="/cart" className="v2-icon-btn" aria-label="cart">
+          <ShoppingBag size={19} strokeWidth={1.8} />
+          {cartCount > 0 && (
+            <span className="v2-icon-badge">{cartCount}</span>
+          )}
+        </Link>
+
+        <button
+          type="button"
+          className="v2-icon-btn v2-lang-btn"
+          onClick={() => switchTo(isAr ? "en" : "ar")}
+        >
+          {isAr ? "EN" : "ع"}
+        </button>
+      </div>
     </div>
   );
 };

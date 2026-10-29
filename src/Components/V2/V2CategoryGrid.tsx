@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import type { Category } from "../../DTO/CategoriesDTO";
@@ -6,45 +6,26 @@ import type { Category } from "../../DTO/CategoriesDTO";
 interface Props {
   categories: Category[];
   activeId: number | null;
+  /** "الكل" active — قايمة كل المنتجات معروضة */
+  allActive: boolean;
   onSelect: (cat: Category | null) => void;
 }
 
-const V2CategoryGrid = ({ categories, activeId, onSelect }: Props) => {
+const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) => {
   const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(false);
   const parents = categories.filter((c) => c.parent_id?.toString() === "0");
 
   if (parents.length === 0) return null;
 
-  const handleAll = () => {
-    if (expanded) {
-      // لو الـ grid مفتوح → الضغط على "الكل" بيرجّع الفلتر ويقفل
-      onSelect(null);
-      setExpanded(false);
-    } else {
-      // لو مغلق → يفتح الـ grid ويعرض كل الأقسام
-      setExpanded(true);
-    }
-  };
-
-  const handleSelect = (cat: Category) => {
-    onSelect(cat);
-    setExpanded(false);
-  };
-
   return (
-    <div
-      key={expanded ? "grid" : "rail"}
-      className={expanded ? "v2-cat-grid" : "v2-cat-rail"}
-      role="list"
-    >
+    <div className="v2-cat-rail" role="list">
       <div
-        className={`v2-cat-tile ${activeId === null ? "active" : ""}`}
+        className={`v2-cat-tile ${allActive ? "active" : ""}`}
         style={{ "--i": 0 } as CSSProperties}
-        onClick={handleAll}
+        onClick={() => onSelect(null)}
         role="listitem"
         tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && handleAll()}
+        onKeyDown={(e) => e.key === "Enter" && onSelect(null)}
       >
         <span className="v2-tile-name">{t("v2.all")}</span>
         <LayoutGrid size={18} className="v2-tile-icon" />
@@ -58,10 +39,10 @@ const V2CategoryGrid = ({ categories, activeId, onSelect }: Props) => {
             key={cat.id}
             className={`v2-cat-tile ${activeId === cat.id ? "active" : ""}`}
             style={{ "--i": idx + 1 } as CSSProperties}
-            onClick={() => handleSelect(cat)}
+            onClick={() => onSelect(cat)}
             role="listitem"
             tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && handleSelect(cat)}
+            onKeyDown={(e) => e.key === "Enter" && onSelect(cat)}
           >
             <span className="v2-tile-name">{cat.name}</span>
             {img && <img src={img} alt={cat.name} loading="lazy" />}
