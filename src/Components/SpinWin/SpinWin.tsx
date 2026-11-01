@@ -190,7 +190,7 @@ const SpinWin = ({ onClose }: Props) => {
                     key={seg.id}
                     d={wedgePath(i, R, CX, CY)}
                     fill={seg.color || FALLBACK_COLORS[i % FALLBACK_COLORS.length]}
-                    stroke="#0b1420"
+                    stroke="#0e1526"
                     strokeWidth="1"
                   />
                 ))}

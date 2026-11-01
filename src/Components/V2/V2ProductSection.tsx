@@ -4,6 +4,7 @@ import { useFetch } from "../../Hooks/useFetch";
 import { useAppSelector } from "../../Hooks/hooks";
 import type { ProductDTO, ProductListResponse } from "../../DTO/ProductsDTO";
 import V2ProductRow from "./V2ProductRow";
+import { toProductArray } from "../../utils/productList";
 import { ProductModal } from "../ProductsDetails/ProductModal";
 
 interface Props {
@@ -27,12 +28,11 @@ const V2ProductSection = ({ title, url, limit = 6, excludeOfferSource }: Props) 
     url
   );
 
-  const products =
-    data?.products?.filter(
-      (p) =>
-        p.status === 1 &&
-        (!excludeOfferSource || p.offer_source !== excludeOfferSource)
-    ) ?? [];
+  const products = toProductArray(data?.products).filter(
+    (p) =>
+      p.status === 1 &&
+      (!excludeOfferSource || p.offer_source !== excludeOfferSource)
+  );
 
   const openProduct = (p: ProductDTO) => {
     setSelectedProduct(p);
@@ -43,9 +43,8 @@ const V2ProductSection = ({ title, url, limit = 6, excludeOfferSource }: Props) 
 
   return (
     <>
-      <div className="v2-section-title">
-        <span className="dash" />
-        <h2 className="txt">{title}</h2>
+      <div className="v2-rail-head">
+        <h2 className="v2-rail-title">{title}</h2>
       </div>
 
       <div className="v2-menu-list">

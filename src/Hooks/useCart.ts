@@ -78,7 +78,13 @@ export const useCart = () => {
         remainingToUnlock: si.prize?.remaining_to_unlock ?? null,
         addonsText:
           si.addons?.length > 0
-            ? si.addons.map((a) => a.name).join("، ")
+            ? si.addons
+                .map(
+                  (a) =>
+                    `${a.name}${a.quantity > 1 ? ` ×${a.quantity}` : ""}` +
+                    ` (${Number(a.price).toFixed(2)} EGP)`
+                )
+                .join("، ")
             : null,
       }))
     : CartData.map((item) => {
@@ -127,8 +133,21 @@ export const useCart = () => {
         // استخدم update بالكمية المطلوبة بدل ما تتضاعف
         const existing = items.find((i) => i.productId === product.id);
         if (existing?.cartId != null) {
+          // المودال بيبعت selected_addons → العميل غيّر الاختيارات فعلًا
+          // نبعت variations/add_ons مع الـupdate والسيرفر بيعيد الـsignature ويدمج
+          const hasSelections = (product as any).selected_addons !== undefined;
           dispatch(
-            serverCartUpdateQty({ cart_id: existing.cartId, quantity })
+            serverCartUpdateQty({
+              cart_id: existing.cartId,
+              quantity,
+              ...(hasSelections
+                ? {
+                    variations: product.variations ?? [],
+                    add_on_ids: product.add_on_ids ?? [],
+                    add_on_qtys: product.add_on_qtys ?? [],
+                  }
+                : {}),
+            })
           );
         } else {
           dispatch(

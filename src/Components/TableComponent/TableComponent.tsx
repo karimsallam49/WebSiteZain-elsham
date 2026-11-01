@@ -71,7 +71,9 @@ const Navigate =useNavigate()
                 {estimatedArrival} دقيقه 
             </td>
             <td>
-                {cell.order_amount}
+                {cell.totals
+                  ? Number(cell.totals.grand_total).toFixed(2)
+                  : cell.order_amount}
             </td>
             <td>
                 {cell.order_status}

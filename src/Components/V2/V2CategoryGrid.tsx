@@ -2,6 +2,8 @@ import { useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import type { Category } from "../../DTO/CategoriesDTO";
+import { useDragScroll } from "../../Hooks/useDragScroll";
+import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14.jpeg";
 
 interface Props {
   categories: Category[];
@@ -14,17 +16,16 @@ interface Props {
 const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
+  const railRef = useDragScroll<HTMLDivElement>();
   const parents = categories.filter((c) => c.parent_id?.toString() === "0");
 
   if (parents.length === 0) return null;
 
   const handleAll = () => {
     if (expanded) {
-      // الـ grid مفتوح → الضغط على "الكل" بيفلتر على كل المنتجات ويقفل الـ grid
       onSelect(null);
       setExpanded(false);
     } else {
-      // مغلق → يفتح الـ grid بأنيميشن ويعرض كل الأقسام
       setExpanded(true);
     }
   };
@@ -37,6 +38,7 @@ const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) =>
   return (
     <div
       key={expanded ? "grid" : "rail"}
+      ref={railRef}
       className={expanded ? "v2-cat-grid" : "v2-cat-rail"}
       role="list"
     >
@@ -48,7 +50,7 @@ const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) =>
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && handleAll()}
       >
-        <span className="v2-tile-name">{t("v2.all")}</span>
+        {expanded && <span className="v2-tile-name">{t("v2.all")}</span>}
         <LayoutGrid size={22} className="v2-tile-icon" />
       </div>
 
@@ -65,8 +67,18 @@ const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) =>
             tabIndex={0}
             onKeyDown={(e) => e.key === "Enter" && handleSelect(cat)}
           >
+            {img && (
+              <img
+                src={img}
+                alt={cat.name}
+                loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = PlaceHolderImage;
+                }}
+              />
+            )}
             <span className="v2-tile-name">{cat.name}</span>
-            {img && <img src={img} alt={cat.name} loading="lazy" />}
           </div>
         );
       })}

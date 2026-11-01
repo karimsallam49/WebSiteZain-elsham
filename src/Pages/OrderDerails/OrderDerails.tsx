@@ -51,11 +51,20 @@ const OrderDetailsPage = () => {
     payment_status,
   } = data;
 
+  const n = (v: any) => Number(v) || 0;
+  const egp = (v: any) => `${n(v).toFixed(2)} EGP`;
+
   const total =
     order_amount +
     delivery_charge -
     (coupon_discount_amount ?? 0) -
     Number(extra_discount ?? 0);
+
+  const tts = data.totals;
+  const dsc = data.discounts;
+  const grandTotal = tts ? n(tts.grand_total) : total;
+  const deliveryFee = tts ? n(tts.delivery_charge) : n(delivery_charge);
+  const freeDelivery = Boolean(data.spin_free_delivery);
 
   const handleTrackOrder = () => {
     if (!order_id) return alert(t("order_details.no_order_id"));
@@ -145,7 +154,18 @@ const OrderDetailsPage = () => {
                         </span>
                       </div>
                     </div>
-                    <span className="price">{item.price} EGP</span>
+                    <span className="price">
+                      {n(item.discount_on_product) > 0 ? (
+                        <>
+                          <del className="text-muted small me-1">
+                            {egp(item.price)}
+                          </del>
+                          {egp(n(item.price) - n(item.discount_on_product))}
+                        </>
+                      ) : (
+                        egp(item.price)
+                      )}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -156,28 +176,142 @@ const OrderDetailsPage = () => {
         <div className="order-summart-container p-2" style={{ width: "50%" }}>
           <div className="order-summary-section w-100 section-bordered">
             <h6>💰 {t("order_details.cost_summary")}</h6>
+
+            {data.applied_offer && (
+              <div className="small mb-2" style={{ color: "var(--v2-gold, #c9a35b)" }}>
+                🎁 {data.applied_offer.label || t("cart.spin_prizes")}
+                {data.applied_offer.product_name &&
+                  ` — ${data.applied_offer.product_name}`}
+                {n(data.applied_offer.discount) > 0 &&
+                  ` (${egp(data.applied_offer.discount)})`}
+                {data.applied_offer.free_delivery &&
+                  ` — ${t("cart.free_delivery_spin")}`}
+              </div>
+            )}
+
             <ul>
               <li>
-                <span>{t("order_details.order_total")}</span>
-                <span>{order_amount} EGP</span>
+                <span>{t("order_details.items_subtotal")}</span>
+                <span>{egp(tts?.items_subtotal ?? order_amount)}</span>
               </li>
-              <li>
-                <span>{t("order_details.coupon_discount")}</span>
-                <span>{coupon_discount_amount} EGP</span>
-              </li>
-              <li>
-                <span>{t("order_details.extra_discount")}</span>
-                <span>{extra_discount} EGP</span>
-              </li>
+
+              {tts && n(tts.line_discounts) > 0 && (
+                <li className="disc">
+                  <span>{t("order_details.line_discounts")}</span>
+                  <span>(-) {egp(tts.line_discounts)}</span>
+                </li>
+              )}
+
+              {dsc ? (
+                <>
+                  {n(dsc.coupon) > 0 && (
+                    <li className="disc">
+                      <span>{t("order_details.coupon_discount")}</span>
+                      <span>(-) {egp(dsc.coupon)}</span>
+                    </li>
+                  )}
+                  {n(dsc.extra) > 0 && (
+                    <li className="disc">
+                      <span>{t("order_details.extra_discount")}</span>
+                      <span>(-) {egp(dsc.extra)}</span>
+                    </li>
+                  )}
+                  {n(dsc.referral) > 0 && (
+                    <li className="disc">
+                      <span>{t("cart.referral")}</span>
+                      <span>(-) {egp(dsc.referral)}</span>
+                    </li>
+                  )}
+                  {n(dsc.loyalty) > 0 && (
+                    <li className="disc">
+                      <span>{t("cart.loyalty")}</span>
+                      <span>(-) {egp(dsc.loyalty)}</span>
+                    </li>
+                  )}
+                  {n(dsc.first_order) > 0 && (
+                    <li className="disc">
+                      <span>{t("cart.first_order")}</span>
+                      <span>(-) {egp(dsc.first_order)}</span>
+                    </li>
+                  )}
+                  {n(dsc.spin_prize) > 0 && (
+                    <li className="disc">
+                      <span>{t("cart.spin_prizes")}</span>
+                      <span>(-) {egp(dsc.spin_prize)}</span>
+                    </li>
+                  )}
+                </>
+              ) : (
+                <>
+                  <li>
+                    <span>{t("order_details.coupon_discount")}</span>
+                    <span>{egp(coupon_discount_amount)}</span>
+                  </li>
+                  <li>
+                    <span>{t("order_details.extra_discount")}</span>
+                    <span>{egp(extra_discount)}</span>
+                  </li>
+                </>
+              )}
+
               <li>
                 <span>{t("order_details.delivery_fee")}</span>
-                <span>{delivery_charge} EGP</span>
+                <span>
+                  {freeDelivery
+                    ? t("cart.free_delivery_spin")
+                    : egp(deliveryFee)}
+                </span>
               </li>
               <li className="total">
                 <span>{t("order_details.total_amount")}</span>
-                <span>{total} EGP</span>
+                <span>{egp(grandTotal)}</span>
               </li>
             </ul>
+
+            {data.spin_prizes && data.spin_prizes.length > 0 && (
+              <div className="mt-2">
+                {data.spin_prizes.map((p) => (
+                  <div
+                    key={p.id}
+                    className="small text-muted border rounded p-2 mb-1"
+                  >
+                    🎁 {p.label}
+                    {p.product_name ? ` — ${p.product_name}` : ""}
+                    {n(p.value) > 0 ? ` (${egp(p.value)})` : ""}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {data.loyalty &&
+              (n(data.loyalty.earned) > 0 || n(data.loyalty.redeemed) > 0) && (
+                <div className="small text-muted mt-2">
+                  {n(data.loyalty.earned) > 0 && (
+                    <div>
+                      ⭐ {t("order_details.points_earned")}:{" "}
+                      {data.loyalty.earned}
+                    </div>
+                  )}
+                  {n(data.loyalty.redeemed) > 0 && (
+                    <div>
+                      💎 {t("order_details.points_redeemed")}:{" "}
+                      {data.loyalty.redeemed} (-{egp(data.loyalty.discount_amount)})
+                    </div>
+                  )}
+                </div>
+              )}
+
+            {data.order_partial_payments &&
+              data.order_partial_payments.length > 0 && (
+                <div className="small text-muted mt-2">
+                  {data.order_partial_payments.map((p, i) => (
+                    <div key={i}>
+                      💳 {p.paid_with}: {egp(p.paid_amount)} —{" "}
+                      {t("order_details.due_amount")}: {egp(p.due_amount)}
+                    </div>
+                  ))}
+                </div>
+              )}
 
             {order_status === "pending" && !isCancelled ? (
               <button

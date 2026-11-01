@@ -434,16 +434,16 @@
 
 html[data-theme="v2"] .chat-fab::before {
   border-top-color: var(--v2-gold-bright);
-  border-right-color: rgba(175, 145, 95, 0.35);
+  border-right-color: rgba(201, 163, 91, 0.35);
 }
 html[data-theme="v2"] .chat-fab::after {
   border-bottom-color: var(--v2-gold);
-  border-left-color: rgba(175, 145, 95, 0.25);
+  border-left-color: rgba(201, 163, 91, 0.25);
 }
 html[data-theme="v2"] .chat-fab {
   background: rgba(15, 23, 38, 0.5) !important;
   border-radius: 50% !important;
-  border-color: rgba(175, 145, 95, 0.45);
+  border-color: rgba(201, 163, 91, 0.45);
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -480,7 +480,7 @@ html[data-theme="v2"] .chat-head .chat-title {
   letter-spacing: 0.06em;
 }
 html[data-theme="v2"] .chat-head .chat-avatar {
-  background: rgba(175, 145, 95, 0.18);
+  background: rgba(201, 163, 91, 0.18);
   border-color: var(--v2-gold);
 }
 html[data-theme="v2"] .chat-head .chat-avatar::after {
@@ -490,12 +490,12 @@ html[data-theme="v2"] .chat-head .chat-close {
   color: var(--v2-cream);
 }
 html[data-theme="v2"] .chat-body::-webkit-scrollbar-thumb {
-  background: rgba(175, 145, 95, 0.35);
+  background: rgba(201, 163, 91, 0.35);
 }
 html[data-theme="v2"] .chat-msg.bot {
   background: var(--v2-navy);
   color: var(--v2-cream);
-  border: 1px solid rgba(175, 145, 95, 0.2);
+  border: 1px solid rgba(201, 163, 91, 0.2);
   box-shadow: none;
 }
 html[data-theme="v2"] .chat-msg.user {
@@ -504,7 +504,7 @@ html[data-theme="v2"] .chat-msg.user {
 }
 html[data-theme="v2"] .chat-typing {
   background: var(--v2-navy);
-  border: 1px solid rgba(175, 145, 95, 0.2);
+  border: 1px solid rgba(201, 163, 91, 0.2);
   box-shadow: none;
 }
 html[data-theme="v2"] .chat-typing span {
@@ -516,7 +516,7 @@ html[data-theme="v2"] .chat-chip {
   color: var(--v2-gold);
 }
 html[data-theme="v2"] .chat-chip:hover {
-  background: rgba(175, 145, 95, 0.15);
+  background: rgba(201, 163, 91, 0.15);
   border-color: var(--v2-gold);
   color: var(--v2-gold-bright);
 }
@@ -524,7 +524,7 @@ html[data-theme="v2"] .chat-chip.solid {
   background: var(--v2-gold);
   border-color: var(--v2-gold);
   color: var(--v2-ink);
-  box-shadow: 0 4px 14px rgba(175, 145, 95, 0.3);
+  box-shadow: 0 4px 14px rgba(201, 163, 91, 0.3);
 }
 html[data-theme="v2"] .chat-product .cp-name {
   color: var(--v2-cream);
@@ -544,6 +544,6 @@ html[data-theme="v2"] .chat-product img {
   border: 1px solid var(--v2-hairline);
 }
 html[data-theme="v2"] .chat-countdown {
-  background: rgba(175, 145, 95, 0.12);
+  background: rgba(201, 163, 91, 0.12);
   color: var(--v2-gold);
 }

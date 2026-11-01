@@ -1,15 +1,17 @@
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Bell, ShoppingBag, User } from "lucide-react";
+import { Bell, Moon, ShoppingBag, Sun, User } from "lucide-react";
 import { setLanguage } from "../../store/Language/LanguageSlice";
 import { useAppSelector } from "../../Hooks/hooks";
 import { useCart } from "../../Hooks/useCart";
+import { useV2Theme } from "../../Hooks/useV2Theme";
 import { LogoBaseUrl } from "../../EndPoints/EndPoints";
 
 const V2TopBar = () => {
   const { i18n } = useTranslation();
   const dispatch = useDispatch();
+  const { mode, toggle } = useV2Theme();
   const { resturantdata } = useAppSelector(
     (state) => state.restaurantSettingsSlice
   );
@@ -50,6 +52,19 @@ const V2TopBar = () => {
       </Link>
 
       <div className="v2-topbar-actions">
+        <button
+          type="button"
+          className="v2-icon-btn"
+          onClick={toggle}
+          aria-label="toggle theme"
+        >
+          {mode === "v2" ? (
+            <Sun size={19} strokeWidth={1.8} />
+          ) : (
+            <Moon size={19} strokeWidth={1.8} />
+          )}
+        </button>
+
         <Link to="/notifications" className="v2-icon-btn" aria-label="notifications">
           <Bell size={19} strokeWidth={1.8} />
           {!!unreadCount && unreadCount > 0 && (

@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { loadServerCart } from "../../store/Cart/serverCartSlice";
+import CartOffersPicker from "../../Components/CartOffersPicker/CartOffersPicker";
 import { useCart } from "../../Hooks/useCart";
 import "./CartPage.css";
 import { useNavigate } from "react-router";
@@ -203,7 +204,23 @@ const totalAmount =
                       </div>
                     )}
                     {item.addonsText && (
-                      <div className="text-muted small">+ {item.addonsText}</div>
+                      <div className="d-flex flex-wrap gap-1 mt-1">
+                        {item.addonsText.split("، ").map((a, i) => (
+                          <span
+                            key={i}
+                            className="small px-2 py-1"
+                            style={{
+                              border: "1px solid var(--v2-hairline, #ddd)",
+                              borderRadius: "8px",
+                              background: "rgba(201, 163, 91, 0.08)",
+                              color: "var(--v2-cream-dim, #888)",
+                              fontSize: "0.7rem",
+                            }}
+                          >
+                            + {a}
+                          </span>
+                        ))}
+                      </div>
                     )}
                     {!item.available && (
                       <div className="text-danger small mt-1">
@@ -307,6 +324,8 @@ const totalAmount =
                 )}
               </div>
 
+              <CartOffersPicker />
+
               <div className="small text-muted mb-2 "style={{ padding:"0 5px" }}>
                 {serverCart ? (
                   <>
@@ -318,6 +337,12 @@ const totalAmount =
                       <span>{t("tax")}</span>
                       <span>(+) {serverCart.total_tax.toFixed(2)} EGP</span>
                     </div>
+                    {serverCart.items.some((i) => (i.addons_tax ?? 0) > 0) && (
+                      <div className="text-end" style={{ fontSize: "0.68rem", opacity: 0.7 }}>
+                        {t("tax_addons_note") ||
+                          "شامل ضريبة الإضافات"}
+                      </div>
+                    )}
                     {serverCart.discounts.coupon > 0 && (
                       <div className="d-flex justify-content-between">
                         <span>{t("discount")} — {t("cart.coupon") || "كوبون"}</span>

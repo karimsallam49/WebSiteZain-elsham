@@ -23,7 +23,10 @@ const V2ProductCard = ({ product, onOpen }: Props) => {
     product.discount_type === "percent"
       ? (originalPrice * (Number(product.discount) || 0)) / 100
       : Number(product.discount) || 0;
-  const discountedPrice = Math.max(originalPrice - discountAmount, 0);
+  const discountedPrice =
+    product.final_price != null
+      ? Number(product.final_price)
+      : Math.max(originalPrice - discountAmount, 0);
   const hasOffer =
     (Number(product.discount) || 0) > 0 && originalPrice > 0;
 
@@ -56,12 +59,8 @@ const V2ProductCard = ({ product, onOpen }: Props) => {
         onKeyDown={(e) => e.key === "Enter" && onOpen(product)}
       >
         <div className="v2-pcard-media">
-          {hasOffer && (
-            <span
-              className={`v2-ribbon${
-                product.offer_source === "happy_hour" ? " hh" : ""
-              }`}
-            >
+          {hasOffer && product.offer_source === "happy_hour" && (
+            <span className="v2-ribbon hh">
               {product.discount_type === "percent"
                 ? `-${Math.round(Number(product.discount))}%`
                 : `-${Number(product.discount).toFixed(0)}`}

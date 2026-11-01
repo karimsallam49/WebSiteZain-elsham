@@ -25,6 +25,8 @@ export interface ProductDTO {
   choice_options: any[];
   discount: number;
   discount_type: "percent" | "amount" | string;
+  /** السعر بعد الخصم مدوّر من السيرفر (مضاعف 5) — لو موجود يُعرض بدل حسابه محليًا */
+  final_price?: number;
   tax_type: "percent" | "amount" | string;
   set_menu: number;
   is_bucket: boolean;

@@ -72,7 +72,16 @@ const AddonsList = ({ product, onChange }: AddonsListProps) => {
 
   return (
     <div>
-      {Array.isArray(product.add_ons) && product.add_ons.length > 0 && product.add_ons.map((addon: any, index: number) => {
+      {Array.isArray(product.add_ons) && product.add_ons.length > 0 && product.add_ons
+        // نستبعد الـ ghost addons — بيانات ناقصة من غير اسم أو سعر
+        .filter(
+          (addon: any) =>
+            addon &&
+            addon.name &&
+            (addon.is_free ||
+              (addon.price != null && !isNaN(Number(addon.price))))
+        )
+        .map((addon: any, index: number) => {
         const isSelected = selectedAddons.some((a) => a.id === addon.id);
         const selected = selectedAddons.find((a) => a.id === addon.id);
 
@@ -113,7 +122,8 @@ const AddonsList = ({ product, onChange }: AddonsListProps) => {
                 style={{ fontSize: "small", minWidth: "60px" }}
                 className="text-muted fw-semibold text-end"
               >
-                {addon.price.toFixed(2)} {t("currency")}
+                {(Number(addon.price ?? addon.add_on_price) || 0).toFixed(2)}{" "}
+                {t("currency")}
               </span>
 
               {isSelected && (

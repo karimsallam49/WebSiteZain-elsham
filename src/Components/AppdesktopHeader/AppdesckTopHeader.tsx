@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchComponent from "../SearchComponent/SearchComponent";
 import "./AppdesckTop.css";
 import { useAppSelector } from "../../Hooks/hooks";
@@ -14,6 +14,9 @@ const AppdesckTopHeader = () => {
   const { categories } = useAppSelector((state) => state.CategoriesSlice);
   const MainCategories = categories.filter((el) => el.parent_id === 0);
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  // صفحة السيرش عندها الـ V2 search bar بتاعها — نخفي سيرش الـ header عشان ميتكررش
+  const isSearchPage = pathname.startsWith("/search");
 
   return (
     <div
@@ -63,12 +66,14 @@ const AppdesckTopHeader = () => {
       </div>
 
       {/* 🔹 البحث */}
-      <div
-        className="d-flex justify-content-center Grarcolor align-items-center"
-        style={{ flex: 2 }}
-      >
-        <SearchComponent />
-      </div>
+      {!isSearchPage && (
+        <div
+          className="d-flex justify-content-center Grarcolor align-items-center"
+          style={{ flex: 2 }}
+        >
+          <SearchComponent />
+        </div>
+      )}
 
 
       <HeaderLinks />

@@ -23,7 +23,10 @@ const V2ProductRow = ({ product, onOpen }: Props) => {
     product.discount_type === "percent"
       ? (originalPrice * (Number(product.discount) || 0)) / 100
       : Number(product.discount) || 0;
-  const discountedPrice = Math.max(originalPrice - discountAmount, 0);
+  const discountedPrice =
+    product.final_price != null
+      ? Number(product.final_price)
+      : Math.max(originalPrice - discountAmount, 0);
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -68,13 +71,6 @@ const V2ProductRow = ({ product, onOpen }: Props) => {
         <div className="v2-product-body">
           <span className="v2-product-name">
             {product.name}
-            {product.discount > 0 && (
-              <span className="v2-product-badge">
-                {product.discount_type === "percent"
-                  ? `-${Math.round(Number(product.discount))}%`
-                  : `-${Number(product.discount).toFixed(0)} ${t("currency")}`}
-              </span>
-            )}
             {product.product_type === "veg" && (
               <span className="v2-product-badge">{t("diet")}</span>
             )}

@@ -14,6 +14,8 @@ import {
   Map,
   FileText,
   LogOut,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./MobileSideBare.css";
@@ -23,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import CartImage from "../../assets/icon/shopping-cart.png";
 import ConfirmPopup from "../confirmPopup/ConfirmPopup"; 
 import { logout } from "../../store/Auth/OTP/LoginSlice";
+import { useV2Theme } from "../../Hooks/useV2Theme";
 
 const MobileSideBare = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +35,7 @@ const MobileSideBare = () => {
   const {OTPToken}=useAppSelector((state)=>state.OTPauthconfigration)
   const { i18n, t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { mode, toggle: toggleTheme } = useV2Theme();
 
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
 
@@ -136,6 +140,16 @@ const MobileSideBare = () => {
               <span>{item.label}</span>
             </Link>
           ))}
+
+          <div
+            className="sidebar-link d-flex align-items-center gap-3 cursor-pointer"
+            onClick={toggleTheme}
+          >
+            {mode === "v2" ? <Sun size={20} /> : <Moon size={20} />}
+            <span>
+              {mode === "v2" ? t("v2.lightMode") : t("v2.darkMode")}
+            </span>
+          </div>
 
 
         {

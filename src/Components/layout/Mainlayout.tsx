@@ -69,7 +69,8 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
   },[selectedBranch])
 
   useEffect(() => {
-    document.documentElement.dataset.theme = "v2";
+    document.documentElement.dataset.theme =
+      localStorage.getItem("v2-theme-mode") || "v2";
 
     if (!document.getElementById("v2-fonts")) {
       const link = document.createElement("link");

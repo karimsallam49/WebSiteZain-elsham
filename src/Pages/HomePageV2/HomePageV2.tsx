@@ -5,8 +5,10 @@ import type { Category } from "../../DTO/CategoriesDTO";
 import {
   offersUrl,
   recommendedProductUrL,
+  GoodTimeProductUrL,
 } from "../../EndPoints/EndPoints";
 import LazyRender from "../../Components/LazyRender/LazyRender";
+import V2GoodTime from "../../Components/V2/V2GoodTime";
 import V2TopBar from "../../Components/V2/V2TopBar";
 import V2AddressSearch from "../../Components/V2/V2AddressSearch";
 import V2HeroSlider from "../../Components/V2/V2HeroSlider";
@@ -80,10 +82,16 @@ const HomePageV2 = () => {
             </LazyRender>
 
             <LazyRender minHeight={240}>
-              <V2ProductSection
+              <V2GoodTime
                 title={t("Recommendation")}
                 url={recommendedProductUrL}
-                limit={6}
+              />
+            </LazyRender>
+
+            <LazyRender minHeight={240}>
+              <V2GoodTime
+                title={t("v2.recommended")}
+                url={GoodTimeProductUrL}
               />
             </LazyRender>
           </>

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import "./MobilePageHeader.css";
 
-const HIDDEN_PATHS = ["/", "/selectbranch", "/cuisine"];
+const HIDDEN_PATHS = ["/", "/selectbranch", "/cuisine", "/search"];
 const HIDDEN_PREFIXES = ["/category/", "/cuisineproductspage"];
 
 const PATH_TITLES: Record<string, string> = {

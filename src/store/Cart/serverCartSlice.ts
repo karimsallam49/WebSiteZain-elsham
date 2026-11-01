@@ -193,15 +193,28 @@ export const serverCartAdd = createAsyncThunk<
 
 export const serverCartUpdateQty = createAsyncThunk<
   ServerCartResponse | null,
-  { cart_id: number; quantity: number } & CartParams,
+  { cart_id: number; quantity: number } & CartParams & {
+      /* بيتبعتوا بس لما العميل بيغير الاختيارات فعلًا —
+         السيرفر بيعيد حساب الـsignature وبيدمج السطور المتطابقة */
+      variations?: any[];
+      add_on_ids?: number[];
+      add_on_qtys?: number[];
+    },
   { state: RootState }
 >("serverCart/update", async (args, { getState }) => {
   const state = getState();
   if (!state.OTPauthconfigration.OTPToken) return null;
+  const body: Record<string, unknown> = {
+    cart_id: args.cart_id,
+    quantity: args.quantity,
+  };
+  if (args.variations !== undefined) body.variations = args.variations;
+  if (args.add_on_ids !== undefined) body.add_on_ids = args.add_on_ids;
+  if (args.add_on_qtys !== undefined) body.add_on_qtys = args.add_on_qtys;
   try {
     const res = await axios.post<ServerCartResponse>(
       `${serverCartUrl}/update?${buildParams(state, args).toString()}`,
-      { cart_id: args.cart_id, quantity: args.quantity },
+      body,
       { headers: authHeaders(state) }
     );
     return normalizeCart(res.data);

@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Slider from "react-slick";
 import { useAppSelector } from "../../Hooks/hooks";
 import type { BannerDTO } from "../../DTO/BannerDTO";
 import type { ProductDTO } from "../../DTO/ProductsDTO";
 import { ProductModal } from "../ProductsDetails/ProductModal";
 import BannerSkeleton from "../../scelton/BannerSkeleton";
+import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14.jpeg";
 
 const V2HeroSlider = () => {
   const { BannerData, BannerLoading } = useAppSelector(
@@ -96,37 +96,16 @@ const V2HeroSlider = () => {
                     ? banner.image_ar_url ?? banner.image_url
                     : banner.image_url
                 }
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = PlaceHolderImage;
+                }}
                 alt={banner.title}
               />
             </div>
           );
         })}
       </Slider>
-
-      {slides.length > 1 && (
-        <div className="v2-hero-nav" dir="ltr">
-          <button
-            type="button"
-            className="v2-hero-arrow"
-            aria-label="previous"
-            onClick={() =>
-              direction ? sliderRef.current?.slickNext() : sliderRef.current?.slickPrev()
-            }
-          >
-            <ChevronLeft size={16} strokeWidth={2.4} />
-          </button>
-          <button
-            type="button"
-            className="v2-hero-arrow"
-            aria-label="next"
-            onClick={() =>
-              direction ? sliderRef.current?.slickPrev() : sliderRef.current?.slickNext()
-            }
-          >
-            <ChevronRight size={16} strokeWidth={2.4} />
-          </button>
-        </div>
-      )}
 
       {showModal && selectedProduct && (
         <ProductModal

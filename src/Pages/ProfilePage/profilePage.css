@@ -12,7 +12,7 @@
     rgba(22, 38, 56, 0.9),
     rgba(11, 20, 32, 0.95)
   );
-  border: 1px solid var(--v2-hairline, rgba(175, 145, 95, 0.3));
+  border: 1px solid var(--v2-hairline, rgba(201, 163, 91, 0.3));
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
   overflow: hidden;
 }
@@ -25,11 +25,11 @@
   background:
     radial-gradient(
       ellipse 60% 120% at 50% 0%,
-      rgba(175, 145, 95, 0.25),
+      rgba(201, 163, 91, 0.25),
       transparent 70%
     ),
-    linear-gradient(160deg, #1d3248 0%, var(--v2-ink-deep, #070d16) 100%);
-  border-bottom: 1px solid var(--v2-hairline, rgba(175, 145, 95, 0.3));
+    linear-gradient(160deg, #1d3248 0%, var(--v2-ink-deep, #0a1120) 100%);
+  border-bottom: 1px solid var(--v2-hairline, rgba(201, 163, 91, 0.3));
 }
 
 .profile-banner::before,
@@ -42,7 +42,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    var(--v2-gold, #af915f),
+    var(--v2-gold, #c9a35b),
     transparent
   );
   opacity: 0.5;
@@ -77,12 +77,12 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--v2-gold, #af915f);
+  border: 2px solid var(--v2-gold, #c9a35b);
   box-shadow:
-    0 0 0 5px var(--v2-ink, #0b1420),
-    0 0 0 6px rgba(175, 145, 95, 0.45),
+    0 0 0 5px var(--v2-ink, #0e1526),
+    0 0 0 6px rgba(201, 163, 91, 0.45),
     0 14px 34px rgba(0, 0, 0, 0.55);
-  background: var(--v2-ink-deep, #070d16);
+  background: var(--v2-ink-deep, #0a1120);
 }
 
 .profile-avatar-cam {
@@ -92,11 +92,11 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid var(--v2-ink, #0b1420);
+  border: 2px solid var(--v2-ink, #0e1526);
   display: grid;
   place-items: center;
-  background: var(--v2-gold, #af915f);
-  color: var(--v2-ink, #0b1420);
+  background: var(--v2-gold, #c9a35b);
+  color: var(--v2-ink, #0e1526);
   font-size: 0.85rem;
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
@@ -104,7 +104,7 @@
 }
 
 .profile-avatar-cam:hover {
-  background: var(--v2-gold-bright, #d4b273);
+  background: var(--v2-gold-bright, #dcb877);
   transform: scale(1.1);
 }
 
@@ -113,7 +113,7 @@
   font-family: var(--v2-font-display, "Cairo", sans-serif);
   font-size: 1.35rem;
   letter-spacing: 0.04em;
-  color: var(--v2-cream, #fce1b6);
+  color: var(--v2-cream, #f5f1e8);
 }
 
 .profile-sub {
@@ -148,7 +148,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--v2-gold, #af915f);
+  color: var(--v2-gold, #c9a35b);
 }
 
 .profile-section-title::before,
@@ -160,14 +160,14 @@
   background: linear-gradient(
     90deg,
     transparent,
-    var(--v2-hairline, rgba(175, 145, 95, 0.5))
+    var(--v2-hairline, rgba(201, 163, 91, 0.5))
   );
 }
 
 .profile-section-title::after {
   background: linear-gradient(
     90deg,
-    var(--v2-hairline, rgba(175, 145, 95, 0.5)),
+    var(--v2-hairline, rgba(201, 163, 91, 0.5)),
     transparent
   );
 }
@@ -188,10 +188,10 @@
 }
 
 .form-profile .input-group-text {
-  background: var(--v2-ink-deep, #070d16);
-  border: 1px solid var(--v2-hairline, rgba(175, 145, 95, 0.3));
+  background: var(--v2-ink-deep, #0a1120);
+  border: 1px solid var(--v2-hairline, rgba(201, 163, 91, 0.3));
   border-inline-end: none;
-  color: var(--v2-gold, #af915f);
+  color: var(--v2-gold, #c9a35b);
   font-size: 0.85rem;
 }
 
@@ -218,7 +218,7 @@
   justify-content: center;
   margin-top: 1.75rem;
   padding-top: 1.4rem;
-  border-top: 1px solid var(--v2-hairline, rgba(175, 145, 95, 0.2));
+  border-top: 1px solid var(--v2-hairline, rgba(201, 163, 91, 0.2));
 }
 
 .profile-submit button {

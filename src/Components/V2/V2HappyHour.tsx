@@ -84,14 +84,8 @@ const V2HappyHour = () => {
   const mins = Math.floor((remaining % 3600) / 60);
   const secs = remaining % 60;
 
-  const discountLabel =
-    slot.discount_type === "percent"
-      ? t("v2.hhDiscountPercent", { value: slot.discount })
-      : t("v2.hhDiscountAmount", { value: slot.discount });
-
   const countdown = (
     <div className="v2-hh-meta" dir="ltr">
-      <span className="v2-hh-discount">{discountLabel}</span>
       <div className="v2-hh-timer">
         <span className="v2-hh-cell">
           <b>{pad(hrs)}</b>

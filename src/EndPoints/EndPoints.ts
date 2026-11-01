@@ -44,6 +44,9 @@ export const GetPromoUrl= `${baseUrl}api/v1/coupon/list?amount=`
 export const PlaceOrderUrl=`${baseUrl}api/v1/customer/order/place`
 export const serverCartUrl=`${baseUrl}api/v1/customer/cart`
 export const GeOrderDetailsUrl=`${baseUrl}api/v1/customer/order/list`
+export const OrderAgainUrl=`${baseUrl}api/v1/customer/order-again`
+export const OffersAvailableUrl=`${baseUrl}api/v1/customer/offers/available`
+export const OffersSelectUrl=`${baseUrl}api/v1/customer/offers/select`
 export const TrackordersUrl=`${baseUrl}api/v1/customer/order/`
 export const AddAdressURL=`${baseUrl}api/v1/customer/address/add`
 export const UpdateAdressURL=`${baseUrl}api/v1/customer/address/update/`

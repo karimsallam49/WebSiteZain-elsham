@@ -13,7 +13,7 @@ html[data-theme="v2"] .all-layout {
 
 .v2-shell {
   background: var(--v2-ink);
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--v2-cream);
   min-height: 100vh;
   font-family: var(--v2-font-body);
   padding-bottom: 2rem;
@@ -48,7 +48,7 @@ html[data-theme="v2"] .all-layout {
   gap: 0.75rem;
   height: 72px;
   padding: 0.5rem 1rem;
-  background: rgba(11, 20, 32, 0.95);
+  background: var(--v2-ink);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--v2-hairline);
   direction: ltr;
@@ -67,9 +67,9 @@ html[data-theme="v2"] .all-layout {
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--v2-hairline);
-  background: rgba(22, 38, 56, 0.7);
+  background: var(--v2-navy);
   color: var(--v2-cream);
   cursor: pointer;
   transition: border-color 0.25s ease, background 0.25s ease;
@@ -78,7 +78,7 @@ html[data-theme="v2"] .all-layout {
 .v2-icon-btn:hover {
   border-color: var(--v2-gold);
   color: var(--v2-gold-bright);
-  background: rgba(22, 38, 56, 0.95);
+  background: var(--v2-ink-deep);
 }
 
 .v2-icon-badge {
@@ -130,7 +130,7 @@ html[data-theme="v2"] .all-layout {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(175, 145, 95, 0.15);
+  border-bottom: 1px solid rgba(201, 163, 91, 0.15);
   font-size: 0.78rem;
   color: var(--v2-cream-dim);
   cursor: pointer;
@@ -152,15 +152,16 @@ html[data-theme="v2"] .all-layout {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border: 1px solid rgba(175, 145, 95, 0.25);
-  background: rgba(22, 38, 56, 0.5);
+  border: 1px solid var(--v2-hairline);
+  background: var(--v2-navy);
+  border-radius: 14px;
   padding: 0.85rem 1rem;
   cursor: pointer;
   transition: border-color 0.3s ease;
 }
 .v2-search:hover,
 .v2-search:focus-within {
-  border-color: rgba(175, 145, 95, 0.6);
+  border-color: rgba(201, 163, 91, 0.6);
 }
 .v2-search input {
   flex: 1;
@@ -171,10 +172,99 @@ html[data-theme="v2"] .all-layout {
   color: var(--v2-cream);
   font-size: 0.85rem;
   padding: 0;
+  padding-inline-start: 0.5rem;
   height: auto;
 }
+/* theme-v2.css بتدي كل input[type=text] خلفية + border —
+   الـ search input المفروض يبقى شفاف جوا الصندوق (للثيمين) */
+html[data-theme^="v2"] .v2-search input[type="text"],
+html[data-theme^="v2"] .v2-search input[type="text"]:focus {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
 .v2-search input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--v2-cream-dim);
+}
+
+/* ---------- Search suggestions ---------- */
+
+.v2-search-wrap {
+  position: relative;
+  margin: 1rem;
+}
+.v2-search-wrap .v2-search {
+  margin: 0;
+}
+.v2-suggest {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--v2-navy);
+  border: 1px solid var(--v2-hairline);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+}
+.v2-suggest-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  color: var(--v2-cream);
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(201, 163, 91, 0.08);
+  transition: background 0.15s ease;
+}
+.v2-suggest-item:last-child {
+  border-bottom: none;
+}
+.v2-suggest-item:hover {
+  background: rgba(201, 163, 91, 0.12);
+}
+.v2-suggest-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--v2-hairline);
+}
+.v2-suggest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.v2-suggest-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.v2-suggest-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: var(--v2-gold);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+.v2-suggest-price del {
+  color: var(--v2-cream-dim);
+  font-size: 0.66rem;
+  font-weight: 400;
+}
+.v2-suggest-empty {
+  padding: 0.85rem 1rem;
+  color: var(--v2-cream-dim);
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 /* ---------- Hero slider ---------- */
@@ -182,15 +272,16 @@ html[data-theme="v2"] .all-layout {
 .v2-hero {
   position: relative;
   overflow: hidden;
+  padding: 0 0.75rem;
 }
 .v2-hero .slick-slide img {
   width: 100%;
-  height: 300px;
+  height: 190px;
   object-fit: cover;
 }
 @media (min-width: 992px) {
   .v2-hero .slick-slide img {
-    height: 460px;
+    height: 340px;
   }
 }
 .v2-hero-slide {
@@ -234,37 +325,9 @@ html[data-theme="v2"] .all-layout {
   }
 }
 
-/* corner ornaments على الـ hero */
+/* corner ornaments على الـ hero — مخفية: الديزاين الجديد كارت مدور نضيف */
 .v2-corner {
-  position: absolute;
-  width: 56px;
-  height: 56px;
-  z-index: 2;
-  pointer-events: none;
-}
-.v2-corner.tl {
-  top: 14px;
-  inset-inline-start: 14px;
-  border-top: 1px solid rgba(175, 145, 95, 0.4);
-  border-inline-start: 1px solid rgba(175, 145, 95, 0.4);
-}
-.v2-corner.tr {
-  top: 14px;
-  inset-inline-end: 14px;
-  border-top: 1px solid rgba(175, 145, 95, 0.4);
-  border-inline-end: 1px solid rgba(175, 145, 95, 0.4);
-}
-.v2-corner.bl {
-  bottom: 14px;
-  inset-inline-start: 14px;
-  border-bottom: 1px solid rgba(175, 145, 95, 0.4);
-  border-inline-start: 1px solid rgba(175, 145, 95, 0.4);
-}
-.v2-corner.br {
-  bottom: 14px;
-  inset-inline-end: 14px;
-  border-bottom: 1px solid rgba(175, 145, 95, 0.4);
-  border-inline-end: 1px solid rgba(175, 145, 95, 0.4);
+  display: none;
 }
 
 /* شرائط الـ dots بتاعة السلايدر — تحت الصورة */
@@ -301,18 +364,38 @@ html[data-theme="v2"] .all-layout {
   padding: 1rem 1rem 0.4rem;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
+  cursor: grab;
+}
+.v2-dragging {
+  cursor: grabbing !important;
+  user-select: none;
+  /* الـ snap بيخنق أثناء الـ drag — نقفله ونرجعه بعد ما يخلص */
+  scroll-snap-type: none !important;
+}
+.v2-dragging * {
+  cursor: grabbing !important;
 }
 .v2-cat-rail::-webkit-scrollbar {
   display: none;
 }
 .v2-cat-rail .v2-cat-tile {
   flex-shrink: 0;
-  min-width: 148px;
+  min-width: 128px;
   scroll-snap-align: start;
+}
+/* tile بتاعة "الكل" — أيقونة بس في وضع الـ rail → مربع ذهبي مضغوط زي التطبيق */
+.v2-cat-rail .v2-cat-tile:first-child {
+  min-width: 56px;
+  justify-content: center;
+  background: var(--v2-gold);
+  border-color: var(--v2-gold);
+}
+.v2-cat-rail .v2-cat-tile:first-child .v2-tile-icon {
+  color: var(--v2-on-gold);
 }
 @media (min-width: 992px) {
   .v2-cat-rail .v2-cat-tile {
-    min-width: 200px;
+    min-width: 170px;
   }
 }
 
@@ -337,18 +420,40 @@ html[data-theme="v2"] .all-layout {
 .v2-cat-grid .v2-cat-tile {
   min-width: 0;
 }
-/* على الموبايل الـ tile بيبقى ضيق (~95px) — نخليه رأسي: صورة فوق واسم تحت */
+/* الـ grid المفتوح — tiles أفقية زي التطبيق: صورة مدورة جمب الاسم */
+.v2-cat-grid .v2-cat-tile {
+  min-height: 56px;
+}
+/* tile "All" في الـ grid — ذهبي بالأيقونة الأول زي التطبيق */
+.v2-cat-grid .v2-cat-tile:first-child {
+  flex-direction: row-reverse;
+  background: var(--v2-gold);
+  border-color: var(--v2-gold);
+}
+.v2-cat-grid .v2-cat-tile:first-child .v2-tile-name,
+.v2-cat-grid .v2-cat-tile:first-child .v2-tile-icon {
+  color: var(--v2-on-gold);
+}
+.v2-cat-grid .v2-cat-tile:first-child .v2-tile-icon {
+  margin-inline-start: 8px;
+}
+.v2-cat-grid .v2-cat-tile img {
+  width: 40px;
+  height: 40px;
+  align-self: center;
+  margin-inline-start: 5px;
+}
+.v2-cat-grid .v2-tile-name {
+  padding: 0.35rem 0.45rem;
+  font-size: 0.74rem;
+}
 @media (max-width: 767px) {
-  .v2-cat-grid .v2-cat-tile {
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.4rem;
-    padding: 0.6rem 0.4rem;
-    text-align: center;
+  .v2-cat-grid .v2-cat-tile img {
+    width: 34px;
+    height: 34px;
   }
   .v2-cat-grid .v2-tile-name {
-    width: 100%;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
   }
 }
 
@@ -357,12 +462,13 @@ html[data-theme="v2"] .all-layout {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.6rem;
-  min-height: 68px;
-  padding: 0.55rem 0.7rem;
+  gap: 0.5rem;
+  min-height: 58px;
+  padding: 0;
+  overflow: hidden;
   background: var(--v2-navy);
-  border: 1px solid rgba(175, 145, 95, 0.2);
-  border-radius: 6px;
+  border: 1px solid var(--v2-hairline);
+  border-radius: 12px;
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease;
   /* انيميشن دخول متتابع — كل كارت بعد اللي قبله */
@@ -400,7 +506,7 @@ html[data-theme="v2"] .all-layout {
   }
   4% {
     border-color: rgba(252, 225, 182, 0.75);
-    box-shadow: 0 0 14px rgba(175, 145, 95, 0.3);
+    box-shadow: 0 0 14px rgba(201, 163, 91, 0.3);
   }
   12% {
     border-color: transparent;
@@ -420,15 +526,17 @@ html[data-theme="v2"] .all-layout {
 }
 .v2-cat-tile.active .v2-tile-name,
 .v2-cat-tile.active .v2-tile-icon {
-  color: var(--v2-ink);
+  color: var(--v2-on-gold);
 }
 .v2-cat-tile.active img {
   filter: none;
 }
 
 .v2-tile-name {
+  flex: 1;
   min-width: 0;
-  font-size: 0.85rem;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--v2-cream);
   overflow: hidden;
@@ -439,17 +547,19 @@ html[data-theme="v2"] .all-layout {
   line-height: 1.3;
 }
 .v2-cat-tile img {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 40px;
+  align-self: center;
+  margin-inline-start: 5px;
+  border-radius: 8px;
   object-fit: cover;
-  border-radius: 6px;
   flex-shrink: 0;
 }
 .v2-tile-icon {
   color: var(--v2-gold);
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 /* ---------- Section titles ---------- */
@@ -461,10 +571,16 @@ html[data-theme="v2"] .all-layout {
   padding: 1.8rem 1rem 0.4rem;
 }
 .v2-section-title .dash {
-  width: 40px;
+  flex: 1;
   height: 1px;
-  background: rgba(175, 145, 95, 0.5);
-  flex-shrink: 0;
+  background: rgba(201, 163, 91, 0.5);
+}
+/* خط تاني ناحية التانية → — OFFERS — متوسّط */
+.v2-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(201, 163, 91, 0.5);
 }
 .v2-section-title .txt {
   font-family: var(--v2-font-display);
@@ -487,16 +603,18 @@ html[data-theme="v2"] .all-layout {
   align-items: center;
   gap: 0.9rem;
   width: 100%;
-  padding: 0.9rem 0;
-  border: none;
-  border-bottom: 1px solid rgba(175, 145, 95, 0.1);
-  background: transparent;
+  padding: 0.75rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--v2-hairline);
+  border-radius: 14px;
+  background: var(--v2-navy);
   text-align: start;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 .v2-product-row:hover {
-  background: rgba(175, 145, 95, 0.05);
+  background: var(--v2-ink-deep);
+  border-color: var(--v2-gold);
 }
 .v2-product-thumb {
   position: relative;
@@ -504,7 +622,8 @@ html[data-theme="v2"] .all-layout {
   height: 64px;
   flex-shrink: 0;
   overflow: hidden;
-  border: 1px solid rgba(175, 145, 95, 0.25);
+  border-radius: 12px;
+  border: 1px solid var(--v2-hairline);
 }
 .v2-product-thumb img {
   width: 100%;
@@ -525,7 +644,7 @@ html[data-theme="v2"] .all-layout {
 }
 .v2-product-badge {
   flex-shrink: 0;
-  border: 1px solid rgba(175, 145, 95, 0.4);
+  border: 1px solid rgba(201, 163, 91, 0.4);
   padding: 0.1rem 0.4rem;
   font-size: 8px;
   letter-spacing: 0.18em;
@@ -535,7 +654,7 @@ html[data-theme="v2"] .all-layout {
 .v2-product-desc {
   margin: 0.25rem 0 0;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--v2-cream-dim);
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -550,7 +669,7 @@ html[data-theme="v2"] .all-layout {
   color: var(--v2-gold);
 }
 .v2-product-price del {
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--v2-cream-dim);
   font-size: 0.72rem;
   margin-inline-end: 0.5rem;
 }
@@ -562,24 +681,63 @@ html[data-theme="v2"] .all-layout {
   flex-shrink: 0;
 }
 
-/* زرار الإضافة + */
+/* زرار View all في آخر سكشن Recommended — outline ذهبي متوسّط */
+.v2-view-all {
+  display: block;
+  margin: 0.4rem 1rem 1rem;
+  width: calc(100% - 2rem);
+  padding: 0.75rem;
+  border: 1px solid var(--v2-gold);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--v2-gold);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.v2-view-all:hover {
+  background: var(--v2-gold);
+  color: var(--v2-on-gold);
+}
+.v2-view-all:disabled {
+  opacity: 0.5;
+}
+
+/* زرار الإضافة + — دايرة ذهبية زي التطبيق */
 .v2-add-btn {
   width: 30px;
   height: 30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(175, 145, 95, 0.5);
-  background: transparent;
-  color: var(--v2-gold);
+  border: none;
+  border-radius: 50%;
+  background: var(--v2-gold);
+  color: var(--v2-on-gold);
   font-size: 1rem;
+  font-weight: 700;
   line-height: 1;
+  padding: 0 0 2px;
   cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
 .v2-add-btn:hover {
+  background: var(--v2-gold-bright);
+}
+
+/* الـ + جوه صفوف المنتجات — مربع outline ذهبي زي التطبيق */
+.v2-product-row .v2-add-btn {
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid var(--v2-gold);
+  color: var(--v2-gold);
+  box-shadow: none;
+}
+.v2-product-row .v2-add-btn:hover {
   background: var(--v2-gold);
-  color: var(--v2-ink);
+  color: var(--v2-on-gold);
 }
 
 /* stepper الكمية */
@@ -587,7 +745,7 @@ html[data-theme="v2"] .all-layout {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  border: 1px solid rgba(175, 145, 95, 0.25);
+  border: 1px solid rgba(201, 163, 91, 0.25);
   padding: 0.2rem 0.5rem;
 }
 .v2-qty button {
@@ -626,7 +784,7 @@ html[data-theme="v2"] .all-layout {
 }
 .v2-loadmore:hover:not(:disabled) {
   background: var(--v2-gold);
-  color: var(--v2-ink);
+  color: var(--v2-on-gold);
 }
 .v2-loadmore:disabled {
   opacity: 0.5;
@@ -645,7 +803,7 @@ html[data-theme="v2"] .all-layout {
   font-size: 0.75rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(175, 145, 95, 0.6);
+  color: rgba(201, 163, 91, 0.6);
 }
 
 /* ---------- Product rail (أطلب تاني / ساعة السعادة / العروض) ---------- */
@@ -661,6 +819,27 @@ html[data-theme="v2"] .all-layout {
   padding: 0 1rem;
   margin-bottom: 0.7rem;
 }
+.v2-rail-arrows {
+  display: flex;
+  gap: 0.4rem;
+  margin-inline-start: auto;
+}
+.v2-rail-arrow {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--v2-gold);
+  background: rgba(201, 163, 91, 0.12);
+  color: var(--v2-gold);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.v2-rail-arrow:hover {
+  background: var(--v2-gold);
+  color: var(--v2-on-gold);
+}
 .v2-rail-title {
   font-family: var(--v2-font-display);
   font-size: 1.05rem;
@@ -675,6 +854,7 @@ html[data-theme="v2"] .all-layout {
   padding: 0.15rem 1rem 0.5rem;
   scrollbar-width: none;
   scroll-snap-type: x proximity;
+  cursor: grab;
 }
 .v2-rail::-webkit-scrollbar {
   display: none;
@@ -685,9 +865,9 @@ html[data-theme="v2"] .all-layout {
   flex-shrink: 0;
   width: 148px;
   scroll-snap-align: start;
-  background: rgba(22, 38, 56, 0.55);
+  background: var(--v2-navy);
   border: 1px solid var(--v2-hairline);
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   transition: border-color 0.25s ease, transform 0.25s ease;
@@ -698,7 +878,7 @@ html[data-theme="v2"] .all-layout {
   }
 }
 .v2-pcard:hover {
-  border-color: rgba(175, 145, 95, 0.55);
+  border-color: rgba(201, 163, 91, 0.55);
   transform: translateY(-2px);
 }
 
@@ -726,7 +906,7 @@ html[data-theme="v2"] .all-layout {
   padding: 3px 0;
   transform: rotate(-45deg);
   background: var(--v2-gold);
-  color: var(--v2-ink);
+  color: var(--v2-on-gold);
   font-size: 0.58rem;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -736,6 +916,15 @@ html[data-theme="v2"] .all-layout {
 }
 .v2-ribbon.hh {
   background: linear-gradient(135deg, var(--v2-gold-bright), var(--v2-gold));
+}
+
+/* نسخة أصغر للـ thumb بتاعة صف المنتج (64px) */
+.v2-product-thumb .v2-ribbon {
+  top: 4px;
+  left: -26px;
+  width: 80px;
+  padding: 2px 0;
+  font-size: 0.5rem;
 }
 
 /* زرار الإضافة الذهبي تحت الصورة */
@@ -750,7 +939,7 @@ html[data-theme="v2"] .all-layout {
   border-radius: 50%;
   border: none;
   background: var(--v2-gold);
-  color: var(--v2-ink);
+  color: var(--v2-on-gold);
   font-weight: 700;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
@@ -766,11 +955,11 @@ html[data-theme="v2"] .all-layout {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 .v2-pcard-cart .v2-qty button {
-  color: var(--v2-ink);
+  color: var(--v2-on-gold);
   font-weight: 700;
 }
 .v2-pcard-cart .v2-qty .qty-num {
-  color: var(--v2-ink);
+  color: var(--v2-on-gold);
   font-size: 0.78rem;
 }
 
@@ -809,15 +998,6 @@ html[data-theme="v2"] .all-layout {
   align-items: center;
   gap: 0.6rem;
 }
-.v2-hh-discount {
-  border: 1px solid var(--v2-gold);
-  color: var(--v2-gold);
-  font-size: 0.66rem;
-  font-weight: 700;
-  padding: 0.25rem 0.55rem;
-  border-radius: 8px;
-  white-space: nowrap;
-}
 .v2-hh-timer {
   display: flex;
   align-items: flex-start;
@@ -834,14 +1014,14 @@ html[data-theme="v2"] .all-layout {
   align-items: center;
   justify-content: center;
   min-width: 34px;
-  height: 30px;
+  height: 32px;
   padding: 0 4px;
   border: 1px solid var(--v2-gold);
   border-radius: 8px;
-  background: rgba(22, 38, 56, 0.7);
-  color: var(--v2-gold-bright);
+  background: var(--v2-gold);
+  color: var(--v2-on-gold);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 .v2-hh-cell i {
@@ -849,6 +1029,8 @@ html[data-theme="v2"] .all-layout {
   font-size: 0.55rem;
   color: var(--v2-cream-dim);
   margin-top: 2px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .v2-hh-sep {
   color: var(--v2-gold);
@@ -888,7 +1070,7 @@ html[data-theme="v2"] .all-layout {
   height: 100%;
   border-radius: 50%;
   border: 3px solid var(--v2-gold);
-  background: #0b1420;
+  background: #0e1526;
   animation: v2-spin-wheel 9s linear infinite;
 }
 .v2-spin-fab-needle {
@@ -956,7 +1138,7 @@ html[data-theme="v2"] .all-layout {
   background: linear-gradient(
     90deg,
     var(--v2-navy) 25%,
-    rgba(175, 145, 95, 0.12) 50%,
+    rgba(201, 163, 91, 0.12) 50%,
     var(--v2-navy) 75%
   );
   background-size: 200% 100%;

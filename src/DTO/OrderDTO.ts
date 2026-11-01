@@ -66,7 +66,69 @@ export interface Order {
   is_product_available: number;
   product_images: string[];
   customer: UserDTO;
-  delivery_man: any | null; 
+  delivery_man: any | null;
+
+  /* ----- حقول الـ API الجديدة ----- */
+  is_partial?: number;
+  payable_total?: number;
+  spin_prize_discount?: number | string;
+  spin_free_delivery?: number;
+  wallet_refunded?: number;
+  first_order_discount_amount?: number | string;
+  loyalty_discount_amount?: number | string;
+  loyalty_points_earned?: number;
+  loyalty_points_redeemed?: number;
+  applied_offer?: {
+    type: "spin_win" | "coupon" | "referral" | "first_order" | null;
+    prize_type?: "free_product" | "discount_percent" | "discount_fixed" | "free_delivery" | null;
+    label?: string;
+    product_id?: number;
+    product_name?: string;
+    discount?: number;
+    free_delivery?: boolean;
+  } | null;
+  discounts?: {
+    coupon: number;
+    coupon_type: string | null;
+    extra: number;
+    referral: number;
+    loyalty: number;
+    first_order: number;
+    spin_prize: number;
+    product_level: {
+      happy_hour: number;
+      product: number;
+      global_offer: number;
+    };
+    total: number;
+  };
+  totals?: {
+    items_subtotal: number;
+    line_discounts: number;
+    order_discounts: number;
+    tax: number;
+    delivery_charge: number;
+    grand_total: number;
+  };
+  loyalty?: {
+    earned: number;
+    redeemed: number;
+    discount_amount: number;
+  };
+  spin_prizes?: {
+    id: number;
+    type: string;
+    label: string;
+    value: number;
+    product_id?: number;
+    product_name?: string;
+    source?: string;
+  }[];
+  order_partial_payments?: {
+    paid_with: string;
+    paid_amount: number;
+    due_amount: number;
+  }[];
 }
 
 export interface OrderDetailsDTO extends Order {
@@ -95,6 +157,7 @@ export interface OrderedProductDTO {
   product_details: ProductDTO;
   variation: any[];
   discount_on_product: number;
+  discount_source?: "product" | "happy_hour" | "global_offer" | null;
   discount_type: string;
   quantity: number;
   tax_amount: number;

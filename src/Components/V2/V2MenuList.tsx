@@ -6,6 +6,7 @@ import {
   GetCategoriesProductUrl,
   latestProductUrl,
 } from "../../EndPoints/EndPoints";
+import { toProductArray } from "../../utils/productList";
 import type { ProductDTO, ProductListResponse } from "../../DTO/ProductsDTO";
 import type { Category } from "../../DTO/CategoriesDTO";
 import V2ProductRow from "./V2ProductRow";
@@ -48,11 +49,12 @@ const V2MenuList = ({ category }: Props) => {
   }, [category, currentLanguage]);
 
   useEffect(() => {
-    if (!data?.products?.length) return;
+    const list = toProductArray(data?.products);
+    if (!list.length) return;
     setItems((prev) => {
       const existingIds = new Set(prev.map((p) => p.id));
-      const fresh = data.products.filter((p) => !existingIds.has(p.id));
-      return offset === 1 ? data.products : [...prev, ...fresh];
+      const fresh = list.filter((p) => !existingIds.has(p.id));
+      return offset === 1 ? list : [...prev, ...fresh];
     });
   }, [data, offset]);
 

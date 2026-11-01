@@ -83,12 +83,12 @@ const V2SpinFab = () => {
                 key={i}
                 d={`M ${CX} ${CY} L ${p1.x} ${p1.y} A ${R} ${R} 0 0 1 ${p2.x} ${p2.y} Z`}
                 fill={WHEEL_COLORS[i % WHEEL_COLORS.length]}
-                stroke="#0b1420"
+                stroke="#0e1526"
                 strokeWidth="1"
               />
             );
           })}
-          <circle cx={CX} cy={CY} r="7" fill="#0b1420" />
+          <circle cx={CX} cy={CY} r="7" fill="#0e1526" />
           <circle cx={CX} cy={CY} r="3.5" fill="#e8c876" />
         </svg>
         <span className="v2-spin-fab-needle" />

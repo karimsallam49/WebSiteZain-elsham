@@ -28,9 +28,13 @@ const [toast, setToast] = useState<{
   type?: "success" | "error";
 }>({ show: false, message: "", type: "error" });
 
-  const IsProductinWishList = wishlistData?.products.some(
-    (el) => el.id === product.id
-  );
+  const IsProductinWishList = (
+    Array.isArray(wishlistData?.products)
+      ? wishlistData.products
+      : Object.values(wishlistData?.products ?? {}).filter(
+          (v: any) => v && typeof v === "object" && v.id
+        )
+  ).some((el: any) => el.id === product.id);
 
   const existingProduct = findItem(product.id);
   const [quantity, setQuantity] = useState(existingProduct?.quantity || 1);
@@ -146,9 +150,13 @@ const discountAmount =
   product.discount_type === "percent"
     ? (originalPrice * (Number(product.discount) || 0)) / 100
     : Number(product.discount) || 0;
-const discountedPrice = Math.max(originalPrice - discountAmount, 0);
+const discountedPrice =
+  product.final_price != null
+    ? Number(product.final_price)
+    : Math.max(originalPrice - discountAmount, 0);
 
-const totalPrice = (discountedPrice + variationsTotal + addonsTotal) * (Number(quantity) || 1);
+const totalPrice =
+  (discountedPrice + variationsTotal) * (Number(quantity) || 1) + addonsTotal;
   return (
     <Modal
       show={show}
@@ -190,8 +198,8 @@ const totalPrice = (discountedPrice + variationsTotal + addonsTotal) * (Number(q
           >
             <Heart
               size={24}
-              fill={isFav ? "red" : "none"}
-              color={isFav ? "red" : "gray"}
+              fill={isFav ? "var(--v2-gold, #c9a35b)" : "none"}
+              color={isFav ? "var(--v2-gold, #c9a35b)" : "gray"}
               strokeWidth={1.6}
             />
           </div>
@@ -346,7 +354,7 @@ const totalPrice = (discountedPrice + variationsTotal + addonsTotal) * (Number(q
                 className={`fw-semibod ${isSelected ? "text-light" : "text-muted"}`}
                 style={{margin:"0 .3rem"}}
               >
-                {value.optionPrice} {t("currency")}
+                {Number(value.optionPrice).toFixed(2)} {t("currency")}
               </div>
             )}
             </div>
@@ -380,7 +388,7 @@ const totalPrice = (discountedPrice + variationsTotal + addonsTotal) * (Number(q
               </span> 
               <span className="TextMainColor">
 
-                {totalPrice} {t("currency")}
+                {totalPrice.toFixed(2)} {t("currency")}
                 </span>  
           </div>
         <div className="d-flex w-100 ">
