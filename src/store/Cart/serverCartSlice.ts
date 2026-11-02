@@ -163,6 +163,10 @@ export const loadServerCart = createAsyncThunk<
   } catch {
     return null;
   }
+}, {
+  // مفيش load تاني لو فيه واحد شغال — بيمنع تكدس الـ calls لما
+  // كذا كومبوننت بينادوا في نفس الوقت (layout + cart + checkout)
+  condition: (_args, { getState }) => !getState().serverCartSlice.syncing,
 });
 
 export const serverCartAdd = createAsyncThunk<

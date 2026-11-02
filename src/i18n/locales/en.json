@@ -78,7 +78,9 @@
     "street_name": "Street / Road",
     "enter_street_name": "Enter street name",
     "save_button": "Save",
-    "save_error": "Failed to save address"
+    "save_error": "Failed to save address",
+    "delivery_area": "Delivery Area",
+    "select_area": "Select delivery area"
   },
   "payment": {
     "choose_method": "Choose Payment Method",
@@ -97,6 +99,9 @@
     "referral": "Referral discount",
     "first_order": "First order discount",
     "loyalty": "Loyalty points",
+    "available_offers": "Available offers",
+    "prize_almost": "Almost there, your prize is close!",
+    "display_only": "Display only",
     "spin_prizes": "Spin & Win prizes",
     "free_delivery_spin": "🚚 Free delivery from Spin & Win",
     "pending_prizes": "Pending prizes 🎁",
@@ -148,7 +153,9 @@
   "phone": "Phone",
   "address": "Address",
   "confirm_delete": "Are you sure you want to delete this address?",
-  "delete_failed": "Failed to delete"
+  "delete_failed": "Failed to delete",
+  "delivery_area": "Delivery area",
+  "area_missing": "Please select a delivery area for this address"
 },
 "coupon": {
   "list_title": "Coupons List",
@@ -247,7 +254,15 @@
     "select_area_first": "Please select your delivery area",
     "select_pickup_branch": "Select pickup branch",
     "select_branch_first": "Please select the pickup branch",
-    "pickup_branch": "Pickup branch"
+    "pickup_branch": "Pickup branch",
+    "redeem_points": "Use loyalty points",
+    "you_have": "You have",
+    "use_all": "Use all",
+    "points_left": "Points left",
+    "remaining_to_pay": "Remaining to pay",
+    "min_points": "Minimum {{min}} points",
+    "points_value": "Discount value",
+    "enter_points": "Points to redeem"
   },
     "deliveryInformation": "Delivery information",
   "updateInfo": "Update info"
@@ -269,6 +284,7 @@
   "Notification": "Notifications",
   "Coupon": "Coupons",
   "Address": "Address",
+  "Branchs": "Branches",
   "Help & Support": "Help & Support",
   "About Us": "About Us",
   "Privacy Policy": "Privacy Policy",
@@ -318,6 +334,36 @@
   "otp_verify_error": "An error occurred while verifying the code",
     "guest": "Guest",
     "login":"Login",
+    "Logout": "Logout",
+    "hotline": "Hotline",
+    "points": "points",
+    "walletPage": {
+      "title": "My Wallet",
+      "balance": "Wallet balance",
+      "your_points": "points",
+      "transfer_title": "Convert points to balance",
+      "rate_hint": "Every {{rate}} points = 1 EGP",
+      "min_hint": "Minimum transfer {{min}} points",
+      "enter_points": "Enter points amount",
+      "transfer_btn": "Transfer",
+      "transfer_success": "Points transferred to wallet successfully",
+      "transfer_error": "Transfer failed",
+      "transactions": "Recent transactions",
+      "empty": "No transactions yet",
+      "after": "After:",
+      "bonuses": "Top-up bonuses",
+      "bonus_hint": "Top up {{amount}} EGP and get {{bonus}} bonus",
+      "not_available": "Wallet is not enabled right now",
+      "type": {
+        "add_fund": "Wallet top-up",
+        "add_fund_by_admin": "Admin credit",
+        "add_fund_bonus": "Top-up bonus",
+        "loyalty_point_to_wallet": "Loyalty points conversion",
+        "referral_order_place": "Referral reward",
+        "order_place": "Order payment",
+        "order_refund": "Order refund"
+      }
+    },
     "total":"Total",
   "updateCart": "Update cart",
   "support": {
@@ -383,8 +429,8 @@
     "viewCart": "View cart",
     "viewAll": "View all",
     "loadMore": "Load more",
-    "lightMode": "Light theme",
-    "darkMode": "Dark theme",
+    "lightMode": "Light",
+    "darkMode": "Dark",
     "offer": "Offer",
     "loadingDishes": "Loading…",
     "marquee": "Zain El Sham • Authentic Levantine Kitchen • Cairo",

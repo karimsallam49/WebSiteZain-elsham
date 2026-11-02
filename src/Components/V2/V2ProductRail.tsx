@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ProductDTO } from "../../DTO/ProductsDTO";
@@ -21,10 +21,11 @@ const V2ProductRail = ({ title, products, extra }: Props) => {
   );
 
   const railRef = useDragScroll<HTMLDivElement>();
+  const railEl = useRef<HTMLDivElement | null>(null);
 
   const isRtl = i18n.language === "ar";
   const scrollRail = (dir: 1 | -1) => {
-    const el = railRef.current;
+    const el = railEl.current;
     if (!el) return;
     const amt = el.clientWidth * 0.7;
     el.scrollBy({
@@ -43,29 +44,38 @@ const V2ProductRail = ({ title, products, extra }: Props) => {
   return (
     <section className="v2-rail-section">
       <div className="v2-rail-head">
-        <h2 className="v2-rail-title">{title}</h2>
-        {extra}
+        <div className="v2-rail-head-start">
+          <h2 className="v2-rail-title">{title}</h2>
+          {extra}
+        </div>
         <div className="v2-rail-arrows" dir="ltr">
+          {/* في الـ RTL اتجاه "القدّام" شمال — فالسهم الشمال بيبقى next */}
           <button
             type="button"
             className="v2-rail-arrow"
-            aria-label="previous"
-            onClick={() => scrollRail(-1)}
+            aria-label={isRtl ? "next" : "previous"}
+            onClick={() => scrollRail(isRtl ? 1 : -1)}
           >
             <ChevronLeft size={15} strokeWidth={2.4} />
           </button>
           <button
             type="button"
             className="v2-rail-arrow"
-            aria-label="next"
-            onClick={() => scrollRail(1)}
+            aria-label={isRtl ? "previous" : "next"}
+            onClick={() => scrollRail(isRtl ? -1 : 1)}
           >
             <ChevronRight size={15} strokeWidth={2.4} />
           </button>
         </div>
       </div>
 
-      <div className="v2-rail" ref={railRef}>
+      <div
+        className="v2-rail"
+        ref={(node) => {
+          railEl.current = node;
+          railRef(node);
+        }}
+      >
         {products.map((product) => (
           <V2ProductCard
             key={product.id}

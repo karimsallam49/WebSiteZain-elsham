@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Bell, Moon, ShoppingBag, Sun, User } from "lucide-react";
+import { Bell, Moon, Sun } from "lucide-react";
 import { setLanguage } from "../../store/Language/LanguageSlice";
 import { useAppSelector } from "../../Hooks/hooks";
-import { useCart } from "../../Hooks/useCart";
 import { useV2Theme } from "../../Hooks/useV2Theme";
 import { LogoBaseUrl } from "../../EndPoints/EndPoints";
 
@@ -15,7 +14,6 @@ const V2TopBar = () => {
   const { resturantdata } = useAppSelector(
     (state) => state.restaurantSettingsSlice
   );
-  const { count: cartCount } = useCart();
   const { notificationsData } = useAppSelector(
     (state) => state.notificationsSlice
   );
@@ -54,41 +52,30 @@ const V2TopBar = () => {
       <div className="v2-topbar-actions">
         <button
           type="button"
-          className="v2-icon-btn"
-          onClick={toggle}
-          aria-label="toggle theme"
+          className="v2-icon-btn v2-lang-btn"
+          onClick={() => switchTo(isAr ? "en" : "ar")}
         >
-          {mode === "v2" ? (
-            <Sun size={19} strokeWidth={1.8} />
-          ) : (
-            <Moon size={19} strokeWidth={1.8} />
-          )}
+          {isAr ? "EN" : "ع"}
         </button>
 
         <Link to="/notifications" className="v2-icon-btn" aria-label="notifications">
-          <Bell size={19} strokeWidth={1.8} />
+          <Bell size={22} strokeWidth={1.8} />
           {!!unreadCount && unreadCount > 0 && (
             <span className="v2-icon-badge">{unreadCount}</span>
           )}
         </Link>
 
-        <Link to="/profile" className="v2-icon-btn" aria-label="profile">
-          <User size={19} strokeWidth={1.8} />
-        </Link>
-
-        <Link to="/cart" className="v2-icon-btn" aria-label="cart">
-          <ShoppingBag size={19} strokeWidth={1.8} />
-          {cartCount > 0 && (
-            <span className="v2-icon-badge">{cartCount}</span>
-          )}
-        </Link>
-
         <button
           type="button"
-          className="v2-icon-btn v2-lang-btn"
-          onClick={() => switchTo(isAr ? "en" : "ar")}
+          className="v2-icon-btn"
+          onClick={toggle}
+          aria-label="toggle theme"
         >
-          {isAr ? "EN" : "ع"}
+          {mode === "v2" ? (
+            <Sun size={22} strokeWidth={1.8} />
+          ) : (
+            <Moon size={22} strokeWidth={1.8} />
+          )}
         </button>
       </div>
     </div>

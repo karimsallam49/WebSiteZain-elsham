@@ -6,9 +6,16 @@ export interface ServerCartAddonDTO {
 }
 
 export interface ServerCartPrizeDTO {
+  id?: number;
+  prize_type?: string;
+  label?: string;
+  status?: string;
+  expires_at?: string | null;
+  eligible?: boolean;
+  /** ليه الجايزة مش مستحقة لسه — يتعرض للعميل */
+  reason?: string | null;
   hint?: string;
   remaining_to_unlock?: number;
-  eligible?: boolean;
 }
 
 export interface ServerCartItemDTO {
@@ -33,6 +40,10 @@ export interface ServerCartItemDTO {
   reason: string | null;
   available_stock: number | null;
   is_prize_item: boolean;
+  /** الصف ميتصرفش — ممنوع update/remove من الباك إند */
+  locked?: boolean;
+  /** صف عرضي فقط — مش بيتشحن وميتحسبش في التوتال */
+  display_only?: boolean;
   free: boolean;
   original_line_total?: number;
   original_final_unit_price?: number;
@@ -67,6 +78,25 @@ export interface PendingPrizeDTO {
   expires_at: string | null;
 }
 
+export interface OfferPickDTO {
+  type: string;
+  prize_id?: number;
+  coupon_id?: number;
+}
+
+export interface OfferChoiceDTO {
+  required: boolean;
+  options: OfferPickDTO[][];
+}
+
+export interface OfferConflictDTO {
+  offer: string;
+  blocked_by?: string[];
+  choice_required?: boolean;
+  pick?: OfferPickDTO;
+  message?: string;
+}
+
 export interface ServerCartResponse {
   items: ServerCartItemDTO[];
   item_count: number;
@@ -77,4 +107,12 @@ export interface ServerCartResponse {
   order_type: string;
   branch_id: number;
   pending_prizes: PendingPrizeDTO[];
+  /** العروض المطبّقة فعلًا — `auto` بتفرّق اللي اتطبّق لوحده عن اللي العميل اختاره */
+  applied_offers?: Array<{ label?: string; name?: string; auto?: boolean; type?: string } & Record<string, unknown>>;
+  /** عروض كانت مطبّقة واتشالت — بتشرح للعميل إيه اللي اتلغى وليه */
+  dropped_offers?: Array<{ label?: string; name?: string; reason?: string; message?: string } & Record<string, unknown>>;
+  applied_offer?: any;
+  spin_prizes?: any[];
+  offer_choice?: OfferChoiceDTO | null;
+  offer_conflicts?: OfferConflictDTO[] | null;
 }

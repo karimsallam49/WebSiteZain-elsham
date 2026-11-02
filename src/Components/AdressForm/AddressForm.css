@@ -1,7 +1,6 @@
 .address-page {
   max-width: 1200px;
   margin: 2rem auto;
-  direction: rtl;
   font-family: "Cairo", sans-serif;
 }
 
@@ -150,3 +149,47 @@
   }
 }
 
+
+/* ---------- جوّه المودال — شيل قواعد الصفحة الكاملة ---------- */
+.modal .address-page {
+  margin: 0;
+  max-width: none;
+}
+
+@media (max-width: 992px) {
+  .modal .address-page {
+    height: auto;
+    overflow-y: visible;
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .modal .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .modal .card-form,
+  .modal .section.card {
+    padding: 0.9rem !important;
+    margin-bottom: 0.8rem;
+  }
+  .modal .section-title {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+  .modal .leaflet-container {
+    height: 220px !important;
+  }
+  .modal .tabs-container {
+    max-width: 100%;
+  }
+  .modal .tab-btn {
+    padding: 0.55rem;
+    font-size: 0.85rem;
+  }
+  .modal .address-page .save-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}

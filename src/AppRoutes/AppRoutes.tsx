@@ -25,6 +25,7 @@ const PaymentFail = lazy(() => import("../Pages/PaymentFail/PaymentFail"));
 const OrderDetailsPage = lazy(() => import("../Pages/OrderDerails/OrderDerails"));
 const OrderTrackingPage = lazy(() => import("../Pages/OrderTrackingPage/OrderrackingPage"));
 const MyOrdersPage = lazy(() => import("../Pages/MyOrders/MyOrders"));
+const WalletPage = lazy(() => import("../Pages/WalletPage/WalletPage"));
 const SelectBranch = lazy(() => import("../Pages/SelectBranchPage/SelectBranch"));
 const AboutUs = lazy(() => import("../Pages/AboutUs/AboutUs"));
 const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy/PrivacyPolicy"));
@@ -267,6 +268,16 @@ const router = createBrowserRouter([
           <Suspense fallback={<Loader />}>
             <ProtectedRoutes>
               <MyOrdersPage />
+            </ProtectedRoutes>
+          </Suspense>
+        ),
+      },
+      {
+        path: "wallet",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <ProtectedRoutes>
+              <WalletPage />
             </ProtectedRoutes>
           </Suspense>
         ),

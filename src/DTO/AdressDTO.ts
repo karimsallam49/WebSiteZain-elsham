@@ -15,4 +15,11 @@ export interface AddressDTO {
   floor?: string | null; 
   house?: string | null;
   is_default:any
+  delivery_area_id?: number | null;
+  delivery_area?: {
+    id: number;
+    branch_id: number;
+    area_name: string;
+    delivery_charge: number;
+  } | null;
 }

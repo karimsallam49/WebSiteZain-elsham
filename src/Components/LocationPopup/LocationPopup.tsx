@@ -79,6 +79,12 @@ const LocationPopup: React.FC<LocationPopupProps> = ({
                   
                   <span className="fw-semibold">{el.address_type}</span>
                   <span className="text-muted small">{el.address}</span>
+                  {el.delivery_area && (
+                    <span className="text-muted small">
+                      {el.delivery_area.area_name} —{" "}
+                      {el.delivery_area.delivery_charge} EGP
+                    </span>
+                  )}
                 </div>
               </div>
             ))}

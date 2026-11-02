@@ -39,7 +39,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   const { selectedAdress } = useAppSelector((state) => state.adressSlice);
   const { resturantdata } = useAppSelector((state) => state.restaurantSettingsSlice);
 
-  const [CurrentedArea, setCurrentedArea] = useState<number | null>(null);
+  const CurrentedArea: number | null = null; // محفوظ للتوافق — الاختيار اليدوي اتشال
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [selectedType, setSelectedType] = useState<
     "delivery" | "take_away" | "dine_in"
@@ -55,10 +55,25 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   const [showBranchModal, setShowBranchModal] = useState(false);
   const [isPartial, setIsPartial] = useState(false);
   const [redeemPoints, setRedeemPoints] = useState(false);
+  const [redeemPointsInput, setRedeemPointsInput] = useState("");
   const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loyaltyEnabled =
     resturantdata?.loyalty_point_status === 1 && (UserData?.point ?? 0) > 0;
+
+  // حسابات الـ redeem — كل القيم عرضية، الباك إند هو اللي بيحسب نهائيًا
+  const userPoints = UserData?.point ?? 0;
+  const exchangeRate = Number(resturantdata?.loyalty_point_exchange_rate) || 0;
+  const minRedeem = Number(resturantdata?.loyalty_point_minimum_point) || 0;
+  const redeemPts = redeemPoints
+    ? Math.min(Number(redeemPointsInput) || userPoints, userPoints)
+    : 0;
+  const redeemValue = exchangeRate > 0 ? redeemPts / exchangeRate : 0;
+
+  // المنطقة بتيجي من العنوان المخزّن، ولو العميل اختار يدويًا بتاخد الأولوية
+  const addressAreaId =
+    selectedAdress?.delivery_area_id ?? selectedAdress?.delivery_area?.id ?? null;
+  const effectiveAreaId = CurrentedArea ?? addressAreaId;
 
   useEffect(() => {
     if (!OTPToken) return;
@@ -68,15 +83,15 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
         loadServerCart({
           order_type: selectedType,
           coupon_code: CouponVerifyData?.code || undefined,
-          redeem_points: redeemPoints ? UserData?.point : undefined,
+          redeem_points: redeemPts || undefined,
         })
       );
-    }, 300);
+    }, 700);
     return () => {
       if (syncTimer.current) clearTimeout(syncTimer.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [OTPToken, selectedType, redeemPoints, CouponVerifyData?.code]);
+  }, [OTPToken, selectedType, redeemPts, CouponVerifyData?.code]);
 
   const selectedBranch = useMemo(
     () => resturantdata?.branches?.find((b) => b.id === selectedBranchId) ?? null,
@@ -102,7 +117,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
         );
 
     const currentArea = deliverfeeData?.delivery_charge_by_area.find(
-      (el) => el.id === CurrentedArea
+      (el) => el.id === effectiveAreaId
     );
 
     const setup = deliverfeeData?.delivery_charge_setup;
@@ -126,7 +141,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       currentAreaCharge: deliveryCharge,
       isFreeDelivery,
     };
-  }, [CartData, deliverfeeData, CurrentedArea, serverCart, selectedType]);
+  }, [CartData, deliverfeeData, effectiveAreaId, serverCart, selectedType]);
   const areProductsAvailable = useCallback(() => {
     if (!UserSelectedTime) return true; 
 
@@ -214,11 +229,11 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
           : "web",
       order_note: deliveryNotes,
       coupon_code: CouponVerifyData?.code ?? "",
-      redeem_points: redeemPoints ? UserData?.point : undefined,
+      redeem_points: redeemPts || undefined,
       delivery_time: UserSelectedTime,
       delivery_date: UserSelectedDate,
       branch_id: selectedBranchId ?? 1,
-      selected_delivery_area: CurrentedArea ?? 0,
+      selected_delivery_area: effectiveAreaId ?? 0,
       is_partial: isPartial ? "1" : "0",
       is_cutlery_required: "0",
       bring_change_amount: ChangeAmount,
@@ -237,13 +252,12 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     deliveryNotes,
     UserSelectedTime,
     UserSelectedDate,
-    CurrentedArea,
+    effectiveAreaId,
     ChangeAmount,
     selectedAdress,
     selectedBranchId,
     isPartial,
-    redeemPoints,
-    UserData?.point,
+    redeemPts,
   ]);
 
   const handleCheckout = useCallback(async () => {
@@ -255,12 +269,15 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     if (
       selectedType === "delivery" &&
       (deliverfeeData?.delivery_charge_by_area?.length ?? 0) > 0 &&
-      !CurrentedArea
+      !effectiveAreaId
     ) {
+      // العنوان من غير منطقة — افتح مودال التعديل وخليه يضيفها
       setAreaError(true);
+      dispatch(editeAdressAction(selectedAdress ?? null));
       setToastMessage(t("checkout.select_area_first"));
       setToastType("error");
       setToastVisible(true);
+      setShowAddressModal(true);
       return;
     }
 
@@ -322,19 +339,15 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     } finally {
       setLoading(false);
     }
-  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t, selectedType, requiredFields, selectedAdress, deliverfeeData, CurrentedArea, resturantdata, selectedBranchId]);
+  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t, selectedType, requiredFields, selectedAdress, deliverfeeData, effectiveAreaId, resturantdata, selectedBranchId]);
 
   return (
-    <div className="cart-page  overflow-auto container py-4">
+    <div className="cart-page checkout-page overflow-auto container py-4">
       <Row>
         <Col lg={8}>
           <UserInformation />
 
           <PlaceOrderDeliverType
-            setOnselec={(area) => {
-              setCurrentedArea(area);
-              setAreaError(false);
-            }}
             SetOnSelectedType={(type) => {
               setSelectedType(type);
               setAreaError(false);
@@ -342,7 +355,6 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
                 setShowBranchModal(true);
               }
             }}
-            areaInvalid={areaError}
           />
 
           {selectedType === "take_away" && (
@@ -470,13 +482,72 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
               )}
 
               {loyaltyEnabled && (
-                <Form.Check
-                  type="checkbox"
-                  className="mt-2"
-                  checked={redeemPoints}
-                  onChange={(e) => setRedeemPoints(e.target.checked)}
-                  label={`${t("checkout.redeem_points") || "استبدل نقاط الولاء"} (${UserData?.point})`}
-                />
+                <div className="loyalty-redeem-box mt-2 p-3 rounded-3">
+                  <label className="d-flex align-items-center gap-2 loyalty-redeem-head">
+                    <input
+                      type="checkbox"
+                      checked={redeemPoints}
+                      onChange={(e) => setRedeemPoints(e.target.checked)}
+                    />
+                    <span className="fw-semibold">
+                      {t("checkout.redeem_points")}
+                    </span>
+                    <span className="loyalty-points-count">
+                      {t("checkout.you_have")} {userPoints} {t("points")}
+                    </span>
+                  </label>
+
+                  {redeemPoints && (
+                    <div className="mt-3">
+                      <div className="d-flex gap-2">
+                        <Form.Control
+                          type="number"
+                          dir="ltr"
+                          min={minRedeem || 1}
+                          max={userPoints}
+                          value={redeemPointsInput}
+                          placeholder={t("checkout.enter_points")}
+                          onChange={(e) =>
+                            setRedeemPointsInput(e.target.value)
+                          }
+                        />
+                        <button
+                          type="button"
+                          className="loyalty-use-all"
+                          onClick={() =>
+                            setRedeemPointsInput(String(userPoints))
+                          }
+                        >
+                          {t("checkout.use_all")}
+                        </button>
+                      </div>
+
+                      <div className="loyalty-redeem-info mt-2">
+                        {exchangeRate > 0 && (
+                          <span>
+                            {t("checkout.points_value")}:{" "}
+                            <b dir="ltr">{redeemValue.toFixed(2)} EGP</b>
+                          </span>
+                        )}
+                        <span>
+                          {t("checkout.points_left")}:{" "}
+                          <b dir="ltr">{userPoints - redeemPts}</b>
+                        </span>
+                        <span>
+                          {t("checkout.remaining_to_pay")}:{" "}
+                          <b dir="ltr">
+                            {Math.max(totalAmount - redeemValue, 0).toFixed(2)} EGP
+                          </b>
+                        </span>
+                        {minRedeem > 0 && (
+                          <span className="loyalty-redeem-hint">
+                            {t("checkout.min_points", { min: minRedeem })}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
 
               <div className="d-flex justify-content-between mt-2">
@@ -541,8 +612,10 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
           {showAddressModal && (
             <AddressForm
               requiredFields={requiredFields}
+              highlightArea={areaError}
               onSaved={() => {
                 setShowAddressModal(false);
+                setAreaError(false);
                 setToastMessage(t("checkout.address_updated"));
                 setToastType("success");
                 setToastVisible(true);

@@ -36,7 +36,7 @@ export const  addWishListUri = `${baseUrl}api/v1/customer/wish-list/add`;
 export const  removeWishListUri = `${baseUrl}api/v1/customer/wish-list/remove`;
 export const deliveryfeeUrl= `${baseUrl}api/v1/config/delivery-fee?branch_id=1`
 export const frequentlyUrl= `${baseUrl}api/v1/products/frequently-bought?limit=4&&offset=1`
-export const DeliveriinfoUrl= `${baseUrl}api/v1/config/delivery-fee?branch_id=1`
+export const DeliveriinfoUrl= `${baseUrl}api/v1/config/delivery-fee?branch_id=`
 export const UserInfoUrl= `${baseUrl}api/v1/customer/info`
 export const UpdateUserInfoUrl= `${baseUrl}api/v1/customer/update-profile`
 export const PromoUrl= `${baseUrl}api/v1/coupon/apply?`
@@ -62,3 +62,6 @@ export const RegisterByPhoneUrl = `${baseUrl}api/v1/auth/registration-with-otp`
 export const ForgetPassordUrl = `${baseUrl}api/v1/auth/forgot-password`
 export const verifyOTPForgetPasswordUrl = `${baseUrl}api/v1/auth/verify-token`
 export const ResetPasswordUrl = `${baseUrl}api/v1/auth/reset-password`
+export const WalletTransactionsUrl=`${baseUrl}api/v1/customer/wallet-transactions`
+export const TransferPointsUrl=`${baseUrl}api/v1/customer/transfer-point-to-wallet`
+export const WalletBonusUrl=`${baseUrl}api/v1/customer/bonus/list`

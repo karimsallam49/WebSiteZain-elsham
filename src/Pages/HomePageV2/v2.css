@@ -402,8 +402,8 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
 .v2-cat-grid {
   display: grid;
   /* minmax(0, 1fr) — 1fr لوحدها min-content أقل حاجة، والـ tiles فيها صورة
-     52px + اسم فكان بتوسّع الـ grid ويطلع بره الشاشة */
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+     + اسم فكان بتوسّع الـ grid ويطلع بره الشاشة */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.55rem;
   padding: 1rem 1rem 0.4rem;
 }
@@ -414,17 +414,19 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
 }
 @media (min-width: 1200px) {
   .v2-cat-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 .v2-cat-grid .v2-cat-tile {
   min-width: 0;
 }
-/* الـ grid المفتوح — tiles أفقية زي التطبيق: صورة مدورة جمب الاسم */
+/* الـ grid المفتوح — tiles أفقية زي التطبيق: صورة مربعة كبيرة جمب الاسم */
 .v2-cat-grid .v2-cat-tile {
-  min-height: 56px;
+  min-height: 66px;
+  padding: 0.25rem;
+  align-items: center;
 }
-/* tile "All" في الـ grid — ذهبي بالأيقونة الأول زي التطبيق */
+/* tile "الكل" في الـ grid — ذهبي بالأيقونة الأول زي التطبيق */
 .v2-cat-grid .v2-cat-tile:first-child {
   flex-direction: row-reverse;
   background: var(--v2-gold);
@@ -438,22 +440,28 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
   margin-inline-start: 8px;
 }
 .v2-cat-grid .v2-cat-tile img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
   align-self: center;
-  margin-inline-start: 5px;
+  margin-inline-start: 4px;
+  flex-shrink: 0;
 }
 .v2-cat-grid .v2-tile-name {
-  padding: 0.35rem 0.45rem;
-  font-size: 0.74rem;
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
 }
 @media (max-width: 767px) {
   .v2-cat-grid .v2-cat-tile img {
-    width: 34px;
-    height: 34px;
+    width: 42px;
+    height: 42px;
   }
   .v2-cat-grid .v2-tile-name {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
   }
 }
 
@@ -487,16 +495,16 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
   }
 }
 
-/* موجة إضاءة ذهبية بتفضل تعدي على الكروت ورا بعض */
+/* موجة إضاءة ذهبية بتعدي على البوردر من بوكس للتاني */
 .v2-cat-tile::before {
   content: "";
   position: absolute;
   inset: -1px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: inherit;
   pointer-events: none;
   animation: v2-tile-wave 7s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * 0.3s);
+  animation-delay: calc(var(--i, 0) * 0.35s);
 }
 @keyframes v2-tile-wave {
   0%,
@@ -504,9 +512,29 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
     border-color: transparent;
     box-shadow: none;
   }
-  4% {
-    border-color: rgba(252, 225, 182, 0.75);
-    box-shadow: 0 0 14px rgba(201, 163, 91, 0.3);
+  3% {
+    border-color: rgba(255, 230, 190, 1);
+    box-shadow: 0 0 20px rgba(201, 163, 91, 0.55), inset 0 0 12px rgba(201, 163, 91, 0.2);
+  }
+  12% {
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+/* نفس الموجة بس بلون أغمق — الذهبي الفاتح بيختفي على البلاطة البيضا في اللايت مود */
+html[data-theme="v2-light"] .v2-cat-tile::before {
+  animation-name: v2-tile-wave-light;
+}
+@keyframes v2-tile-wave-light {
+  0%,
+  100% {
+    border-color: transparent;
+    box-shadow: none;
+  }
+  3% {
+    border-color: rgba(169, 129, 63, 0.95);
+    box-shadow: 0 0 18px rgba(169, 129, 63, 0.45),
+      inset 0 0 10px rgba(169, 129, 63, 0.18);
   }
   12% {
     border-color: transparent;
@@ -819,10 +847,46 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
   padding: 0 1rem;
   margin-bottom: 0.7rem;
 }
+.v2-sub-pills {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  margin-bottom: 0.9rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.v2-sub-pills::-webkit-scrollbar {
+  display: none;
+}
+.v2-sub-pill {
+  flex-shrink: 0;
+  padding: 0.45rem 1.1rem;
+  border-radius: 24px;
+  border: 1px solid var(--v2-hairline);
+  background: transparent;
+  color: var(--v2-cream);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.v2-sub-pill.active {
+  background: var(--v2-gold);
+  border-color: var(--v2-gold);
+  color: var(--v2-on-gold);
+}
+
+/* العنوان + العناصر الزيادة (التايمر) متجمّعين على ناحية البداية */
+.v2-rail-head-start {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
 .v2-rail-arrows {
   display: flex;
   gap: 0.4rem;
-  margin-inline-start: auto;
 }
 .v2-rail-arrow {
   width: 30px;
@@ -1150,5 +1214,44 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
   }
   to {
     background-position: -200% 0;
+  }
+}
+
+/* أسهم الـ rail على الموبايل/الآيفون — أصغر وثابتة ماتتداسش */
+.v2-rail-arrows {
+  flex-shrink: 0;
+}
+.v2-rail-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .v2-rail-head {
+    gap: 0.5rem;
+    padding: 0 0.75rem;
+  }
+  .v2-rail-arrow {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .v2-rail-arrow svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+@media (max-width: 400px) {
+  .v2-rail-head {
+    flex-wrap: wrap;
+  }
+  .v2-rail-head-start {
+    flex: 1 1 100%;
+  }
+  .v2-rail-arrows {
+    margin-inline-start: auto;
   }
 }

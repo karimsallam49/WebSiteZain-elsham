@@ -27,8 +27,15 @@ const HomePageV2 = () => {
     (state) => state.restaurantSettingsSlice
   );
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
+  const [activeSub, setActiveSub] = useState<Category | null>(null);
   // القايمة مش بتظهر إلا لما اليوزر يختار قسم أو يدوس "الكل"
   const [menuVisible, setMenuVisible] = useState(false);
+
+  const subCats = activeCategory
+    ? categories.filter(
+        (c) => String(c.parent_id) === String(activeCategory.id)
+      )
+    : [];
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const allActive = menuVisible && activeCategory === null;
@@ -44,6 +51,7 @@ const HomePageV2 = () => {
       setMenuVisible(true);
     } else {
       setActiveCategory(cat);
+      setActiveSub(null);
       setMenuVisible(true);
     }
     menuRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -97,13 +105,31 @@ const HomePageV2 = () => {
           </>
         ) : (
           <>
-            <div className="v2-section-title" ref={menuRef}>
-              <span className="dash" />
-              <h2 className="txt">
-                {activeCategory ? activeCategory.name : t("v2.all")}
-              </h2>
-            </div>
-            <V2MenuList category={activeCategory} />
+            <div ref={menuRef} />
+            {subCats.length > 0 && (
+              <div className="v2-sub-pills" dir="ltr">
+                <button
+                  type="button"
+                  className={`v2-sub-pill ${activeSub === null ? "active" : ""}`}
+                  onClick={() => setActiveSub(null)}
+                >
+                  {t("v2.all")}
+                </button>
+                {subCats.map((sub) => (
+                  <button
+                    key={sub.id}
+                    type="button"
+                    className={`v2-sub-pill ${
+                      activeSub?.id === sub.id ? "active" : ""
+                    }`}
+                    onClick={() => setActiveSub(sub)}
+                  >
+                    {sub.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            <V2MenuList category={activeSub ?? activeCategory} />
           </>
         )}
 

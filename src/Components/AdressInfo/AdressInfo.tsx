@@ -60,7 +60,6 @@ const AdressInfo = () => {
           backgroundColor: "white",
           padding: ".5rem",
           borderBottom: "1px solid #ddd",
-          direction: "ltr",
           cursor: "pointer",
         }}
         onClick={handleShowPopup}

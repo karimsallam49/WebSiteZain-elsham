@@ -270,7 +270,8 @@ const totalPrice =
         </div>
 
         <div className="product-info-body" style={{ height:!isAvailable?"21%":"36%" }}>
-          <div className=" rounded-4 p-3 mb-3">
+          {(product.description?.trim() || CurrentPhoto) && (
+          <div className="w-100 rounded-4 p-3 mb-3">
             <div className="d-flex align-items-start justify-content-between w-100">
               <span className="text-dark d-flex justify-content-start mb-2">
                 {t("details")}
@@ -288,7 +289,9 @@ const totalPrice =
                 )}
               </div>
             </div>
-            <p className="mt-2 text-muted">{product.description}</p>
+            {product.description?.trim() && (
+              <p className="mt-2 text-muted">{product.description}</p>
+            )}
             {CurrentPhoto && (
               <>
                 {product.calories}{" "}
@@ -298,6 +301,7 @@ const totalPrice =
               </>
             )}
           </div>
+          )}
 
    
     {Array.isArray(product.variations) && product.variations.length > 0 && (

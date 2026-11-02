@@ -16,28 +16,37 @@ import {
   LogOut,
   Sun,
   Moon,
+  Headphones,
+  Star,
+  Languages,
+  Wallet,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./MobileSideBare.css";
 import { useAppSelector, useAppDispatch } from "../../Hooks/hooks";
-import SideBareLanguageSwithcer from "../SideBareLanguageSwitcher/SideBareLanguageSwithcer";
 import { useTranslation } from "react-i18next";
-import CartImage from "../../assets/icon/shopping-cart.png";
-import ConfirmPopup from "../confirmPopup/ConfirmPopup"; 
+import ConfirmPopup from "../confirmPopup/ConfirmPopup";
 import { logout } from "../../store/Auth/OTP/LoginSlice";
 import { useV2Theme } from "../../Hooks/useV2Theme";
+import { setLanguage } from "../../store/Language/LanguageSlice";
+import i18n from "../../i18n";
 
 const MobileSideBare = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const { UserData } = useAppSelector((state) => state.UserInfoSLice);
-  const {OTPToken}=useAppSelector((state)=>state.OTPauthconfigration)
-  const { i18n, t } = useTranslation();
+  const { OTPToken } = useAppSelector((state) => state.OTPauthconfigration);
+  const { resturantdata } = useAppSelector(
+    (state) => state.restaurantSettingsSlice
+  );
+  const { i18n: i18nInst, t } = useTranslation();
   const dispatch = useAppDispatch();
   const { mode, toggle: toggleTheme } = useV2Theme();
 
-  const dir = i18n.language === "ar" ? "rtl" : "ltr";
+  // i18n.dir() بيرجع دايركشن اللغة الحالية — بيتحدّث فورًا مع تبديل اللغة
+  const dir = i18nInst.dir();
+  const isAr = i18nInst.language === "ar";
 
   // الـ topbar بتاع V2 بيبعت event يفتح الـ drawer
   useEffect(() => {
@@ -46,28 +55,52 @@ const MobileSideBare = () => {
     return () => window.removeEventListener("v2:open-sidebar", open);
   }, []);
 
-  // ✅ تنفيذ تسجيل الخروج
   const handleLogout = () => {
     dispatch(logout());
     setIsOpen(false);
   };
 
-  const menuItems = [
+  const toggleLanguage = () => {
+    const newLang = isAr ? "en" : "ar";
+    i18n.changeLanguage(newLang);
+    document.dir = newLang === "ar" ? "rtl" : "ltr";
+    dispatch(setLanguage(newLang));
+  };
+
+  const gridItems = [
     { label: t("Profile"), icon: <User size={20} />, path: "/profile" },
     { label: t("My Orders"), icon: <ClipboardList size={20} />, path: "/MyOrders" },
-    { label: t("Favourite"), icon: <Heart size={20} />, path: "/wishlist" },
     { label: t("Notification"), icon: <Bell size={20} />, path: "/notifications" },
+    { label: t("Favourite"), icon: <Heart size={20} />, path: "/wishlist" },
     { label: t("Coupon"), icon: <Tag size={20} />, path: "/Coupon" },
-    
     { label: t("Address"), icon: <MapPin size={20} />, path: "/AdressPageInfo" },
     { label: t("Branchs"), icon: <Map size={20} />, path: "/selectbranch" },
-    { label: t("Help & Support"), icon: <Info size={20} />, path: "/support" },
+  ];
+
+  // المحفظة بتظهر بس لما الباك إند يفعلها
+  const walletEnabled = resturantdata?.wallet_status === 1;
+  const sidebarGrid = walletEnabled
+    ? [
+        ...gridItems.slice(0, 6),
+        {
+          label: t("walletPage.title"),
+          icon: <Wallet size={20} />,
+          path: "/wallet",
+        },
+        gridItems[6],
+      ]
+    : gridItems;
+
+  const listItems = [
+    { label: t("Help & Support"), icon: <Headphones size={20} />, path: "/support" },
     { label: t("About Us"), icon: <Info size={20} />, path: "/about-us" },
     { label: t("Privacy Policy"), icon: <Shield size={20} />, path: "/privacy-policy" },
     { label: t("Terms & Conditions"), icon: <FileText size={20} />, path: "/terms-and-conditions" },
     { label: t("Refund Policy"), icon: <FileText size={20} />, path: "/refund-policy" },
     { label: t("Cancellation Policy"), icon: <FileText size={20} />, path: "/cancellation-policy" },
   ];
+
+  const hotline = resturantdata?.restaurant_phone;
 
   return (
     <>
@@ -89,82 +122,97 @@ const MobileSideBare = () => {
             <div className="overlay" onClick={() => setIsOpen(false)} />
           )}
           <div className={`mobile-sidebar ${dir} ${isOpen ? "open" : ""}`}>
-        <div className="sidebar-header text-light p-4 backgroundMainColor">
-          <div className="d-flex text-light justify-content-between align-items-center">
-            <h5 className="m-0 text-capitalize text-light ">
-             {`${UserData?.f_name ?? t("guest")} ${UserData?.l_name ?? ""}`}
-            </h5>
-            {
-              !OTPToken&&(
-
-                <Link to="register-otp" className="TextMainColor">
-            {t("login")}
-            </Link>
-              )
-          }
-            <X size={28} className="close-icon" onClick={() => setIsOpen(false)} />
-          </div>
-          <small className="text-light">{UserData?.email ?? ""}</small>
-
-          <div className="d-flex justify-content-between align-items-center mt-3 text-muted small">
-            <div>
-              <Link style={{ color: "gray" }} to="/cart">
-                <img src={CartImage} width={25} alt="cart" />
-              </Link>
-            </div>
-            <div>
-              <span className="fw-semibold text-dark">
-                <SideBareLanguageSwithcer />
-              </span>
-            </div>
-            <div>
-              <div className="position-relative">
-                <Link style={{ color: "white" }} to="wishlist">
-                  <Heart className="Grarcolor cursor-pointer" size={22} strokeWidth={1.6} />
-                </Link>
+            {/* الهيدر — أفاتار + اسم + نقاط + زر قفل */}
+            <div className="msb-header">
+              <div className="msb-avatar">
+                <User size={26} strokeWidth={1.8} />
               </div>
+              <div className="msb-user">
+                <div className="msb-name">
+                  {`${UserData?.f_name ?? t("guest")} ${UserData?.l_name ?? ""}`}
+                </div>
+                {OTPToken && UserData?.point != null && (
+                  <div className="msb-points">
+                    <Star size={13} fill="currentColor" />
+                    {UserData.point} {t("points")}
+                  </div>
+                )}
+                {!OTPToken && (
+                  <Link to="/register-otp" className="msb-login" onClick={() => setIsOpen(false)}>
+                    {t("login")}
+                  </Link>
+                )}
+              </div>
+              <button
+                type="button"
+                className="msb-close"
+                onClick={() => setIsOpen(false)}
+                aria-label="close"
+              >
+                <X size={22} />
+              </button>
             </div>
-          </div>
-        </div>
 
-   
-        <div className="sidebar-links p-3">
-          {menuItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.path}
-              className="sidebar-link d-flex align-items-center gap-3"
-              onClick={() => setIsOpen(false)}
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </Link>
-          ))}
+            {/* جريد الاختصارات */}
+            <div className="msb-grid">
+              {sidebarGrid.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className="msb-tile"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+              <button
+                type="button"
+                className="msb-tile msb-icon-tile"
+                onClick={toggleTheme}
+                aria-label={mode === "v2" ? t("v2.lightMode") : t("v2.darkMode")}
+              >
+                {mode === "v2" ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              <button type="button" className="msb-tile" onClick={toggleLanguage}>
+                <Languages size={20} />
+                <span>{isAr ? "English" : "العربية"}</span>
+              </button>
+            </div>
 
-          <div
-            className="sidebar-link d-flex align-items-center gap-3 cursor-pointer"
-            onClick={toggleTheme}
-          >
-            {mode === "v2" ? <Sun size={20} /> : <Moon size={20} />}
-            <span>
-              {mode === "v2" ? t("v2.lightMode") : t("v2.darkMode")}
-            </span>
-          </div>
+            {/* الخط الساخن */}
+            {hotline && (
+              <a className="msb-hotline" href={`tel:${hotline}`}>
+                <Headphones size={18} />
+                {t("hotline")} <span dir="ltr">{hotline}</span>
+              </a>
+            )}
 
+            {/* صفوف الروابط */}
+            <div className="msb-list">
+              {listItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className="msb-row"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </Link>
+              ))}
 
-        {
-         OTPToken&&(
-
-           <div
-           className="sidebar-link d-flex align-items-center gap-3 text-danger  cursor-pointer"
-           onClick={() => setShowLogoutConfirm(true)}
-           >
-            <LogOut size={20} />
-            <span>{t("Logout")}</span>
-          </div>
-          )
-          }
-        </div>
+              {OTPToken && (
+                <button
+                  type="button"
+                  className="msb-row msb-danger"
+                  onClick={() => setShowLogoutConfirm(true)}
+                >
+                  <LogOut size={20} />
+                  <span>{t("Logout")}</span>
+                </button>
+              )}
+            </div>
           </div>
         </>,
         document.body
@@ -172,7 +220,7 @@ const MobileSideBare = () => {
 
       <ConfirmPopup
         show={showLogoutConfirm}
-    message={t("Are_you_sure_you_want_to_log_out?")}
+        message={t("Are_you_sure_you_want_to_log_out?")}
         onConfirm={handleLogout}
         onClose={() => setShowLogoutConfirm(false)}
       />

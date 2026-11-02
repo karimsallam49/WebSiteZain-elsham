@@ -24,9 +24,10 @@ const REQUIRED_FIELDS = [
 interface AddressFormProps {
   onSaved?: () => void;
   requiredFields?: string[];
+  highlightArea?: boolean;
 }
 
-const AddressForm = ({ onSaved, requiredFields = [] }: AddressFormProps) => {
+const AddressForm = ({ onSaved, requiredFields = [], highlightArea = false }: AddressFormProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const isNew = useLocation().state?.isNew === true;
@@ -49,6 +50,7 @@ const AddressForm = ({ onSaved, requiredFields = [] }: AddressFormProps) => {
   const [lat, setLat] = useState(30.096528);
   const [lng, setLng] = useState(31.072488);
   const [addressId, setAddressId] = useState<number | null>(null);
+  const [deliveryAreaId, setDeliveryAreaId] = useState<number | null>(null);
   const [toastMessage, setToastMessage] = useState("");
   const [toastShow, setToastShow] = useState(false);
 
@@ -56,7 +58,13 @@ const AddressForm = ({ onSaved, requiredFields = [] }: AddressFormProps) => {
     (state) => state.adressSlice
   );
   const { UserData } = useAppSelector((state) => state.UserInfoSLice);
+  const { deliverfeeData } = useAppSelector((state) => state.DeliveryFeeSlice);
   const dispatch = useAppDispatch();
+
+  const deliveryAreas = deliverfeeData?.delivery_charge_by_area ?? [];
+  const isAreaType =
+    deliverfeeData?.delivery_charge_setup?.delivery_charge_type === "area" &&
+    deliveryAreas.length > 0;
 
   useEffect(() => {
     if (!isNew || !UserData) return;
@@ -88,7 +96,10 @@ const AddressForm = ({ onSaved, requiredFields = [] }: AddressFormProps) => {
     setStreet(latest.road ?? "");
     setLat(Number(latest.latitude) || 30.096528);
     setLng(Number(latest.longitude) || 31.072488);
-  }, [AdressData, isNew, UserData]);
+    setDeliveryAreaId(
+      latest.delivery_area_id ?? latest.delivery_area?.id ?? null
+    );
+  }, [AdressData, isNew, UserData, editeAdress, selectedAdress]);
 
   const handleSave = () => {
     const missing: string[] = [];
@@ -119,14 +130,27 @@ const AddressForm = ({ onSaved, requiredFields = [] }: AddressFormProps) => {
       is_guest: 0,
       contact_person_name: contactName,
       is_default: 1,
+      delivery_area_id: isAreaType ? deliveryAreaId : null,
     };
 
     const onSaveSuccess = () => {
-      dispatch(actGetadress()).then(() => {
-        if (onSaved) onSaved();
-        else navigate("/AdressPageInfo");
-      });
-      dispatch(addadress(payload));
+      dispatch(actGetadress())
+        .unwrap()
+        .then((list: AddressDTO[]) => {
+          // اختار العنوان الحقيقي من السيرفر (بـ id و delivery_area) مش الـ payload المحلي
+          const saved =
+            list?.find((a) => a.id === addressId) ??
+            list?.find((a) => a.address === payload.address) ??
+            list?.[0];
+          if (saved) dispatch(addadress(saved));
+
+          if (onSaved) onSaved();
+          else navigate("/AdressPageInfo");
+        })
+        .catch(() => {
+          if (onSaved) onSaved();
+          else navigate("/AdressPageInfo");
+        });
       if (editeAdress) {
         dispatch(editeAdressAction(null));
       }
@@ -291,6 +315,40 @@ const AddressForm = ({ onSaved, requiredFields = [] }: AddressFormProps) => {
                   />
                 </div>
               </div>
+
+              {isAreaType && (
+                <div className="col-12 col-md-6">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold text-muted">
+                      {t("address.delivery_area")}
+                      {highlightArea && <span className="text-danger"> *</span>}
+                    </label>
+                    <select
+                      className={`form-select ${
+                        highlightArea && !deliveryAreaId ? "is-invalid" : ""
+                      }`}
+                      value={deliveryAreaId ?? ""}
+                      onChange={(e) =>
+                        setDeliveryAreaId(
+                          e.target.value ? Number(e.target.value) : null
+                        )
+                      }
+                    >
+                      <option value="">{t("address.select_area")}</option>
+                      {deliveryAreas.map((area) => (
+                        <option key={area.id} value={area.id}>
+                          {area.area_name}
+                        </option>
+                      ))}
+                    </select>
+                    {highlightArea && !deliveryAreaId && (
+                      <div className="text-danger small mt-1">
+                        {t("checkout.select_area_first")}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

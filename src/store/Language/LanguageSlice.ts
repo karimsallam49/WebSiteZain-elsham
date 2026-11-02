@@ -5,8 +5,10 @@ interface LanguageState {
   currentLanguage: "ar" | "en";
 }
 
+const savedLang = localStorage.getItem("i18nextLng");
+
 const initialState: LanguageState = {
-  currentLanguage: "en",
+  currentLanguage: savedLang === "en" ? "en" : "ar",
 };
 
 const languageSlice = createSlice({

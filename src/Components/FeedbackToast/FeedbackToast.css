@@ -1,23 +1,50 @@
 /* src/Components/FeedbackToast/FeedbackToast.css */
 .feedback-toast {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: #28a745;
+  top: 72px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #1f8a3f;
   color: white;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 500;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  max-width: min(92vw, 440px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  transform: translateX(-50%) translateY(-16px) scale(0.96);
+  opacity: 0;
+  transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 100000;
+  pointer-events: none; /* مش هيمنع الضغط على اللي تحته */
 }
 
 .feedback-toast.error {
-  background-color: #dc3545;
+  background-color: #c92a2a;
 }
 
 .feedback-toast.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.feedback-toast .toast-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .feedback-toast {
+    top: 64px;
+    font-size: 0.9rem;
+    padding: 10px 18px;
+  }
 }

@@ -14,6 +14,10 @@ import { Plus } from "lucide-react";
 const AdressPageInfo = () => {
   const { t } = useTranslation();
   const { AdressData } = useAppSelector((state) => state.adressSlice);
+  const { deliverfeeData } = useAppSelector((state) => state.DeliveryFeeSlice);
+  const isAreaType =
+    deliverfeeData?.delivery_charge_setup?.delivery_charge_type === "area" &&
+    (deliverfeeData?.delivery_charge_by_area?.length ?? 0) > 0;
   const [filterdadress, Setfilterdadress] = useState(AdressData);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedId, setSelectedId] = useState<any | null>(null);
@@ -88,6 +92,22 @@ const AdressPageInfo = () => {
                     <div className="name-details">{t("addressinfo.address")}</div>
                     <div className="details-title">{el.address}</div>
                   </div>
+                  {el.delivery_area && (
+                    <div className="details-row w-100 d-flex gap-5">
+                      <div className="name-details">
+                        {t("addressinfo.delivery_area")}
+                      </div>
+                      <div className="details-title">
+                        {el.delivery_area.area_name} —{" "}
+                        {el.delivery_area.delivery_charge} EGP
+                      </div>
+                    </div>
+                  )}
+                  {isAreaType && !el.delivery_area && (
+                    <div className="text-danger small mt-2">
+                      ⚠ {t("addressinfo.area_missing")}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

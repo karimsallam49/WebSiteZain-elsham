@@ -28,6 +28,7 @@ function App() {
    
     const dir = i18n.language === "ar" ? "rtl" : "ltr";
     document.documentElement.dir = dir;
+    document.documentElement.lang = i18n.language;
     document.body.dir = dir;
   }, [i18n.language]);
   return (

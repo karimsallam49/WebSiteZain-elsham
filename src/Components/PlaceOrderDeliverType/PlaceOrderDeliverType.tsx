@@ -1,23 +1,18 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
-import { Card, Form } from "react-bootstrap";
+import { useState, useCallback, useMemo } from "react";
+import { Card } from "react-bootstrap";
 import { useAppSelector } from "../../Hooks/hooks";
 import React from "react";
 import { useTranslation } from "react-i18next"; // ✅ إضافة الترجمة
 import "../../App.css";
 
 type PlaceOrderProps = {
-  setOnselec: (Areanumber: number) => void;
   SetOnSelectedType: (Type: "delivery" | "take_away" | "dine_in") => void;
-  areaInvalid?: boolean;
 };
 
-const PlaceOrderDeliverType = React.memo(({ setOnselec, SetOnSelectedType, areaInvalid }: PlaceOrderProps) => {
+const PlaceOrderDeliverType = React.memo(({ SetOnSelectedType }: PlaceOrderProps) => {
   const [selectedType, setSelectedType] = useState<"delivery" | "take_away" | "dine_in">("delivery");
-  const [selectedArea, setSelectedArea] = useState<number | null>(null);
-  const areaSelectRef = useRef<HTMLSelectElement>(null);
 
   const { resturantdata } = useAppSelector((state) => state.restaurantSettingsSlice);
-  const { deliverfeeData } = useAppSelector((state) => state.DeliveryFeeSlice);
 
   const { t } = useTranslation(); // ✅ Hook الترجمة
 
@@ -31,27 +26,6 @@ const PlaceOrderDeliverType = React.memo(({ setOnselec, SetOnSelectedType, areaI
     setSelectedType(type);
     SetOnSelectedType(type);
   }, [SetOnSelectedType]);
-
-  const handleSelectArea = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = Number(e.target.value);
-    setSelectedArea(value);
-    setOnselec(value);
-  }, [setOnselec]);
-
-  useEffect(() => {
-    if (areaInvalid && selectedType === "delivery") {
-      areaSelectRef.current?.focus();
-      (areaSelectRef.current as any)?.showPicker?.();
-    }
-  }, [areaInvalid, selectedType]);
-
-  const areaOptions = useMemo(() => {
-    return deliverfeeData?.delivery_charge_by_area?.map((area) => (
-      <option key={area.id} value={area.id}>
-        {area.area_name} ({area.delivery_charge} EGP)
-      </option>
-    ));
-  }, [deliverfeeData]);
 
   return (
     <>
@@ -141,22 +115,6 @@ const PlaceOrderDeliverType = React.memo(({ setOnselec, SetOnSelectedType, areaI
           )}
         </div>
       </div>
-
-      {selectedType === "delivery" && (
-        <div className="w-100 mb-4">
-          <h4 className="mb-3 fw-semibold">{t("checkout.zip_or_area")}</h4>
-          <Form.Select
-            ref={areaSelectRef}
-            aria-label="Select Delivery Area"
-            value={selectedArea ?? ""}
-            onChange={handleSelectArea}
-            isInvalid={areaInvalid}
-          >
-            <option value="">{t("checkout.select_your_area")}</option>
-            {areaOptions}
-          </Form.Select>
-        </div>
-      )}
     </>
   );
 });

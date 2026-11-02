@@ -8,7 +8,13 @@ import { reverseGeocode } from "../../utilities/geocode";
 const Geolocation = () => {
   const dispatch = useAppDispatch();
   const { UserData } = useAppSelector((state) => state.UserInfoSLice);
+  const { AdressData, selectedAdress } = useAppSelector(
+    (state) => state.adressSlice
+  );
   const requestedRef = useRef(false);
+  // ref عشان الجيو لوكيشن بيجي async — نشوف أحدث قيمة وقت الـ resolve مش وقت الـ mount
+  const addressStateRef = useRef({ selectedAdress, AdressData });
+  addressStateRef.current = { selectedAdress, AdressData };
 
   useEffect(() => {
     if (requestedRef.current) return;
@@ -51,7 +57,11 @@ const Geolocation = () => {
           is_default: 1,
         };
 
-        dispatch(addadress(payload));
+        // ما نستبدلش عنوان محفوظ/مختار — العنوان المؤقت بس لما مفيش عنوان أصلاً
+        const { selectedAdress: sel, AdressData: list } = addressStateRef.current;
+        if (!sel && (!list || list.length === 0)) {
+          dispatch(addadress(payload));
+        }
       },
       (err) => {
         console.error("Geolocation error:", err);

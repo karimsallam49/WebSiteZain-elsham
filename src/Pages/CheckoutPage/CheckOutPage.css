@@ -129,6 +129,7 @@
   border-radius: 10px !important;
   resize: none;
   transition: 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 .delivery-textarea:focus {

@@ -160,7 +160,9 @@ const totalAmount =
               return (
               <Card
                 key={item.key}
-                className="p-3 border-0 shadow-sm mb-3 rounded-4"
+                className={`p-3 border-0 shadow-sm mb-3 rounded-4 ${
+                  item.locked ? "cart-prize-locked" : ""
+                }`}
               >
                 <Row className="align-items-center">
                   <Col xs={3} md={2}>
@@ -227,20 +229,30 @@ const totalAmount =
                         ⚠ {item.reason}
                       </div>
                     )}
-                    {item.prizeHint && !item.free && (
-                      <div className="text-warning small mt-1">
-                        {item.prizeHint}
-                        {item.remainingToUnlock != null &&
-                          ` (${t("cart.remaining") || "فاضل"} ${item.remainingToUnlock})`}
+                    {(item.prizeReason || item.prizeHint) && !item.free && (
+                      <div className="cart-prize-reason">
+                        <span className="cart-prize-reason-icon">🎁</span>
+                        <div>
+                          <div className="cart-prize-reason-title">
+                            {t("cart.prize_almost") || "قريب من جايزتك!"}
+                          </div>
+                          <div className="cart-prize-reason-text">
+                            {item.prizeReason ?? item.prizeHint}
+                            {item.remainingToUnlock != null &&
+                              ` — ${t("cart.remaining") || "فاضل"} ${item.remainingToUnlock}`}
+                          </div>
+                        </div>
                       </div>
                     )}
-                    <Button
-                      variant="link"
-                      className="text-danger p-0 mt-1 small"
-                      onClick={() => remove(item)}
-                    >
-                      <FaTrashAlt /> {t("remove")}
-                    </Button>
+                    {!item.locked && (
+                      <Button
+                        variant="link"
+                        className="text-danger p-0 mt-1 small"
+                        onClick={() => remove(item)}
+                      >
+                        <FaTrashAlt /> {t("remove")}
+                      </Button>
+                    )}
                   </Col>
 
                   <Col
@@ -272,24 +284,32 @@ const totalAmount =
                     </div>
 
                     <div className="d-flex align-items-center gap-2">
-                      <Button
-                        variant="light"
-                        size="sm"
-                        className="rounded-circle border"
-                        onClick={() => decrease(item)}
-                      >
-                        <FaMinus />
-                      </Button>
-                      <span style={{ margin: "0 1rem", fontSize: "large" }}>
-                        {item.quantity}
-                      </span>
-                      <Button
-                        size="sm"
-                        className="rounded-circle border backgroundMainColor text-light"
-                        onClick={() => increase(item)}
-                      >
-                        <FaPlus />
-                      </Button>
+                      {item.displayOnly ? (
+                        <span className="badge" style={{ border: "1px solid var(--v2-hairline)", color: "var(--v2-cream-dim)", fontWeight: 500 }}>
+                          {t("cart.display_only") || "للعرض فقط"}
+                        </span>
+                      ) : (
+                        <>
+                          <Button
+                            variant="light"
+                            size="sm"
+                            className="rounded-circle border"
+                            onClick={() => decrease(item)}
+                          >
+                            <FaMinus />
+                          </Button>
+                          <span style={{ margin: "0 1rem", fontSize: "large" }}>
+                            {item.quantity}
+                          </span>
+                          <Button
+                            size="sm"
+                            className="rounded-circle border backgroundMainColor text-light"
+                            onClick={() => increase(item)}
+                          >
+                            <FaPlus />
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </Col>
                 </Row>
@@ -425,6 +445,26 @@ const totalAmount =
                 )}
               </div>
 
+              {/* عروض اتشالت أو اتمنعت — الباك بيشرحها وإحنا بنعرضها */}
+              {serverCart?.dropped_offers && serverCart.dropped_offers.length > 0 && (
+                <div className="alert alert-warning py-2 small mb-3" style={{ fontSize: "0.78rem" }}>
+                  {serverCart.dropped_offers.map((o: any, i: number) => (
+                    <div key={i}>
+                      {o.label ?? o.name} — {o.reason ?? o.message}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {serverCart?.offer_conflicts && serverCart.offer_conflicts.length > 0 && (
+                <div className="alert alert-warning py-2 small mb-3" style={{ fontSize: "0.78rem" }}>
+                  {serverCart.offer_conflicts.map((c: any, i: number) => (
+                    <div key={i}>
+                      {c.message ?? c.offer}
+                      {c.blocked_by?.length ? ` (${c.blocked_by.join(", ")})` : ""}
+                    </div>
+                  ))}
+                </div>
+              )}
               {serverCart && serverCart.pending_prizes.length > 0 && (
                 <div className="w-100 mb-2" style={{ padding: "0 5px" }}>
                   <div className="fw-semibold small mb-1">

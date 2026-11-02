@@ -12,7 +12,13 @@ i18n
       en: { translation: en },
       ar: { translation: ar },
     },
+    lng: "ar",
     fallbackLng: "ar",
+    detection: {
+      // العربي هو الـ default — بنقرأ بس من الـ localStorage عشان اختيار المستخدم يتذكر
+      order: ["localStorage"],
+      caches: ["localStorage"],
+    },
     interpolation: {
       escapeValue: false,
     },

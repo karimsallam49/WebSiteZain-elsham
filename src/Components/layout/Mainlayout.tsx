@@ -30,7 +30,7 @@ const Mainlayout = () => {
   const location = useLocation();
   const { currentLanguage } = useAppSelector((state) => state.LanguageSlice);
   const { OTPToken } = useAppSelector((state) => state.OTPauthconfigration);
-  const { AdressData } = useAppSelector((state) => state.adressSlice);
+  const { AdressData, selectedAdress } = useAppSelector((state) => state.adressSlice);
 const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
 
   const HideBottom = location.pathname !== "/selectBranch";
@@ -49,13 +49,14 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
         console.error("Error fetching restaurant settings:", err);
         dispatch(selectAbranch(1));
       });
+  }, []);
 
-
-
-    if (AdressData && AdressData.length > 0) {
+  // أول ما قائمة العناوين تحمّل — اختار الأول لو مفيش عنوان مختار
+  useEffect(() => {
+    if (AdressData && AdressData.length > 0 && !selectedAdress) {
       dispatch(addadress(AdressData[0]));
     }
-  }, []);
+  }, [AdressData]);
   useEffect(()=>{
     if(!selectedBranch) return
     dispatch(actBanner())
@@ -84,7 +85,7 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
 
   useEffect(() => {
     i18n.changeLanguage(currentLanguage);
-  }, []);
+  }, [currentLanguage]);
 
   useEffect(() => {
     dispatch(fetchCategories());

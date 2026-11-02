@@ -31,8 +31,13 @@ export interface CartUiItem {
   available: boolean;
   reason: string | null;
   isPrize: boolean;
+  /** صف مقفول — ممنوع تعديل/حذف من الباك إند */
+  locked: boolean;
+  /** صف عرضي فقط — مش بيتشحن */
+  displayOnly: boolean;
   free: boolean;
   prizeHint: string | null;
+  prizeReason: string | null;
   remainingToUnlock: number | null;
   addonsText: string | null;
 }
@@ -73,8 +78,11 @@ export const useCart = () => {
         available: si.available,
         reason: si.reason,
         isPrize: si.is_prize_item,
+        locked: si.locked === true,
+        displayOnly: si.display_only === true,
         free: si.free,
         prizeHint: si.prize?.hint ?? null,
+        prizeReason: si.prize?.reason ?? null,
         remainingToUnlock: si.prize?.remaining_to_unlock ?? null,
         addonsText:
           si.addons?.length > 0
@@ -107,8 +115,11 @@ export const useCart = () => {
           available: true,
           reason: null,
           isPrize: false,
+          locked: false,
+          displayOnly: false,
           free: false,
           prizeHint: null,
+          prizeReason: null,
           remainingToUnlock: null,
           addonsText: null,
         };
@@ -170,12 +181,23 @@ export const useCart = () => {
   const increase = useCallback(
     (item: CartUiItem) => {
       if (isAuthed && item.cartId != null) {
-        dispatch(
-          serverCartUpdateQty({
-            cart_id: item.cartId,
-            quantity: item.quantity + 1,
-          })
-        );
+        // صف الجايزة الـlocked: cart/update بيرجع 403 — بنعمل add بدلها
+        // الباك إند بيدمج الكمية وأول وحدة بتفضل free
+        if (item.locked) {
+          dispatch(
+            serverCartAdd({
+              product_id: item.productId,
+              quantity: 1,
+            })
+          );
+        } else {
+          dispatch(
+            serverCartUpdateQty({
+              cart_id: item.cartId,
+              quantity: item.quantity + 1,
+            })
+          );
+        }
       } else {
         dispatch(increaseQuantity(item.productId));
       }
