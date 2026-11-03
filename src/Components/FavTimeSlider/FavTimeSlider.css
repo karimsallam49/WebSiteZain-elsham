@@ -3,28 +3,75 @@
   width: 100%;
 }
 
-.time-btn {
-  width: 100%;
-  background: none;
-  border-radius: 10px;
-  padding: 0.4rem 0.5rem;
-  font-size: 0.78rem;
+/* ريل سكرول أفقي بدل الـ slick — ثابت في RTL ومن غير أسهم */
+.favtime-rail {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px;
+  padding-inline: 56px; /* مساحة أكبر للأسهم على الطرفين */
+}
+.favtime-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* أسهم التنقل — بتتقلب مع الاتجاه */
+.favtime-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  background: #fff;
+  color: var(--v2-gold, var(--MainColor, #a9813f));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.25s;
-  border:none;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.favtime-arrow:hover {
+  border-color: var(--v2-gold, var(--MainColor, #a9813f));
+}
+.favtime-arrow.prev {
+  inset-inline-start: 0;
+}
+.favtime-arrow.next {
+  inset-inline-end: 0;
+}
+
+.time-btn {
+  flex: 0 0 calc(50% - 0.25rem); /* اتنين pills بس في الشاشة والباقي سكرول */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
+  padding: 0.5rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  background: #fff;
+  color: var(--v2-cream, #555);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
-
+.time-btn svg {
+  color: var(--v2-gold, var(--MainColor, #a9813f));
+}
 .time-btn:hover {
-  background: #eee;
+  border-color: var(--v2-gold, var(--MainColor, #a9813f));
 }
-
 .time-btn.active {
-  background: var(--MainColor);
-  color: white;
+  background: var(--v2-gold, var(--MainColor, #a9813f));
+  border-color: var(--v2-gold, var(--MainColor, #a9813f));
+  color: #fff;
 }
-
+.time-btn.active svg {
+  color: #fff;
+}

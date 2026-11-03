@@ -5,8 +5,8 @@
   max-width: 360px;
   height: 100dvh;
   background: var(--v2-on-gold, #f7f4ed);
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease;
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.3);
+  transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
   z-index: 20000;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -15,21 +15,23 @@
 
 /* الـ drawer بيفتح من ناحية البداية — يمين بالعربي، شمال بالإنجليزي */
 .mobile-sidebar.rtl {
-  right: -110%;
+  right: 0;
   left: auto;
-  border-radius: 18px 0 0 18px;
+  border-radius: 24px 0 0 24px;
+  transform: translateX(110%);
 }
 .mobile-sidebar.rtl.open {
-  right: 0;
+  transform: translateX(0);
 }
 
 .mobile-sidebar.ltr {
-  left: -110%;
+  left: 0;
   right: auto;
-  border-radius: 0 18px 18px 0;
+  border-radius: 0 24px 24px 0;
+  transform: translateX(-110%);
 }
 .mobile-sidebar.ltr.open {
-  left: 0;
+  transform: translateX(0);
 }
 
 .overlay {
@@ -38,6 +40,15 @@
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(2px);
   z-index: 19999;
+  animation: msb-fade 0.25s ease;
+}
+@keyframes msb-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ---------- header ---------- */
@@ -45,7 +56,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 20px 16px 14px;
+  padding: 22px 16px 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(201, 163, 91, 0.12),
+    transparent 90%
+  );
 }
 .msb-avatar {
   width: 56px;
@@ -130,6 +146,7 @@
 .msb-tile:active,
 .msb-tile:hover {
   border-color: var(--v2-gold, #a9813f);
+  background: rgba(201, 163, 91, 0.08);
   color: var(--v2-cream, #222);
 }
 
@@ -139,12 +156,15 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 8px 14px 6px;
+  margin: 10px 14px 8px;
   padding: 10px;
   color: var(--v2-gold, #a9813f);
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
+  border: 1.5px dashed var(--v2-gold, #a9813f);
+  border-radius: 999px;
+  background: rgba(201, 163, 91, 0.08);
 }
 .msb-hotline svg {
   color: var(--v2-gold, #a9813f);
@@ -180,11 +200,54 @@
 .msb-row:active,
 .msb-row:hover {
   border-color: var(--v2-gold, #a9813f);
+  background: rgba(201, 163, 91, 0.08);
   color: var(--v2-cream, #222);
 }
 .msb-row.msb-danger,
 .msb-row.msb-danger svg {
   color: #e08a8a;
+}
+.msb-row.msb-danger:hover {
+  border-color: #e08a8a;
+  background: rgba(224, 138, 138, 0.08);
+}
+
+/* ---------- ديسكتوب — panel عائمة بدل drawer لاصق ---------- */
+@media (min-width: 992px) {
+  .mobile-sidebar {
+    width: 380px;
+    top: 20px;
+    bottom: 20px;
+    height: auto;
+    border-radius: 24px;
+    box-shadow:
+      0 24px 60px rgba(42, 47, 66, 0.35),
+      0 0 0 1px rgba(201, 163, 91, 0.15);
+    scrollbar-width: thin;
+  }
+  .mobile-sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .mobile-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(201, 163, 91, 0.35);
+    border-radius: 999px;
+  }
+
+  /* بتحترم الزوايا من كل الجهات لأنها مش لاصقة في الحرف */
+  .mobile-sidebar.rtl {
+    right: 20px;
+    border-radius: 24px;
+  }
+  .mobile-sidebar.ltr {
+    left: 20px;
+    border-radius: 24px;
+  }
+
+  /* الهيدر بياخد ركن علوي مدوّر */
+  .msb-header {
+    border-radius: 24px 24px 0 0;
+    padding-top: 26px;
+  }
 }
 
 /* ---------- legacy classes (باقي الـ project بيستخدمهم) ---------- */

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Search, ChevronDown } from "lucide-react";
+import { MapPin, Search, ChevronDown, TriangleAlert } from "lucide-react";
 import { useAppSelector } from "../../Hooks/hooks";
+import { useBranchCoverage } from "../../Hooks/useBranchCoverage";
 import { useFetch } from "../../Hooks/useFetch";
 import { ImageUrl, SearchSuggestionAPI } from "../../EndPoints/EndPoints";
 import LocationPopup from "../LocationPopup/LocationPopup";
@@ -15,6 +16,7 @@ interface SuggestionProduct {
   price?: number;
   discount?: number;
   discount_type?: string;
+  final_price?: number;
 }
 
 const V2AddressSearch = () => {
@@ -23,6 +25,7 @@ const V2AddressSearch = () => {
   const { userLocation } = useAppSelector((state) => state.UserInfoSLice);
   const { selectedAdress } = useAppSelector((state) => state.adressSlice);
   const { currentLanguage } = useAppSelector((state) => state.LanguageSlice);
+  const { outOfRange } = useBranchCoverage();
   const [showPopup, setShowPopup] = useState(false);
 
   const [term, setTerm] = useState("");
@@ -69,14 +72,25 @@ const V2AddressSearch = () => {
   return (
     <>
       <div
-        className="v2-address-row"
+        className={`v2-address-row ${outOfRange ? "oor" : ""}`}
         onClick={() => setShowPopup(true)}
         role="button"
       >
-        <MapPin size={14} color="var(--v2-gold)" />
-        <span className="v2-addr-label">{t("v2.deliveryTo")}</span>
-        <span className="v2-addr-text">{displayLocation}</span>
-        <ChevronDown size={13} color="rgba(255,255,255,.4)" />
+        {outOfRange ? (
+          <TriangleAlert size={14} color="#e5484d" />
+        ) : (
+          <MapPin size={14} color="var(--v2-gold)" />
+        )}
+        {!outOfRange && (
+          <span className="v2-addr-label">{t("v2.deliveryTo")}</span>
+        )}
+        <span className="v2-addr-text">
+          {outOfRange ? t("out_of_range") : displayLocation}
+        </span>
+        <ChevronDown
+          size={13}
+          color={outOfRange ? "#e5484d" : "rgba(255,255,255,.4)"}
+        />
       </div>
 
       <div className="v2-search-wrap" ref={suggestRef}>
@@ -102,14 +116,19 @@ const V2AddressSearch = () => {
               <div className="v2-suggest-empty">{t("v2.loadingDishes")}</div>
             ) : suggestions?.length ? (
               suggestions.map((s) => {
+                // نفس منطق كروت المنتجات: final_price الأول، وبعدين حساب الخصم
                 const price = Number(s.price) || 0;
                 const disc = Number(s.discount) || 0;
-                const final =
+                const computed =
                   disc > 0
                     ? s.discount_type === "percent"
                       ? price * (1 - disc / 100)
                       : price - disc
                     : price;
+                const final =
+                  s.final_price != null
+                    ? Number(s.final_price)
+                    : Math.max(computed, 0);
                 const img = s.image
                   ? s.image.startsWith("http")
                     ? s.image

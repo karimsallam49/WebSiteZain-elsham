@@ -4,7 +4,7 @@ import { useFetch } from "../../Hooks/useFetch";
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
 import { TrackordersUrl, ImageUrl } from "../../EndPoints/EndPoints";
 import type { OrderDetailsDTO } from "../../DTO/OrderDTO";
-import processingImage from "../../assets/image/processing_animation.gif";
+import processingImage from "../../assets/image/processing_animation.webp";
 import ConfirmPopup from "../../Components/confirmPopup/ConfirmPopup";
 import { useState } from "react";
 import { actCancellOrde } from "../../store/PlaceOrder/actCancellOrder";

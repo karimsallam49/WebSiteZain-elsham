@@ -59,6 +59,9 @@ const AddressForm = ({ onSaved, requiredFields = [], highlightArea = false }: Ad
   );
   const { UserData } = useAppSelector((state) => state.UserInfoSLice);
   const { deliverfeeData } = useAppSelector((state) => state.DeliveryFeeSlice);
+  const { selectedBranch } = useAppSelector(
+    (state) => state.restaurantSettingsSlice
+  );
   const dispatch = useAppDispatch();
 
   const deliveryAreas = deliverfeeData?.delivery_charge_by_area ?? [];
@@ -80,14 +83,19 @@ const AddressForm = ({ onSaved, requiredFields = [], highlightArea = false }: Ad
       (AdressData && AdressData.length > 0 ? AdressData[0] : null);
     if (!latest) return;
     setAddressId(latest.id ?? null);
+    // عنوان الـ geolocation المؤقت (id null) بيبقى فيه placeholders —
+    // ساعتها ناخد اسم/تليفون اليوزر الحقيقي بدلهم
+    const isTempAddress = !latest.id;
+    const fallbackName =
+      `${UserData?.f_name ?? ""} ${UserData?.l_name ?? ""}`.trim();
+    const fallbackPhone = UserData?.phone?.replace("+20", "") ?? "";
     setContactName(
-      latest.contact_person_name ||
-        `${UserData?.f_name ?? ""} ${UserData?.l_name ?? ""}`.trim()
+      isTempAddress ? fallbackName : latest.contact_person_name || fallbackName
     );
     setPhone(
-      latest.contact_person_number?.replace("+20", "") ||
-        UserData?.phone?.replace("+20", "") ||
-        ""
+      isTempAddress
+        ? fallbackPhone
+        : latest.contact_person_number?.replace("+20", "") || fallbackPhone
     );
     setAddressType(latest.address_type ?? "Home");
     setAddress(latest.address ?? "");
@@ -96,10 +104,16 @@ const AddressForm = ({ onSaved, requiredFields = [], highlightArea = false }: Ad
     setStreet(latest.road ?? "");
     setLat(Number(latest.latitude) || 30.096528);
     setLng(Number(latest.longitude) || 31.072488);
+    // المنطقة لازم تكون تابعة للفرع الحالي — delivery_area بيرجع مفلتر بالفرع
+    // من السيرفر، وdelivery_area_id الخام ممكن يكون لفرع تاني فنتحقق منه
     setDeliveryAreaId(
-      latest.delivery_area_id ?? latest.delivery_area?.id ?? null
+      latest.delivery_area?.id ??
+        (deliveryAreas.some((a) => a.id === latest.delivery_area_id)
+          ? latest.delivery_area_id ?? null
+          : null)
     );
-  }, [AdressData, isNew, UserData, editeAdress, selectedAdress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [AdressData, isNew, UserData, editeAdress, selectedAdress, deliverfeeData?.delivery_charge_by_area]);
 
   const handleSave = () => {
     const missing: string[] = [];
@@ -131,6 +145,7 @@ const AddressForm = ({ onSaved, requiredFields = [], highlightArea = false }: Ad
       contact_person_name: contactName,
       is_default: 1,
       delivery_area_id: isAreaType ? deliveryAreaId : null,
+      branch_id: selectedBranch ?? null,
     };
 
     const onSaveSuccess = () => {

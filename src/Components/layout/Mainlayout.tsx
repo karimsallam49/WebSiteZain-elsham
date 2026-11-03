@@ -14,16 +14,16 @@ import { addadress } from "../../store/Adress/AdressSlice";
 import { FetchPages } from "../../store/Pages/PagesSlice";
 import { actGetBranch } from "../../store/Branch/BranchSlice";
 import { selectAbranch } from "../../store/ResturantConfiq/ResturantConfiqSlice";
-import AppdesckTopHeader from "../AppdesktopHeader/AppdesckTopHeader";
 import MobilePageHeader from "../MobilePageHeader/MobilePageHeader";
 import Footer from "../Footer/Footer";
 import BottomNav from "../BottomNav/BottomNav";
-import AdressInfo from "../AdressInfo/AdressInfo";
+import V2PageShell from "../V2/V2PageShell";
 import ChatMealFab from "../ChatMeal/ChatMealFab";
 import "./MainLayoutstyle.css";
 import i18n from "../../i18n";
 import { actBanner } from "../../store/Banner/aCtBanner";
 import { loadServerCart } from "../../store/Cart/serverCartSlice";
+import { useBranchCoverage } from "../../Hooks/useBranchCoverage";
 
 const Mainlayout = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +32,7 @@ const Mainlayout = () => {
   const { OTPToken } = useAppSelector((state) => state.OTPauthconfigration);
   const { AdressData, selectedAdress } = useAppSelector((state) => state.adressSlice);
 const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
+  const { nearest } = useBranchCoverage();
 
   const HideBottom = location.pathname !== "/selectBranch";
   const isV2Home = location.pathname === "/";
@@ -57,10 +58,19 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
       dispatch(addadress(AdressData[0]));
     }
   }, [AdressData]);
+
+  // اختار أقرب فرع للوكيشن بتاع اليوزر بدل أول فرع دايمًا
+  useEffect(() => {
+    if (nearest && nearest.id !== selectedBranch) {
+      dispatch(selectAbranch(nearest.id));
+    }
+  }, [nearest, selectedBranch, dispatch]);
   useEffect(()=>{
     if(!selectedBranch) return
     dispatch(actBanner())
     dispatch(actGetBranch());
+    // المناطق ليها mapping لكل فرع — نعيد جلب العناوين عشان delivery_area تتحدث للفرع الجديد
+    if (OTPToken) dispatch(actGetadress());
 
     const defer = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 800));
     defer(() => {
@@ -71,7 +81,7 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
 
   useEffect(() => {
     document.documentElement.dataset.theme =
-      localStorage.getItem("v2-theme-mode") || "v2";
+      localStorage.getItem("v2-theme-mode") || "v2-light";
 
     if (!document.getElementById("v2-fonts")) {
       const link = document.createElement("link");
@@ -108,14 +118,13 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
       <MobilePageHeader />
 
       <div className="w-100 container position-relative all-container" style={{ minHeight: "100vh" }}>
-        {!isV2Home && (
-          <div className="adress-desktop-only w-100">
-            <AdressInfo />
-          </div>
+        {isV2Home ? (
+          <Outlet />
+        ) : (
+          <V2PageShell>
+            <Outlet />
+          </V2PageShell>
         )}
-
-        {!isV2Home && <AppdesckTopHeader />}
-        <Outlet />
       </div>
 
       {HideBottom && <BottomNav />}

@@ -30,6 +30,7 @@ const PATH_TITLES: Record<string, string> = {
   "/myorders": "my_orders",
   "/payment-success": "payment",
   "/payment-fail": "payment",
+  "/wallet": "wallet",
 };
 
 const MobilePageHeader = () => {

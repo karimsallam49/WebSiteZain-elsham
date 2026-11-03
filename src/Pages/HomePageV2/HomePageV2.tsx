@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../Hooks/hooks";
 import type { Category } from "../../DTO/CategoriesDTO";
 import {
-  offersUrl,
+  // offersUrl, // معطّل مع سكشن "العروض"
   recommendedProductUrL,
   GoodTimeProductUrL,
 } from "../../EndPoints/EndPoints";
@@ -16,16 +16,16 @@ import V2CategoryGrid from "../../Components/V2/V2CategoryGrid";
 import V2MenuList from "../../Components/V2/V2MenuList";
 import V2OrderAgain from "../../Components/V2/V2OrderAgain";
 import V2HappyHour from "../../Components/V2/V2HappyHour";
-import V2ProductSection from "../../Components/V2/V2ProductSection";
+// import V2ProductSection from "../../Components/V2/V2ProductSection"; // معطّل مع سكشن "العروض"
 import V2SpinFab from "../../Components/V2/V2SpinFab";
 import "./v2.css";
 
 const HomePageV2 = () => {
   const { t } = useTranslation();
   const { categories } = useAppSelector((state) => state.CategoriesSlice);
-  const { selectedBranch } = useAppSelector(
-    (state) => state.restaurantSettingsSlice
-  );
+  // const { selectedBranch } = useAppSelector( // معطّل مع سكشن "العروض"
+  //   (state) => state.restaurantSettingsSlice
+  // );
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [activeSub, setActiveSub] = useState<Category | null>(null);
   // القايمة مش بتظهر إلا لما اليوزر يختار قسم أو يدوس "الكل"
@@ -80,6 +80,7 @@ const HomePageV2 = () => {
               <V2HappyHour />
             </LazyRender>
 
+            {/* سكشن "العروض" — معطّل مؤقتًا
             <LazyRender minHeight={240}>
               <V2ProductSection
                 title={t("v2.offers")}
@@ -87,7 +88,7 @@ const HomePageV2 = () => {
                 limit={6}
                 excludeOfferSource="happy_hour"
               />
-            </LazyRender>
+            </LazyRender> */}
 
             <LazyRender minHeight={240}>
               <V2GoodTime
@@ -107,7 +108,7 @@ const HomePageV2 = () => {
           <>
             <div ref={menuRef} />
             {subCats.length > 0 && (
-              <div className="v2-sub-pills" dir="ltr">
+              <div className="v2-sub-pills">
                 <button
                   type="button"
                   className={`v2-sub-pill ${activeSub === null ? "active" : ""}`}

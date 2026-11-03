@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { Card, Form } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { useAppSelector } from "../../Hooks/hooks";
 import FavTimeSlider from "../FavTimeSlider/FavTimeSlider";
 import { useTranslation } from "react-i18next"; // ✅ تم إضافة الترجمة
@@ -92,25 +92,20 @@ const FavTimeSelectForOrder: React.FC<FavTimeSelectForOrderProps> = React.memo(
         <div className="w-100">
           <h4 className="mb-3 fw-semibold">{t("checkout.favorite_time")}</h4>
 
-          <div className="d-flex gap-4 mb-3 align-items-center">
-            <Form.Check
-              type="radio"
-              id="today"
-              label={t("checkout.today")}
-              name="daySelect"
-              checked={dayOffset === 0}
-              onChange={() => setDayOffset(0)}
-              className="custom-radio-fav"
-            />
-            <Form.Check
-              type="radio"
-              id="tomorrow"
-              label={t("checkout.tomorrow")}
-              name="daySelect"
-              checked={dayOffset === 1}
-              onChange={() => setDayOffset(1)}
-              className="custom-radio-fav"
-            />
+          <div className="fav-day-toggle">
+            {[
+              { label: t("checkout.today"), value: 0 },
+              { label: t("checkout.tomorrow"), value: 1 },
+            ].map((d) => (
+              <button
+                key={d.value}
+                type="button"
+                className={`fav-day-pill ${dayOffset === d.value ? "active" : ""}`}
+                onClick={() => setDayOffset(d.value)}
+              >
+                {d.label}
+              </button>
+            ))}
           </div>
 
           <FavTimeSlider timeSlots={OrderTimes} onSelectTime={handleTimeSelect} />

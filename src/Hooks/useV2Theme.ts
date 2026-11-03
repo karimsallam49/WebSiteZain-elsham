@@ -4,7 +4,7 @@ const KEY = "v2-theme-mode";
 export type V2ThemeMode = "v2" | "v2-light";
 
 export const getV2ThemeMode = (): V2ThemeMode =>
-  (localStorage.getItem(KEY) as V2ThemeMode) || "v2";
+  (localStorage.getItem(KEY) as V2ThemeMode) || "v2-light";
 
 export const applyV2ThemeMode = (mode: V2ThemeMode) => {
   document.documentElement.dataset.theme = mode;

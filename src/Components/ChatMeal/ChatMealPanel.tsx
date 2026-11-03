@@ -8,7 +8,6 @@ import { useCart } from "../../Hooks/useCart";
 import { fetchRandomMeal, fetchTermCategories } from "../../utilities/termsApi";
 import { ImageUrl } from "../../EndPoints/EndPoints";
 import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14.jpeg";
-import { ProductModal } from "../ProductsDetails/ProductModal";
 import FeedbackToast from "../FeedbackToast/FeedbackToast";
 import type { ProductDTO } from "../../DTO/ProductsDTO";
 import type {
@@ -19,6 +18,8 @@ import type {
 
 interface Props {
   onClose: () => void;
+  /** يفتح مودال المنتج من الأب — الشات بيقفل عشان المودال يبان */
+  onShowProduct: (product: ProductDTO) => void;
 }
 
 interface Msg {
@@ -43,7 +44,7 @@ const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 const isDietCategory = (name: string): boolean =>
   /ريجيم|دايت|diet/i.test(name);
 
-const ChatMealPanel = ({ onClose }: Props) => {
+const ChatMealPanel = ({ onClose, onShowProduct }: Props) => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const { add: addToCartUnified } = useCart();
@@ -57,7 +58,6 @@ const ChatMealPanel = ({ onClose }: Props) => {
   const [chips, setChips] = useState<Chip[]>([]);
   const categoriesRef = useRef<TermCategoryDTO[]>([]);
   const [nextTerm, setNextTerm] = useState<NextTermDTO | null>(null);
-  const [modalProduct, setModalProduct] = useState<ProductDTO | null>(null);
   const [showToast, setShowToast] = useState(false);
 
   const filtersRef = useRef<RandomMealFilters>({});
@@ -260,7 +260,7 @@ const ChatMealPanel = ({ onClose }: Props) => {
           solid: true,
           action: () => {
             if (Number(product.price) === 0 || product.variations?.length) {
-              setModalProduct(product);
+              onShowProduct(product);
               return;
             }
             addToCartUnified({ ...product, price: Number(product.price) }, 1);
@@ -269,7 +269,7 @@ const ChatMealPanel = ({ onClose }: Props) => {
         },
         {
           label: t("chatMeal.actions.details"),
-          action: () => setModalProduct(product),
+          action: () => onShowProduct(product),
         },
         {
           label: t("chatMeal.actions.retry"),
@@ -486,14 +486,6 @@ const ChatMealPanel = ({ onClose }: Props) => {
           )}
         </div>
       </div>
-
-      {modalProduct && (
-        <ProductModal
-          show={!!modalProduct}
-          handleClose={() => setModalProduct(null)}
-          product={modalProduct}
-        />
-      )}
 
       <FeedbackToast
         message={t("item_added_successfully")}

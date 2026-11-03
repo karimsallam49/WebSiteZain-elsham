@@ -9,15 +9,14 @@ import {
   Col,
   Card,
   InputGroup,
-  Dropdown,
-  Image,
 } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
+import { useAppDispatch } from "../../Hooks/hooks";
 import { actOTPLogin } from "../../store/Auth/OTP/actOTPLogin";
 import { actVerifyPhone } from "../../store/Auth/OTP/actVerifiyPhone";
-import mobileCodePic from "../../assets/svg/otp_verification.svg"
-import { ResturantIMG } from "../../EndPoints/EndPoints";
+import mobileCodePic from "../../assets/image/OTP.webp"
+import zainGif from "../../assets/image/Zain El Sham - Transparent.webp"
+import object3Png from "../../assets/image/object3.webp"
 import ButtonComponent from "../../Components/Button/ButtonComponent";
 import { useTranslation } from "react-i18next";
 import { actLoginByPhone } from "../../store/Auth/OTP/actLoginByPhone";
@@ -44,7 +43,7 @@ const RegisterWithOTP = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>(countryList[0]);
+  const selectedCountry = countryList[0]; // كود الدولة ثابت على مصر
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otpDigits, setOtpDigits] = useState(Array(6).fill(""));
   const [showOtpField, setShowOtpField] = useState(false);
@@ -61,11 +60,17 @@ const [firstName, setFirstName] = useState("");
 const [lastName, setLastName] = useState("");
 const [registerPassword, setRegisterPassword] = useState("");
     const location = useLocation();
-const { t } = useTranslation();
+const { t, i18n } = useTranslation();
 
-  const {resturantdata}=useAppSelector((state)=>state.restaurantSettingsSlice)
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
-const logoImage = `${ResturantIMG}/${resturantdata?.restaurant_logo}`;
+
+  // لوجو البراند — الإمبلم المتحرّك فوق اسم المطعم
+  const brandLogo = (
+    <div className="otp-brand">
+      <img src={zainGif} alt="Zain El Sham" />
+      <img src={object3Png} alt="" />
+    </div>
+  );
 
   useEffect(() => {
     if (showOtpField) {
@@ -273,7 +278,7 @@ const handleLoginWithPassword = async () => {
   const allFilled = otpDigits.every((d) => d !== "");
 
   return (
-    <Container className="py-5 d-flex align-items-center justify-content-center otp-login-page" dir="ltr" style={{ height: "90vh" }}>
+    <Container className="py-5 d-flex align-items-center justify-content-center otp-login-page" dir={i18n.dir()} style={{ minHeight: "92vh" }}>
       <Row className="justify-content-center w-100">
         <Col md={6} lg={5}>
           <Card className="shadow-lg p-4 rounded-4 border-0">
@@ -286,16 +291,14 @@ const handleLoginWithPassword = async () => {
 
               {showRegistureFiled && (
                 <>
-                  <div style={{ height: "20vh" }} className="logo w-100 d-flex align-items-center justify-content-center">
-                    <img className="object-fit-contain" style={{ width: "100%", height: "60px" }} src={logoImage} alt="" />
-                  </div>
+                  {brandLogo}
 
                   <div className="text-center mb-4 fw-semibold">
-                    Complete your registration
+                    {t("checkout.otp_complete_reg")}
                   </div>
 
                   <Form.Group className="mb-3">
-                    <Form.Label>First Name</Form.Label>
+                    <Form.Label>{t("checkout.otp_first_name")}</Form.Label>
                     <Form.Control
                       type="text"
                       value={firstName}
@@ -304,7 +307,7 @@ const handleLoginWithPassword = async () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3">
-                    <Form.Label>Last Name</Form.Label>
+                    <Form.Label>{t("checkout.otp_last_name")}</Form.Label>
                     <Form.Control
                       type="text"
                       value={lastName}
@@ -313,7 +316,7 @@ const handleLoginWithPassword = async () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>{t("checkout.otp_password")}</Form.Label>
                     <Form.Control
                       type="password"
                       value={registerPassword}
@@ -323,7 +326,7 @@ const handleLoginWithPassword = async () => {
                   <div className="w-100 d-flex align-items-center justify-content-center">
 
                   <ButtonComponent
-                    text="Register"
+                    text={t("checkout.otp_register")}
                     loading={loading}
                     onClick={handleRegister}
                     className="w-100"
@@ -334,20 +337,18 @@ const handleLoginWithPassword = async () => {
 
               {showLoginFiled && !showRegistureFiled && (
                 <>
-                  <div style={{ height: "20vh" }} className="logo w-100 d-flex align-items-center justify-content-center">
-                    <img className="object-fit-contain" style={{ width: "100%", height: "60px" }} src={logoImage} alt="" />
-                  </div>
+                  {brandLogo}
 
                   <div className="text-center mb-4 fw-semibold">
-                    Enter your password to continue
+                    {t("checkout.otp_enter_password")}
                   </div>
 
 
                   <Form.Group className="mb-3">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>{t("checkout.otp_password")}</Form.Label>
                     <Form.Control
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder={t("checkout.otp_password")}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -355,13 +356,13 @@ const handleLoginWithPassword = async () => {
 
                   <div className="w-100 text-end">
                     <Link to="/forget-password">
-                      Forget Password?
+                      {t("checkout.otp_forgot")}
                     </Link>
                   </div>
                   <div className="w-100 d-flex align-items-center justify-content-center">
 
                   <ButtonComponent
-                    text="Login"
+                    text={t("checkout.otp_login")}
                     className="w-100"
                     loading={loading}
                     onClick={handleLoginWithPassword}
@@ -377,7 +378,7 @@ const handleLoginWithPassword = async () => {
                       setPassword("");
                     }}
                   >
-                    Back
+                    {t("checkout.otp_back")}
                   </Button>
                 </>
               )}
@@ -385,59 +386,21 @@ const handleLoginWithPassword = async () => {
               {!showRegistureFiled && !showLoginFiled && (
                 <>
                   {showOtpField && (
-                    <div className="w-100">
-                      <img className="w-100 object-fit-contain" height={280} src={mobileCodePic} alt="" />
+                    <div className="w-100 d-flex justify-content-center">
+                      <img className="object-fit-contain" style={{ width: "55%" }} src={mobileCodePic} alt="" />
                     </div>
                   )}
 
                   {!showOtpField && (
                     <>
-                      <div style={{ height: "20vh" }} className="logo w-100 d-flex align-items-center justify-content-center">
-                        <img className="object-fit-contain" style={{ width: "100%", height: "60px" }} src={logoImage} alt="" />
-                      </div>
+                      {brandLogo}
                       <Form onSubmit={handleSendOtp}>
                         <Form.Group controlId="phone" className="mb-3">
-                          <Form.Label>Phone Number</Form.Label>
+                          <Form.Label>{t("checkout.otp_phone_label")}</Form.Label>
                           <InputGroup className="phone-input-group">
-                            <Dropdown
-                              onSelect={(iso) => {
-                                const c = countryList.find((x) => x.iso === iso);
-                                if (c) setSelectedCountry(c);
-                              }}
-                            >
-                              <Dropdown.Toggle variant="light" className="d-flex align-items-center">
-                                <Image
-                                  src={selectedCountry.flag}
-                                  alt={selectedCountry.name}
-                                  rounded
-                                  style={{ width: 18, height: 16, marginRight: 8 }}
-                                />
-                                <span style={{ minWidth: 18 }}>{selectedCountry.code}</span>
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu style={{ maxHeight: 250, overflowY: "auto" }}>
-                                {countryList.map((c) => (
-                                  <Dropdown.Item
-                                    key={c.iso}
-                                    eventKey={c.iso}
-                                    active={c.iso === selectedCountry.iso}
-                                  >
-                                    <div className="d-flex align-items-center">
-                                      <Image
-                                        src={c.flag}
-                                        alt={c.name}
-                                        rounded
-                                        style={{ width: 18, height: 14, marginRight: 8 }}
-                                      />
-                                      <span style={{ flex: 1 }}>{c.name}</span>
-                                      <small className="text-muted">{c.code}</small>
-                                    </div>
-                                  </Dropdown.Item>
-                                ))}
-                              </Dropdown.Menu>
-                            </Dropdown>
                             <Form.Control
                               type="tel"
-                              placeholder="Enter your phone number"
+                              placeholder={t("checkout.otp_phone_placeholder")}
                               value={phoneNumber}
                               onChange={(e) => setPhoneNumber(e.target.value)}
                               required
@@ -447,7 +410,7 @@ const handleLoginWithPassword = async () => {
                         </Form.Group>
 
                         <Button type="submit" className="backgroundMainColor border-0 w-100" disabled={loading}>
-                          {loading ? <Spinner size="sm" animation="border" /> : "Send OTP"}
+                          {loading ? <Spinner size="sm" animation="border" /> : t("checkout.otp_send")}
                         </Button>
                       </Form>
                     </>
@@ -457,14 +420,14 @@ const handleLoginWithPassword = async () => {
                   {showOtpField && (
                     <>
                       <div className="text-center mb-3 fw-semibold">
-                        Enter the 6-digit code sent to{" "}
+                        {t("checkout.otp_sent_to")}{" "}
                         <span className="text-primary">
                           {selectedCountry.code}
                           {formatPhoneNumber(phoneNumber)}
                         </span>
                       </div>
 
-                      <div className="d-flex justify-content-center gap-2 mb-3">
+                      <div className="d-flex justify-content-center gap-2 mb-3" dir="ltr">
                         {otpDigits.map((digit, i) => (
                           <Form.Control
                             key={i}
@@ -498,10 +461,10 @@ const handleLoginWithPassword = async () => {
                               className="p-0 text-decoration-none"
                               onClick={() => handleSendOtp()}
                             >
-                              Resend
+                              {t("checkout.otp_resend")}
                             </Button>
                           ) : (
-                            <>Resend in {timer}s</>
+                            <>{t("checkout.otp_resend_in", { timer })}</>
                           )}
                         </small>
                       </div>
@@ -509,9 +472,10 @@ const handleLoginWithPassword = async () => {
                       {allFilled && (
                         <div className="w-100">
                           <ButtonComponent
-                            text="Apply"
+                            text={t("checkout.otp_apply")}
                             loading={loading}
                             onClick={handleVerifyOtp}
+                            className="w-100"
                           />
                         </div>
                       )}
@@ -524,7 +488,7 @@ const handleLoginWithPassword = async () => {
                         }}
                         className="w-100 mt-3 text-decoration-none"
                       >
-                        Change phone number
+                        {t("checkout.otp_change_phone")}
                       </Button>
                     </>
                   )}

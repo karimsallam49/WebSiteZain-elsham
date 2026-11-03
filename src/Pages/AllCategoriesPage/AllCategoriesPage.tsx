@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import Categoryplaceholder from "../../assets/BackGround.png";
+import Categoryplaceholder from "../../assets/BackGround.webp";
 import { useNavigate } from "react-router-dom";
 import "./Categoriesstyle.css";
 import { SectionName } from "../../Components/SectionName/SectionName";

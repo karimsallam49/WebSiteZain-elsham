@@ -12,7 +12,7 @@ import {
   CookingPot,
   Truck,
 } from "lucide-react";
-import DeliverMan from "../../assets/image/delivery-man.gif";
+import DeliverMan from "../../assets/image/delivery-man.webp";
 import { Button } from "react-bootstrap";
 import ConfirmPic from "../../assets/image/check_circle.png";
 import { useTranslation } from "react-i18next";

@@ -104,7 +104,11 @@ const AdressPageInfo = () => {
                     </div>
                   )}
                   {isAreaType && !el.delivery_area && (
-                    <div className="text-danger small mt-2">
+                    <div
+                      className="text-danger small mt-2"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => EditeAction(el)}
+                    >
                       ⚠ {t("addressinfo.area_missing")}
                     </div>
                   )}

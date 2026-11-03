@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { ArrowDownLeft, ArrowUpRight, Star, Wallet } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
+import { useAppSelector } from "../../Hooks/hooks";
 import {
   WalletTransactionsUrl,
-  TransferPointsUrl,
+  // TransferPointsUrl, // معطّل مؤقتًا مع سكشن تحويل النقاط
   WalletBonusUrl,
 } from "../../EndPoints/EndPoints";
-import { actGetUser } from "../../store/User/actGetUser";
+// import { actGetUser } from "../../store/User/actGetUser"; // معطّل مع سكشن التحويل
 import FeedbackToast from "../../Components/FeedbackToast/FeedbackToast";
 import "./WalletPage.css";
 
@@ -32,7 +32,7 @@ interface WalletBonus {
 
 const WalletPage = () => {
   const { t, i18n } = useTranslation();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch(); // معطّل مع سكشن التحويل
 
   const { UserData } = useAppSelector((s) => s.UserInfoSLice);
   const { OTPToken } = useAppSelector((s) => s.OTPauthconfigration);
@@ -43,8 +43,8 @@ const WalletPage = () => {
 
   const [transactions, setTransactions] = useState<WalletTx[]>([]);
   const [bonuses, setBonuses] = useState<WalletBonus[]>([]);
-  const [pointsInput, setPointsInput] = useState("");
-  const [transferring, setTransferring] = useState(false);
+  // const [pointsInput, setPointsInput] = useState(""); // معطّل مع سكشن التحويل
+  // const [transferring, setTransferring] = useState(false);
   const [toast, setToast] = useState<{
     show: boolean;
     message: string;
@@ -54,9 +54,10 @@ const WalletPage = () => {
   const walletEnabled = resturantdata?.wallet_status === 1;
   const balance = Number(UserData?.wallet_balance) || 0;
   const userPoints = Number(UserData?.point) || 0;
-  const exchangeRate = Number(resturantdata?.loyalty_point_exchange_rate) || 0;
-  const minPoints = Number(resturantdata?.loyalty_point_minimum_point) || 0;
-  const loyaltyOn = resturantdata?.loyalty_point_status === 1;
+  // معطّل مع سكشن التحويل
+  // const exchangeRate = Number(resturantdata?.loyalty_point_exchange_rate) || 0;
+  // const minPoints = Number(resturantdata?.loyalty_point_minimum_point) || 0;
+  // const loyaltyOn = resturantdata?.loyalty_point_status === 1;
 
   const headers = {
     Authorization: `Bearer ${OTPToken}`,
@@ -86,26 +87,27 @@ const WalletPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [OTPToken, walletEnabled]);
 
-  const handleTransfer = async () => {
-    const pts = Number(pointsInput);
-    if (!pts || pts <= 0) return;
-    setTransferring(true);
-    try {
-      await axios.post(TransferPointsUrl, { point: pts }, { headers });
-      setToast({ show: true, message: t("walletPage.transfer_success"), type: "success" });
-      setPointsInput("");
-      dispatch(actGetUser());
-      fetchTransactions();
-    } catch (err: any) {
-      const msg =
-        err?.response?.data?.errors?.[0]?.message ||
-        err?.response?.data?.message ||
-        t("walletPage.transfer_error");
-      setToast({ show: true, message: msg, type: "error" });
-    } finally {
-      setTransferring(false);
-    }
-  };
+  // معطّل مع سكشن تحويل النقاط
+  // const handleTransfer = async () => {
+  //   const pts = Number(pointsInput);
+  //   if (!pts || pts <= 0) return;
+  //   setTransferring(true);
+  //   try {
+  //     await axios.post(TransferPointsUrl, { point: pts }, { headers });
+  //     setToast({ show: true, message: t("walletPage.transfer_success"), type: "success" });
+  //     setPointsInput("");
+  //     dispatch(actGetUser());
+  //     fetchTransactions();
+  //   } catch (err: any) {
+  //     const msg =
+  //       err?.response?.data?.errors?.[0]?.message ||
+  //       err?.response?.data?.message ||
+  //       t("walletPage.transfer_error");
+  //     setToast({ show: true, message: msg, type: "error" });
+  //   } finally {
+  //     setTransferring(false);
+  //   }
+  // };
 
   if (!walletEnabled) {
     return (
@@ -139,8 +141,8 @@ const WalletPage = () => {
         </div>
       </div>
 
-      {/* تحويل نقاط */}
-      {loyaltyOn && exchangeRate > 0 && (
+      {/* تحويل نقاط — معطّل مؤقتًا، مش عايزين اليوزر يبدل النقط لمحفظة دلوقتي */}
+      {/* {loyaltyOn && exchangeRate > 0 && (
         <div className="wallet-card">
           <div className="wallet-card-title">{t("walletPage.transfer_title")}</div>
           <p className="wallet-card-hint">
@@ -167,7 +169,7 @@ const WalletPage = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* البونصات */}
       {bonuses.length > 0 && (

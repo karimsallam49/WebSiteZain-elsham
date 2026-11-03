@@ -46,7 +46,7 @@ export interface PlaceOrderDTO {
   delivery_date: string;      
   branch_id: number;
   distance: number;
-  selected_delivery_area: number;
+  selected_delivery_area: number | null;
   delivery_address: AddressDTO|null;
   is_partial: "0" | "1";
   is_cutlery_required: "0" | "1";

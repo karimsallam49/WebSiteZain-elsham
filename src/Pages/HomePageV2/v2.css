@@ -54,10 +54,32 @@ html[data-theme="v2"] .all-layout {
   direction: ltr;
 }
 
+.v2-topbar-start {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
 .v2-topbar-actions {
   display: flex;
   align-items: center;
   gap: 0.45rem;
+}
+
+/* زرار المنيو — ديسكتوب بس، الموبايل عنده ☰ في الـ bottom nav */
+@media (max-width: 991.98px) {
+  .v2-icon-btn.v2-menu-btn,
+  .v2-icon-btn.v2-desktop-only {
+    display: none;
+  }
+}
+
+/* صفحات جوه V2PageShell بترجع .v2-inner بنفسها (زي /search) —
+   منعش بوردر وعرض مزدوج لما تتداخل */
+.v2-shell .v2-inner .v2-inner {
+  border-inline: none;
+  max-width: none;
 }
 
 .v2-icon-btn {
@@ -145,6 +167,19 @@ html[data-theme="v2"] .all-layout {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 60%;
+}
+
+/* حالة "خارج نطاق التوصيل" — الصف نفسه بيبقى alert أحمر */
+.v2-address-row.oor {
+  background: rgba(229, 72, 77, 0.12);
+  border-bottom-color: rgba(229, 72, 77, 0.35);
+}
+.v2-address-row.oor .v2-addr-text {
+  color: #e5484d;
+  font-weight: 700;
+}
+.v2-address-row.oor .v2-addr-label {
+  color: rgba(229, 72, 77, 0.75);
 }
 
 .v2-search {
@@ -345,7 +380,8 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
   content: "";
   display: block;
   width: 18px;
-  height: 2px;
+  height: 4px;
+  border-radius: 999px;
   background: rgba(252, 225, 182, 0.35);
   opacity: 1;
   transition: background 0.3s ease, width 0.3s ease;

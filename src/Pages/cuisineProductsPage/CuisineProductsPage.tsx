@@ -7,7 +7,7 @@ import type { ProductDTO } from "../../DTO/ProductsDTO";
 import { ProductModal } from "../../Components/ProductsDetails/ProductModal";
 import { GetDataComponent } from "../../Components/GetDataComponents/GetDataComponent";
 import "./CategoryPage.css";
-import imageplaceholder from "../../assets/BackGround.png";
+import imageplaceholder from "../../assets/BackGround.webp";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../Hooks/hooks";
 import { throttle } from "../../utilities/throttle";

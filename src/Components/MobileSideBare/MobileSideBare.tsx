@@ -27,6 +27,8 @@ import { useAppSelector, useAppDispatch } from "../../Hooks/hooks";
 import { useTranslation } from "react-i18next";
 import ConfirmPopup from "../confirmPopup/ConfirmPopup";
 import { logout } from "../../store/Auth/OTP/LoginSlice";
+import { clearuserinfo } from "../../store/User/userSlice";
+import { addadress, clearadress } from "../../store/Adress/AdressSlice";
 import { useV2Theme } from "../../Hooks/useV2Theme";
 import { setLanguage } from "../../store/Language/LanguageSlice";
 import i18n from "../../i18n";
@@ -57,6 +59,10 @@ const MobileSideBare = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    // صفّر بيانات اليوزر والعناوين — الـ sidebar يرجع guest فورًا بدون ريفريش
+    dispatch(clearuserinfo());
+    dispatch(clearadress());
+    dispatch(addadress(null));
     setIsOpen(false);
   };
 
@@ -107,7 +113,7 @@ const MobileSideBare = () => {
       {/* زر فتح القائمة */}
       <Button
         variant="light"
-        className="rounded-3 shadow-sm"
+        className="rounded-3"
         style={{ fontSize: "x-large", color: "gray" }}
         onClick={() => setIsOpen(true)}
       >
@@ -206,7 +212,10 @@ const MobileSideBare = () => {
                 <button
                   type="button"
                   className="msb-row msb-danger"
-                  onClick={() => setShowLogoutConfirm(true)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setShowLogoutConfirm(true);
+                  }}
                 >
                   <LogOut size={20} />
                   <span>{t("Logout")}</span>

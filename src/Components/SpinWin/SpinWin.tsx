@@ -3,20 +3,29 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { X, Sparkles, Copy, Check, Coins } from "lucide-react";
+import { X, Copy, Check, Coins, Trophy } from "lucide-react";
 import { useAppSelector } from "../../Hooks/hooks";
 import {
   spinConfigUrl,
   spinDoUrl,
   spinBuyUrl,
+  spinTermsUrl,
 } from "../../EndPoints/EndPoints";
 import type {
   SpinConfigResponse,
   SpinResultResponse,
 } from "../../DTO/SpinWinDTO";
+import spinBaseOn from "../../assets/SpinImage/Spin-the-Wheel.webp";
+import spinBaseOff from "../../assets/SpinImage/Spin-the-Wheel_2.webp";
 import "./SpinWin.css";
 
 const FALLBACK_COLORS = ["#c9a24b", "#16263a", "#8a6a2f", "#1e3a55", "#a3803d", "#0f1a2b"];
+
+interface SpinTermsResponse {
+  terms: string;
+  terms_en?: string;
+  terms_ar?: string;
+}
 
 interface Props {
   onClose: () => void;
@@ -38,6 +47,9 @@ const SpinWin = ({ onClose }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [termsData, setTermsData] = useState<SpinTermsResponse | null>(null);
+  const [termsLoading, setTermsLoading] = useState(false);
 
   const headers = useMemo(
     () => ({
@@ -95,11 +107,18 @@ const SpinWin = ({ onClose }: Props) => {
         { headers }
       );
       const data = res.data;
-      // حرّك العجلة على winning_index — ده النتيجة الحقيقية
-      const target =
-        360 * 6 - (data.winning_index * segAngle + segAngle / 2);
+      // حرّك العجلة على winning_index — ده النتيجة الحقيقية.
+      // لازم نكمّل من الـ rotation الحالي ونضيف لفات لقدام —
+      // لو حسبنا من الصفر تاني، اللفة الجاية ممكن ترجع للورا أو متتحركش
+      const targetMod =
+        ((-(data.winning_index * segAngle + segAngle / 2)) % 360 + 360) % 360;
       setSpinning(true);
-      setRotation(target);
+      setRotation((prev) => {
+        const prevMod = ((prev % 360) + 360) % 360;
+        let delta = targetMod - prevMod;
+        if (delta <= 0) delta += 360;
+        return prev + 360 * 5 + delta;
+      });
       window.setTimeout(() => {
         setResult(data);
         setSpinning(false);
@@ -134,6 +153,26 @@ const SpinWin = ({ onClose }: Props) => {
     }
   };
 
+  const openTerms = async () => {
+    setShowTerms(true);
+    if (termsData || termsLoading) return;
+    setTermsLoading(true);
+    try {
+      const res = await axios.get<SpinTermsResponse>(spinTermsUrl, { headers });
+      setTermsData(res.data);
+    } catch {
+      setTermsData({ terms: t("spinWin.loadError") });
+    } finally {
+      setTermsLoading(false);
+    }
+  };
+
+  const termsText = termsData
+    ? isAr
+      ? termsData.terms_ar || termsData.terms
+      : termsData.terms_en || termsData.terms
+    : null;
+
   const copyCode = (code: string) => {
     navigator.clipboard?.writeText(code);
     setCopied(code);
@@ -159,12 +198,39 @@ const SpinWin = ({ onClose }: Props) => {
           <X size={18} />
         </button>
 
-        <h3 className="sw-title">
-          <Sparkles size={18} color="var(--v2-gold)" />
-          {t("spinWin.title")}
-        </h3>
+        {config && !showTerms && (
+          <div className="sw-spins-chip">
+            <Trophy size={13} />
+            {t("spinWin.spinsLeft")}: <b>{config.spins.total}</b>
+          </div>
+        )}
 
-        {!OTPToken ? (
+        {showTerms ? (
+          <div className="sw-terms-view">
+            <div className="sw-title-icon">
+              <Trophy size={20} />
+            </div>
+            <h3 className="sw-title">{t("spinWin.terms")}</h3>
+            <div className="sw-terms-text">
+              {termsLoading ? t("v2.loadingDishes") : (termsText ?? "—")}
+            </div>
+            <button
+              type="button"
+              className="sw-spin-btn"
+              onClick={() => setShowTerms(false)}
+            >
+              {t("spinWin.back")}
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="sw-title-icon">
+              <Trophy size={20} />
+            </div>
+            <h3 className="sw-title">{t("spinWin.title")}</h3>
+            <p className="sw-sub">{t("spinWin.promoText")}</p>
+
+            {!OTPToken ? (
           <div className="sw-login">
             <p>{t("spinWin.loginToSpin")}</p>
             <Link to="/register-otp" className="sw-login-btn" onClick={onClose}>
@@ -177,49 +243,88 @@ const SpinWin = ({ onClose }: Props) => {
           <div className="sw-loading">{t("spinWin.unavailable")}</div>
         ) : (
           <>
-            {/* العجلة */}
-            <div className="sw-wheel-wrap" dir="ltr">
-              <div className="sw-pointer" />
-              <svg
-                className={`sw-wheel${spinning ? " spinning" : ""}`}
-                viewBox={`0 0 ${SIZE} ${SIZE}`}
-                style={{ transform: `rotate(${rotation}deg)` }}
-              >
-                {segments.map((seg, i) => (
-                  <path
-                    key={seg.id}
-                    d={wedgePath(i, R, CX, CY)}
-                    fill={seg.color || FALLBACK_COLORS[i % FALLBACK_COLORS.length]}
-                    stroke="#0e1526"
-                    strokeWidth="1"
+            {/* العجلة فوق القاعدة الذهبية — الأنوار بتومض وقت اللف */}
+            <div
+              className={`sw-stage${spinning ? " spinning" : ""}${
+                result?.prize?.type ? " won" : ""
+              }`}
+              dir="ltr"
+            >
+              <div className="sw-pointer">
+                <Trophy size={15} />
+              </div>
+              <div className="sw-wheel-enter">
+                <svg
+                  className="sw-wheel"
+                  viewBox={`0 0 ${SIZE} ${SIZE}`}
+                  style={{ transform: `rotate(${rotation}deg)` }}
+                >
+                  <circle
+                    cx={CX}
+                    cy={CY}
+                    r={R + 2}
+                    fill="none"
+                    stroke="#d9b565"
+                    strokeWidth="7"
                   />
-                ))}
-                {segments.map((seg, i) => {
-                  const mid = i * segAngle + segAngle / 2;
-                  const p = pointAt(mid, R * 0.62, CX, CY);
-                  return (
-                    <text
-                      key={`t-${seg.id}`}
-                      x={p.x}
-                      y={p.y}
-                      fill="#fff"
-                      fontSize="10"
-                      fontWeight="700"
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      transform={`rotate(${mid}, ${p.x}, ${p.y})`}
-                    >
-                      {segLabel(seg)}
-                    </text>
-                  );
-                })}
-              </svg>
-              <div className="sw-hub" />
-            </div>
-
-            {/* عدد اللفات */}
-            <div className="sw-spins">
-              {t("spinWin.spinsLeft")}: <b>{config.spins.total}</b>
+                  {segments.map((seg, i) => (
+                    <path
+                      key={seg.id}
+                      d={wedgePath(i, R, CX, CY)}
+                      fill={seg.color || FALLBACK_COLORS[i % FALLBACK_COLORS.length]}
+                      stroke="rgba(0,0,0,0.25)"
+                      strokeWidth="1"
+                    />
+                  ))}
+                  {segments.map((seg, i) => {
+                    const mid = i * segAngle + segAngle / 2;
+                    const p = pointAt(mid, R * 0.62, CX, CY);
+                    return (
+                      <text
+                        key={`t-${seg.id}`}
+                        x={p.x}
+                        y={p.y}
+                        fill="#fff"
+                        fontSize="10"
+                        fontWeight="700"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        transform={`rotate(${mid}, ${p.x}, ${p.y})`}
+                      >
+                        {segLabel(seg)}
+                      </text>
+                    );
+                  })}
+                  {/* لمبات على إطار العجلة — بتومض بالتناوب وقت اللف */}
+                  {Array.from({ length: 16 }).map((_, i) => {
+                    const p = pointAt((360 / 16) * i, R + 2, CX, CY);
+                    return (
+                      <circle
+                        key={`b-${i}`}
+                        cx={p.x}
+                        cy={p.y}
+                        r="3.4"
+                        className={`sw-bulb ${i % 2 ? "b" : "a"}`}
+                      />
+                    );
+                  })}
+                </svg>
+                <div className="sw-hub" />
+              </div>
+              <div className="sw-base">
+                <img
+                  src={spinBaseOff}
+                  alt=""
+                  className="sw-base-img"
+                  draggable={false}
+                />
+                <img
+                  src={spinBaseOn}
+                  alt=""
+                  className="sw-base-img sw-base-on"
+                  draggable={false}
+                />
+              </div>
             </div>
 
             {/* النتيجة */}
@@ -270,6 +375,7 @@ const SpinWin = ({ onClose }: Props) => {
             {config.pending_prizes.length > 0 && (
               <div className="sw-prizes">
                 <h4>{t("spinWin.yourPrizes")}</h4>
+                <p className="sw-prizes-hint">{t("spinWin.prizesHint")}</p>
                 {config.pending_prizes.map((p) => (
                   <div key={p.id} className="sw-prize-row">
                     <span className="sw-prize-label">{p.label}</span>
@@ -296,6 +402,16 @@ const SpinWin = ({ onClose }: Props) => {
                 ))}
               </div>
             )}
+
+            <button
+              type="button"
+              className="sw-terms-link"
+              onClick={openTerms}
+            >
+              {t("spinWin.terms")}
+            </button>
+          </>
+        )}
           </>
         )}
       </div>

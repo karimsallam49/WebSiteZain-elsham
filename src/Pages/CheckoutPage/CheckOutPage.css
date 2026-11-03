@@ -85,6 +85,56 @@
   color: #333;
 }
 
+/* صف اختيار عنوان في مودال تحديث البيانات */
+.addr-pick {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--v2-hairline, #e8e2d5);
+  background: #fff;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.addr-pick:hover {
+  border-color: var(--v2-gold, var(--MainColor, #a9813f));
+}
+.addr-pick.active {
+  border-color: var(--v2-gold, var(--MainColor, #a9813f));
+  background: rgba(201, 163, 91, 0.1);
+}
+.addr-pick-pin {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--v2-gold, var(--MainColor, #a9813f));
+}
+.addr-pick-check {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--v2-gold, var(--MainColor, #a9813f));
+}
+.addr-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.9rem;
+  border: 1.5px dashed var(--v2-gold, var(--MainColor, #a9813f));
+  border-radius: 999px;
+  color: var(--v2-gold, var(--MainColor, #a9813f));
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.addr-add:hover {
+  background: rgba(201, 163, 91, 0.12);
+  color: var(--v2-gold, var(--MainColor, #a9813f));
+}
+
 @media (max-width: 767px) {
   .cart-page .card img {
     height: 60px !important;
@@ -144,4 +194,23 @@
     padding-top: 4rem !important;
     padding-bottom: 7rem !important;
   }
+}
+
+/* تحذير "خارج نطاق التوصيل" فوق زرار الطلب — alert أحمر بنفس روح V2 */
+.oor-checkout-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.9rem 0 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  background: rgba(229, 72, 77, 0.12);
+  border: 1px solid rgba(229, 72, 77, 0.35);
+  color: #e5484d;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.oor-checkout-hint svg {
+  flex-shrink: 0;
 }

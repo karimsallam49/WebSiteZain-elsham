@@ -65,6 +65,37 @@ html[data-theme^="v2"] .all-layout {
   overflow-y: visible !important;
 }
 
+/* صفحات V1 على الموبايل كانت بتعمل scroll جوا نفسها
+   (height:100vh + overflow-y:auto لأن .all-layout كان مقفول)
+   في V2 الـ window هو اللي بيعمل scroll — لو سيبنا الـ scroll الداخلي
+   بيظهر scrollbarين فوق بعض. بنلغي الـ height/overflow بس، والـ padding
+   بيفضل عشان الـ MobilePageHeader الـ fixed والـ BottomNav */
+@media (max-width: 992px) {
+  html[data-theme^="v2"] .cart-page,
+  html[data-theme^="v2"] .notification-page,
+  html[data-theme^="v2"] .all-categories-page,
+  html[data-theme^="v2"] .my-orders-page,
+  html[data-theme^="v2"] .coupon-page,
+  html[data-theme^="v2"] .order-tracking,
+  html[data-theme^="v2"] .order-details,
+  html[data-theme^="v2"] .order-complete-page,
+  html[data-theme^="v2"] .select-branch-page,
+  html[data-theme^="v2"] .support-page,
+  html[data-theme^="v2"] .cuisine-page,
+  html[data-theme^="v2"] .adress-info-page,
+  html[data-theme^="v2"] .address-page,
+  html[data-theme^="v2"] .login-page,
+  html[data-theme^="v2"] .otp-login-page,
+  html[data-theme^="v2"] .forgot-password-page,
+  html[data-theme^="v2"] .payment-status-page,
+  html[data-theme^="v2"] .wishlist-page,
+  html[data-theme^="v2"] .static-page {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
 html[data-theme^="v2"] * {
   font-family: var(--v2-font-body) !important;
 }

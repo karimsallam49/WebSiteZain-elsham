@@ -1,13 +1,17 @@
-import { useAppSelector } from '../../Hooks/hooks'
-import { Button, Card } from 'react-bootstrap'
-import { MapPin, Phone, User } from "lucide-react";
+import { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../../Hooks/hooks'
+import { Button, Card, Modal } from 'react-bootstrap'
+import { Check, MapPin, Phone, Plus, User } from "lucide-react";
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { addadress } from '../../store/Adress/AdressSlice'
 
 const UserInformation = () => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const { UserData, userLocation } = useAppSelector((state) => state.UserInfoSLice);
-  const { selectedAdress } = useAppSelector((state) => state.adressSlice);
+  const { selectedAdress, AdressData } = useAppSelector((state) => state.adressSlice);
+  const [showPicker, setShowPicker] = useState(false);
 
   return (
     <Card className="p-3 border-0 w-100 shadow-sm mb-3 rounded-4">
@@ -20,15 +24,14 @@ const UserInformation = () => {
                 {t("deliveryInformation")}
               </strong>
 
-              <Link to="/AdressPage" className="text-decoration-none">
-                <Button
-                  variant="link"
-                  className="p-0 text-decoration-none"
-                  style={{ color: "var(--MainColor)" }}
-                >
-                  {t("updateInfo")}
-                </Button>
-              </Link>
+              <Button
+                variant="link"
+                className="p-0 text-decoration-none"
+                style={{ color: "var(--MainColor)" }}
+                onClick={() => setShowPicker(true)}
+              >
+                {t("updateInfo")}
+              </Button>
             </div>
 
             <div className="user-info-container text-muted small d-flex flex-column align-items-start justify-content-center gap-3 w-100">
@@ -60,6 +63,70 @@ const UserInformation = () => {
           </div>
         </div>
       </div>
+
+      {/* اختيار عنوان من عناوين المستخدم — العنوان المختار هو اللي بيتبعت مع الأوردر */}
+      <Modal
+        show={showPicker}
+        onHide={() => setShowPicker(false)}
+        centered
+        scrollable
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{t("mobile_header.addresses")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-2 p-md-3">
+          {!AdressData || AdressData.length === 0 ? (
+            <div className="text-muted text-center py-4">
+              {t("checkout.no_saved_addresses")}
+            </div>
+          ) : (
+            <div className="d-flex flex-column gap-2">
+              {AdressData.map((addr) => {
+                const active = selectedAdress?.id === addr.id;
+                return (
+                  <button
+                    key={addr.id}
+                    type="button"
+                    className={`addr-pick${active ? " active" : ""}`}
+                    onClick={() => {
+                      dispatch(addadress(addr));
+                      setShowPicker(false);
+                    }}
+                  >
+                    <MapPin size={16} className="addr-pick-pin" />
+                    <span className="text-start flex-grow-1">
+                      <span className="d-block fw-bold">{addr.address_type}</span>
+                      {addr.contact_person_name && (
+                        <span className="d-block small">
+                          {addr.contact_person_name}
+                          {addr.contact_person_number && (
+                            <> — <bdi dir="ltr">{addr.contact_person_number}</bdi></>
+                          )}
+                        </span>
+                      )}
+                      <span className="d-block small text-muted">{addr.address}</span>
+                      {addr.delivery_area && (
+                        <span className="d-block small text-muted">
+                          {addr.delivery_area.area_name}
+                        </span>
+                      )}
+                    </span>
+                    {active && <Check size={18} className="addr-pick-check" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          <Link
+            to="/AdressPage"
+            className="addr-add"
+            onClick={() => setShowPicker(false)}
+          >
+            <Plus size={15} /> {t("mobile_header.address_form")}
+          </Link>
+        </Modal.Body>
+      </Modal>
     </Card>
   );
 };

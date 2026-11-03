@@ -15,7 +15,9 @@ export interface AddressDTO {
   floor?: string | null; 
   house?: string | null;
   is_default:any
+  branch_id?: number | null;
   delivery_area_id?: number | null;
+  delivery_areas?: Record<string, number> | null;
   delivery_area?: {
     id: number;
     branch_id: number;

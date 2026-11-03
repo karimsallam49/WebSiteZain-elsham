@@ -4,6 +4,7 @@ import "./CheckOutPage.css";
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next"; 
+import { TriangleAlert } from "lucide-react";
 
 import FavTimeSelectForOrder from "../../Components/FaveTimeSelectForOrder/FavTimeSelectForOrder";
 import ChangePaymentSection from "../../Components/ChangePaymentPopup/ChangePaymentPopup";
@@ -17,11 +18,13 @@ import { actGetUser } from "../../store/User/actGetUser";
 import { DeleteCard } from "../../store/Cart/CartSlice";
 import { loadServerCart, clearServerCart } from "../../store/Cart/serverCartSlice";
 import { editeAdressAction } from "../../store/Adress/AdressSlice";
+import { actGetadress } from "../../store/Adress/actGetAddress";
 import React from "react";
 import i18n from "../../i18n";
 import FeedbackToast from "../../Components/FeedbackToast/FeedbackToast";
 import AddressForm from "../../Components/AdressForm/AdressForm";
 import { getItemUnitPrice } from "../../utilities/cartPricing";
+import { useBranchCoverage } from "../../Hooks/useBranchCoverage";
 
 const CheckOutPage = () => {
   const dispatch = useAppDispatch();
@@ -71,9 +74,19 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   const redeemValue = exchangeRate > 0 ? redeemPts / exchangeRate : 0;
 
   // المنطقة بتيجي من العنوان المخزّن، ولو العميل اختار يدويًا بتاخد الأولوية
+  const branchAreas = deliverfeeData?.delivery_charge_by_area ?? [];
+  // delivery_area بيرجع مفلتر بالفرع المختار من الـ list endpoint.
+  // delivery_area_id الخام ممكن يكون بتاع فرع تاني — بنقبله بس لو موجود في مناطق الفرع الحالي
   const addressAreaId =
-    selectedAdress?.delivery_area_id ?? selectedAdress?.delivery_area?.id ?? null;
+    selectedAdress?.delivery_area?.id ??
+    (branchAreas.some((a) => a.id === selectedAdress?.delivery_area_id)
+      ? selectedAdress?.delivery_area_id ?? null
+      : null);
   const effectiveAreaId = CurrentedArea ?? addressAreaId;
+
+  // لو اليوزر بره نطاق أقرب فرع — التوصيل ممنوع، يختار عنوان تاني أو استلام
+  const { outOfRange } = useBranchCoverage();
+  const deliveryOutOfRange = selectedType === "delivery" && outOfRange;
 
   useEffect(() => {
     if (!OTPToken) return;
@@ -233,7 +246,9 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       delivery_time: UserSelectedTime,
       delivery_date: UserSelectedDate,
       branch_id: selectedBranchId ?? 1,
-      selected_delivery_area: effectiveAreaId ?? 0,
+      // المنطقة ليها معنى بس في أوردرات التوصيل — takeaway/dine_in منبعتش حاجة
+      selected_delivery_area:
+        selectedType === "delivery" ? effectiveAreaId : null,
       is_partial: isPartial ? "1" : "0",
       is_cutlery_required: "0",
       bring_change_amount: ChangeAmount,
@@ -261,6 +276,13 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
   ]);
 
   const handleCheckout = useCallback(async () => {
+    if (deliveryOutOfRange) {
+      setToastMessage(t("checkout.out_of_range_hint"));
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
     if (!paymentMethod) {
       alert(t("checkout.select_payment_method"));
       return;
@@ -332,14 +354,34 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
         dispatch(clearServerCart());
         // حدّث بيانات المستخدم (رصيد المحفظة / نقاط الولاء ممكن تكون اتغيرت)
         dispatch(actGetUser());
+        // الباك بيحفظ selected_delivery_area على العنوان للفرع ده — نزامن الليستة
+        if (OTPToken) dispatch(actGetadress());
       }
     } catch (err) {
       console.error("Order failed:", err);
-      alert(t("checkout.error_placing_order"));
+      // الباك بيرفض بـ code: delivery_area لو المنطقة مش تابعة للفرع المختار —
+      // نفتح مودال العنوان ونخليه يختار منطقة مناسبة، والباك هيحفظها للعنوان
+      const apiErrors = (err as any)?.errors;
+      const deliveryAreaErr = Array.isArray(apiErrors)
+        ? apiErrors.find((e: any) => e?.code === "delivery_area")
+        : null;
+
+      if (deliveryAreaErr) {
+        setAreaError(true);
+        dispatch(editeAdressAction(selectedAdress ?? null));
+        setToastMessage(
+          deliveryAreaErr.message || t("checkout.select_area_first")
+        );
+        setToastType("error");
+        setToastVisible(true);
+        setShowAddressModal(true);
+      } else {
+        alert(t("checkout.error_placing_order"));
+      }
     } finally {
       setLoading(false);
     }
-  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t, selectedType, requiredFields, selectedAdress, deliverfeeData, effectiveAreaId, resturantdata, selectedBranchId]);
+  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t, selectedType, requiredFields, selectedAdress, deliverfeeData, effectiveAreaId, resturantdata, selectedBranchId, deliveryOutOfRange]);
 
   return (
     <div className="cart-page checkout-page overflow-auto container py-4">
@@ -584,10 +626,18 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
               </div>
             </div>
 
+            {deliveryOutOfRange && (
+              <div className="oor-checkout-hint" role="alert">
+                <TriangleAlert size={18} />
+                <span>{t("checkout.out_of_range_hint")}</span>
+              </div>
+            )}
+
             <ButtonComponent
               text={t("checkout.place_order")}
               loading={Loading}
               onClick={handleCheckout}
+              disabled={deliveryOutOfRange}
             />
           </Card>
         </Col>
