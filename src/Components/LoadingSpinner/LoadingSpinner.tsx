@@ -1,9 +1,3 @@
-import ClipLoader from "react-spinners/ClipLoader"
+import LogoLoader from "./LogoLoader";
 
-export const LoadingSpinner = () => {
-  return (
-    <div className="d-flex justify-content-center align-items-center w-100 h-100">
-        <ClipLoader color="orange" />
-</div>
-  )
-}
+export const LoadingSpinner = () => <LogoLoader size={48} />;

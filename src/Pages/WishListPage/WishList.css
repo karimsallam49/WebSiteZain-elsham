@@ -6,3 +6,132 @@
     padding-bottom: 5rem !important;
   }
 }
+
+/* ---------- Wishlist — عنوان وحالة فاضية بروح V2 ---------- */
+.wishlist-title {
+  font-weight: 800;
+  color: var(--v2-cream, #2a2f42);
+  margin-bottom: 1.2rem;
+}
+.wishlist-title::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 3px;
+  margin-top: 0.4rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--v2-gold, #c9a35b), transparent);
+}
+.wishlist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 4rem 1rem;
+  color: var(--v2-cream-dim, #9c8a5c);
+}
+.wishlist-empty-icon {
+  font-size: 2.6rem;
+  color: var(--v2-gold, #c9a35b);
+  opacity: 0.6;
+  line-height: 1;
+}
+
+/* ---------- Wishlist grid + cards — كروت V2 ---------- */
+.wl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 0.9rem;
+}
+.wl-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  background: var(--v2-navy, #fff);
+  color: var(--v2-cream, #2a2f42);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.wl-card:hover {
+  border-color: var(--v2-gold, #c9a35b);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+.wl-img-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+.wl-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.wl-disc {
+  position: absolute;
+  top: 8px;
+  inset-inline-start: 8px;
+  background: var(--v2-gold, #c9a35b);
+  color: #241a05;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+.wl-body {
+  padding: 0.6rem 0.7rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.wl-name {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.3em;
+}
+.wl-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+.wl-price {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--v2-gold, #a9813f);
+  white-space: nowrap;
+}
+.wl-price del {
+  margin-inline-start: 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--v2-cream-dim, #9c8a5c);
+}
+.wl-add {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--v2-gold, #c9a35b);
+  color: #241a05;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.wl-add:hover {
+  transform: scale(1.12);
+}
+.wishlist-empty svg {
+  color: var(--v2-gold, #c9a35b);
+  opacity: 0.6;
+}

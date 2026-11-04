@@ -283,6 +283,14 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       return;
     }
 
+    // الباك بيرفض delivery_time/delivery_date فاضيين — نتأكد قبل الإرسال
+    if (!UserSelectedDate || !UserSelectedTime) {
+      setToastMessage(t("checkout.select_delivery_time"));
+      setToastType("error");
+      setToastVisible(true);
+      return;
+    }
+
     if (!paymentMethod) {
       alert(t("checkout.select_payment_method"));
       return;
@@ -365,8 +373,18 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
       const deliveryAreaErr = Array.isArray(apiErrors)
         ? apiErrors.find((e: any) => e?.code === "delivery_area")
         : null;
+      const timeErr = Array.isArray(apiErrors)
+        ? apiErrors.find(
+            (e: any) =>
+              e?.code === "delivery_time" || e?.code === "delivery_date"
+          )
+        : null;
 
-      if (deliveryAreaErr) {
+      if (timeErr) {
+        setToastMessage(t("checkout.select_delivery_time"));
+        setToastType("error");
+        setToastVisible(true);
+      } else if (deliveryAreaErr) {
         setAreaError(true);
         dispatch(editeAdressAction(selectedAdress ?? null));
         setToastMessage(
@@ -381,7 +399,7 @@ const [toastType, setToastType] = useState<"success" | "error">("success");
     } finally {
       setLoading(false);
     }
-  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t, selectedType, requiredFields, selectedAdress, deliverfeeData, effectiveAreaId, resturantdata, selectedBranchId, deliveryOutOfRange]);
+  }, [prepareOrderBody, dispatch, navigate, paymentMethod, t, selectedType, requiredFields, selectedAdress, deliverfeeData, effectiveAreaId, resturantdata, selectedBranchId, deliveryOutOfRange, UserSelectedDate, UserSelectedTime]);
 
   return (
     <div className="cart-page checkout-page overflow-auto container py-4">

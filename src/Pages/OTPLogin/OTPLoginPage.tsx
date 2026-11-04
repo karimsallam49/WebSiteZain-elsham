@@ -217,7 +217,8 @@ const handleLoginWithPassword = async () => {
       setError(t("invalid_credentials"));
     }
   } catch (err: any) {
-    setError(err || t("login_failed"));
+    // فشل تسجيل الدخول (401 وغيره) — رسالة مترجمة بدل نص axios الخام
+    setError(t("invalid_credentials"));
   } finally {
     setLoading(false);
   }
@@ -354,8 +355,11 @@ const handleLoginWithPassword = async () => {
                     />
                   </Form.Group>
 
-                  <div className="w-100 text-end">
-                    <Link to="/forget-password">
+                  <div className="w-100 text-end mb-3">
+                    <Link
+                      to="/forget-password"
+                      className="TextMainColor text-decoration-underline small fw-semibold"
+                    >
                       {t("checkout.otp_forgot")}
                     </Link>
                   </div>

@@ -63,3 +63,46 @@
   }
   
 }
+/* ---------- V2 product card — ثيم الكروت الداكن/الذهبي ---------- */
+.product-cart-contain {
+  max-width: none;
+}
+.product-card {
+  background: var(--v2-navy, #fff) !important;
+  border: 1px solid var(--v2-hairline, #e8e2d5) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  color: var(--v2-cream, #2a2f42);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.product-card:hover {
+  border-color: var(--v2-gold, #c9a35b) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2) !important;
+}
+.product-card .card-img-top {
+  height: 130px !important;
+}
+.product-card .card-titl {
+  color: var(--v2-cream, #2a2f42);
+}
+.product-card .card-text,
+.product-card .text-danger,
+.product-card .price-place span {
+  color: var(--v2-gold, #a9813f) !important;
+}
+.product-card .price-place del {
+  color: var(--v2-cream-dim, #9c8a5c) !important;
+}
+.product-card .card-bottom {
+  background: var(--v2-gold, #c9a35b) !important;
+  color: #241a05 !important;
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.veg {
+  border-radius: 6px 0 12px;
+  font-size: 0.6rem;
+  font-weight: 700;
+}

@@ -444,9 +444,29 @@ const ChatMealPanel = ({ onClose, onShowProduct }: Props) => {
                       <span className="cp-desc">{m.product.description}</span>
                     )}
                     <span className="cp-price">
-                      {Number(m.product.price) > 0
-                        ? `${Number(m.product.price).toFixed(2)} ${t("currency")}`
-                        : t("chatMeal.priceOnSelection")}
+                      {(() => {
+                        const p = m.product as any;
+                        const orig =
+                          Number(p.original_price) || Number(p.price) || 0;
+                        if (orig <= 0) return t("chatMeal.priceOnSelection");
+                        const disc = Number(p.discount) || 0;
+                        const computed =
+                          disc > 0
+                            ? p.discount_type === "percent"
+                              ? orig * (1 - disc / 100)
+                              : orig - disc
+                            : orig;
+                        const final =
+                          p.final_price != null
+                            ? Number(p.final_price)
+                            : Math.max(computed, 0);
+                        return (
+                          <>
+                            {final < orig && <del>{orig.toFixed(2)}</del>}
+                            {final.toFixed(2)} {t("currency")}
+                          </>
+                        );
+                      })()}
                     </span>
                   </div>
                 </div>

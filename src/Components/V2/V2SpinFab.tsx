@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import SpinWin from "../SpinWin/SpinWin";
+import iconWin from "../../assets/icon win.png";
 import { useAppSelector } from "../../Hooks/hooks";
 import { spinConfigUrl } from "../../EndPoints/EndPoints";
 import type { SpinConfigResponse } from "../../DTO/SpinWinDTO";
 
-const WHEEL_COLORS = ["#c9a24b", "#16263a", "#e8c876", "#1e3a55"];
+// const WHEEL_COLORS = ["#c9a24b", "#16263a", "#e8c876", "#1e3a55"]; // بتاع الـ SVG القديم
 
 /** زرار عائم على يمين الشاشة — عجلة صغيرة بتلف بتفتح مودال Spin & Win */
 const V2SpinFab = () => {
@@ -53,6 +54,7 @@ const V2SpinFab = () => {
   // الزرار ما يظهرش غير لما الباك يأكد إن العجلة مفعّلة (is_active)
   if (isActive !== true) return null;
 
+  /* دول بتاع أيقونة الـ SVG القديمة — معلّقين لحد ما نرجّعها
   const SEGS = 8;
   const segAngle = 360 / SEGS;
   const SIZE = 54;
@@ -64,6 +66,7 @@ const V2SpinFab = () => {
     const rad = (deg * Math.PI) / 180;
     return { x: CX + R * Math.sin(rad), y: CY - R * Math.cos(rad) };
   };
+  */
 
   return (
     <>
@@ -74,6 +77,7 @@ const V2SpinFab = () => {
         aria-label={t("spinWin.title")}
         title={t("spinWin.title")}
       >
+        {/* الأيقونة القديمة (SVG) — متبدلة بصورة العجلة الجديدة icon win.png
         <svg viewBox={`0 0 ${SIZE} ${SIZE}`} aria-hidden="true">
           {Array.from({ length: SEGS }, (_, i) => {
             const p1 = pointAt(i * segAngle);
@@ -92,6 +96,14 @@ const V2SpinFab = () => {
           <circle cx={CX} cy={CY} r="3.5" fill="#e8c876" />
         </svg>
         <span className="v2-spin-fab-needle" />
+        */}
+        <img
+          className="v2-spin-fab-img"
+          src={iconWin}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+        />
       </button>
 
       {open && <SpinWin onClose={() => setOpen(false)} />}

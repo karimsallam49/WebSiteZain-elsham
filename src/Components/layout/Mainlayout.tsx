@@ -24,6 +24,7 @@ import i18n from "../../i18n";
 import { actBanner } from "../../store/Banner/aCtBanner";
 import { loadServerCart } from "../../store/Cart/serverCartSlice";
 import { useBranchCoverage } from "../../Hooks/useBranchCoverage";
+import { useCart } from "../../Hooks/useCart";
 
 const Mainlayout = () => {
   const dispatch = useAppDispatch();
@@ -36,6 +37,11 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
 
   const HideBottom = location.pathname !== "/selectBranch";
   const isV2Home = location.pathname === "/";
+  // الشات بيظهر في الصفحات المعينة بس — الهوم والسيرش، والكارت لو فاضيه
+  const { count: cartCount } = useCart();
+  const showChatFab =
+    ["/", "/search"].includes(location.pathname.toLowerCase()) ||
+    (location.pathname.toLowerCase() === "/cart" && cartCount === 0);
 
 
   useEffect(() => {
@@ -135,7 +141,7 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
         </div>
       )}
 
-      <ChatMealFab />
+      {showChatFab && <ChatMealFab />}
     </div>
   );
 };

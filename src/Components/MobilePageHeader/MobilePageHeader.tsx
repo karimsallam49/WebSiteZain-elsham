@@ -19,7 +19,7 @@ const PATH_TITLES: Record<string, string> = {
   "/support": "support",
   "/cancellation-policy": "cancellation",
   "/login": "login",
-  "/register-otp": "register",
+  "/register-otp": "login",
   "/forget-password": "forget_password",
   "/notifications": "notifications",
   "/profile": "profile",

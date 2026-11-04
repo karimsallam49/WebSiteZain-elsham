@@ -358,6 +358,14 @@
   .sw-prize-row { padding: 0.35rem 0.55rem; }
 }
 
+/* شاشات ضيقة — الشارة الـ absolute بتغطي العنوان، نرجعها في الفلو فوق التروفي */
+@media (max-width: 480px), (max-height: 720px) {
+  .sw-spins-chip {
+    position: static;
+    margin-bottom: 0.5rem;
+  }
+}
+
 /* ---------- الشروط والأحكام ---------- */
 /* لينك صغير تحت المحتوى */
 .sw-terms-link {

@@ -1,42 +1,165 @@
-.simple-table {
+/* ---------- Orders cards — ديزاين كروت الأوردرات بنفس روح V2 ---------- */
+
+.orders-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.order-card {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   width: 100%;
-  border-collapse: collapse;
-  background-color: white;
+  padding: 0.7rem 0.85rem;
+  border-radius: 14px;
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  background: var(--v2-navy, #fff);
+  color: var(--v2-cream, #2a2f42);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.order-card:hover {
+  border-color: var(--v2-gold, #c9a35b);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.simple-table th,
-.simple-table td {
-  padding: 1rem;
-  font-size: 15px;
-  color: #333;
+/* صور المنتجات متلاصقة فوق بعض */
+.oc-imgs {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.oc-imgs img {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid var(--v2-navy, #fff);
+  margin-inline-end: -12px;
+  background: var(--v2-ink-deep, #eee);
+}
+.oc-imgs img:first-child {
+  margin-inline-end: 0;
+}
+.oc-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 0.3rem;
+  margin-inline-end: -12px;
+  border-radius: 10px;
+  border: 2px solid var(--v2-navy, #fff);
+  background: rgba(201, 163, 91, 0.15);
+  color: var(--v2-gold, #a9813f);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+.oc-imgs > *:last-child {
+  margin-inline-end: 0;
 }
 
-.simple-table th,
-.simple-table td {
-  border: none;
+.oc-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.oc-id {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--v2-gold, #a9813f);
+}
+.oc-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  color: var(--v2-cream-dim, #9c8a5c);
+}
+.oc-meta svg {
+  color: var(--v2-gold, #a9813f);
 }
 
-.simple-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+.oc-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+.oc-total {
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+.oc-status {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid;
+  text-transform: capitalize;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.st-pending {
+  color: #e0a63c;
+  border-color: rgba(224, 166, 60, 0.45);
+  background: rgba(224, 166, 60, 0.12);
+}
+.st-processing {
+  color: #5aa9e6;
+  border-color: rgba(90, 169, 230, 0.45);
+  background: rgba(90, 169, 230, 0.12);
+}
+.st-out {
+  color: #b48ae8;
+  border-color: rgba(180, 138, 232, 0.45);
+  background: rgba(180, 138, 232, 0.12);
+}
+.st-delivered {
+  color: #4caf7d;
+  border-color: rgba(76, 175, 125, 0.45);
+  background: rgba(76, 175, 125, 0.12);
+}
+.st-danger {
+  color: #e5484d;
+  border-color: rgba(229, 72, 77, 0.45);
+  background: rgba(229, 72, 77, 0.12);
+}
+.st-muted {
+  color: var(--v2-cream-dim, #9c8a5c);
+  border-color: var(--v2-hairline, #e8e2d5);
+  background: transparent;
 }
 
-.simple-table th {
-  font-weight: 600;
-  color: #111;
-  background-color: #fff;
+.oc-arrow {
+  color: var(--v2-cream-dim, #9c8a5c);
+  flex-shrink: 0;
+}
+.order-card:hover .oc-arrow {
+  color: var(--v2-gold, #c9a35b);
 }
 
-.simple-table {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+/* الموبايل — الصف يفضل compact */
+@media (max-width: 576px) {
+  .oc-imgs img,
+  .oc-more {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    border-radius: 8px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .oc-id {
+    font-size: 0.85rem;
+  }
+  .oc-status {
+    font-size: 0.56rem;
+    padding: 0.15rem 0.45rem;
   }
 }
