@@ -7,7 +7,6 @@ import { useAppSelector } from "../../Hooks/hooks";
 import { useV2Theme } from "../../Hooks/useV2Theme";
 import { useCart } from "../../Hooks/useCart";
 import { LogoBaseUrl } from "../../EndPoints/EndPoints";
-import { thumbUrl } from "../../utilities/thumbUrl";
 
 const V2TopBar = () => {
   const { i18n } = useTranslation();
@@ -52,14 +51,11 @@ const V2TopBar = () => {
         <Link to="/" className="v2-brand">
           {logo ? (
             <img
-              src={thumbUrl(logo, 200)}
+              src={logo}
               alt={resturantdata?.restaurant_name || ""}
               className="v2-brand-logo"
               width={140}
               height={47}
-              onError={(e) => {
-                if (e.currentTarget.src !== logo) e.currentTarget.src = logo;
-              }}
             />
           ) : (
             <span className="v2-brand-name">

@@ -1,3 +1,4 @@
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { Outlet, useLocation } from "react-router";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
@@ -121,6 +122,7 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
   return (
     <div className="w-100 all-layout">
 
+      <ScrollToTop />
       <MobilePageHeader />
 
       <div className="w-100 container position-relative all-container" style={{ minHeight: "100vh" }}>

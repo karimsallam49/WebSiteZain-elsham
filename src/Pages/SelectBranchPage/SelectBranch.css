@@ -1,57 +1,107 @@
-.branch-card {
-  transition: all 0.3s ease;
+/* ---------- SelectBranch — V2 design ---------- */
+.sb-page {
+  min-height: 60vh;
+  padding: 0.5rem 1rem 2rem;
+}
+@media (max-width: 992px) {
+  .sb-page {
+    padding-top: 4rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.sb-head {
+  margin-bottom: 1rem;
+}
+.sb-back {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  color: var(--v2-cream, #2a2f42);
+}
+.sb-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  background: transparent;
+  border-radius: 10px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--v2-cream, #2a2f42);
+  margin-bottom: 0.8rem;
   cursor: pointer;
-  border: 2px solid transparent !important;
-  border-radius: 15px;
 }
 
-.branch-card:hover {
-  transform: translateY(-4px);
+.sb-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+@media (min-width: 768px) {
+  .sb-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
-.branch-card.selected {
-  border: 2px solid #5e2b1d !important; /* لون البوردر */
-  background-color: #fff1ee; /* خلفية خفيفة */
-  box-shadow: 0 0 10px rgba(94, 43, 29, 0.25);
-}
-
-.branch-img-wrapper {
-  height: 180px;
+.sb-card {
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  border-radius: 16px;
+  background: var(--v2-navy, #fff);
   overflow: hidden;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  padding: 0;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  font-family: inherit;
+}
+.sb-card:hover {
+  border-color: var(--v2-gold, #c9a35b);
+  box-shadow: 0 8px 24px rgba(60, 40, 10, 0.1);
+  transform: translateY(-2px);
+}
+.sb-card.selected {
+  border-color: var(--v2-gold, #c9a35b);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--v2-gold, #c9a35b) 30%, transparent);
 }
 
-.branch-img {
+.sb-img {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.sb-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-/* ✅ الزرار */
-.go-home-btn {
-  background-color: #5e2b1d !important;
-  border: none !important;
-  padding: 0.75rem 2rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  opacity: 0.5;
+.sb-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.8rem 0.9rem;
 }
-
-.go-home-btn:disabled {
-  cursor: not-allowed;
+.sb-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--v2-cream, #2a2f42);
 }
-
-.go-home-btn:not(:disabled) {
-  opacity: 1;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(94, 43, 29, 0.3);
+.sb-addr,
+.sb-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--v2-cream-dim, #9c8a5c);
 }
-
-@media (max-width: 992px) {
-  .select-branch-page {
-    height: 100vh;
-    overflow-y: auto;
-    padding-bottom: 5rem !important;
-  }
+.sb-addr svg,
+.sb-time svg {
+  color: var(--v2-gold, #c9a35b);
+  flex-shrink: 0;
 }

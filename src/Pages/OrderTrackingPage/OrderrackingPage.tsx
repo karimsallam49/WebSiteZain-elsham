@@ -5,18 +5,16 @@ import { useAppSelector } from "../../Hooks/hooks";
 import { TrackordersUrl } from "../../EndPoints/EndPoints";
 import type { OrderDetailsDTO } from "../../DTO/OrderDTO";
 import {
-  CheckCircle,
+  Check,
   Clock,
   Bike,
   Package,
   CookingPot,
   Truck,
 } from "lucide-react";
-import DeliverMan from "../../assets/image/delivery-man.webp";
-import { Button } from "react-bootstrap";
-import ConfirmPic from "../../assets/image/check_circle.png";
+import DeliverMan from "../../assets/image/delivery-man-260.webp";
 import { useTranslation } from "react-i18next";
-import"./OrderTrackingStyle.css"
+
 const OrderTrackingPage = () => {
   const { order_id } = useParams();
   const { currentLanguage } = useAppSelector((state) => state.LanguageSlice);
@@ -32,73 +30,69 @@ const OrderTrackingPage = () => {
   );
 
   if (!data) {
-    return <div className="text-center p-5">{t("order_tracking.loading")}</div>;
+    return <div className="ot-loading">{t("order_tracking.loading")}</div>;
   }
 
   const { id, order_status, delivery_time, preparation_time } = data;
 
   const steps = [
-    { key: "pending", label: t("order_tracking.pending"), icon: <Clock size={30} color="yellow" /> },
-    { key: "out_for_delivery", label: t("order_tracking.out_for_delivery"), icon: <Truck color="yellow" size={30} /> },
-    { key: "confirmed", label: t("order_tracking.confirmed"), icon: <CheckCircle size={30} color="yellow" /> },
-    { key: "delivered", label: t("order_tracking.delivered"), icon: <Bike color="yellow" size={30} /> },
-    { key: "processing", label: t("order_tracking.processing"), icon: <CookingPot color="yellow" size={30} /> },
-    { key: "cancelled", label: t("order_tracking.cancelled"), icon: <Package color="yellow" size={30} /> },
+    { key: "pending", label: t("order_tracking.pending"), Icon: Clock },
+    { key: "confirmed", label: t("order_tracking.confirmed"), Icon: Package },
+    { key: "processing", label: t("order_tracking.processing"), Icon: CookingPot },
+    { key: "out_for_delivery", label: t("order_tracking.out_for_delivery"), Icon: Truck },
+    { key: "delivered", label: t("order_tracking.delivered"), Icon: Bike },
   ];
 
+  const isCancelled = order_status === "cancelled";
   const activeIndex = steps.findIndex((s) => s.key === order_status);
-  const isAllInactive = activeIndex === -1;
+  const isAllInactive = activeIndex === -1 && !isCancelled;
 
   return (
-    <div className="order-tracking w-100 container py-5 text-center">
-      <div className="tracking-header mb-5">
-        <img src={DeliverMan} alt="Delivery" className="delivery-img mb-3" />
-        <h5>{t("order_tracking.confirmation")}</h5>
-        <p className="time-range text-danger">
+    <div className="ot-page">
+      {/* Hero */}
+      <div className="ot-hero od-card">
+        <img src={DeliverMan} alt="" aria-hidden="true" />
+        <h2 className="ot-title">{t("order_tracking.confirmation")}</h2>
+        <p className="ot-time">
           {delivery_time || `0 - ${preparation_time} ${t("order_tracking.minutes")}`}
         </p>
-        <p className="order-id">
+        <span className="od-chip">
           {t("order_tracking.your_order")} <b>#{id}</b>
-        </p>
+        </span>
       </div>
 
-      <div className="tracking-grid w-100">
-        <div className="row">
+      {/* Timeline */}
+      {isCancelled ? (
+        <div className="od-card ot-cancelled">
+          <Package size={26} />
+          <strong>{t("order_tracking.cancelled")}</strong>
+        </div>
+      ) : (
+        <div className="od-card ot-steps">
           {steps.map((step, index) => {
-            const isActive = !isAllInactive && index <= activeIndex;
-            const isCurrent = index === activeIndex;
-
+            const done = !isAllInactive && index < activeIndex;
+            const current = index === activeIndex;
+            const { Icon } = step;
             return (
               <div
                 key={step.key}
-                className={`tracking-step d-flex justify-content-between align-items-center col-12 col-md-6 col-sm-12 ${
-                  isActive ? "active" : ""
-                } ${isCurrent ? "current" : ""}`}
-                style={{
-                  opacity: isAllInactive ? 0.5 : isActive ? 1 : 0.5,
-                }}
+                className={`ot-step ${done ? "done" : ""} ${current ? "current" : ""}`}
               >
-                <div className="icon-wrapper d-flex align-items-sm-center justify-content-around w-100">
-                  {step.icon}
-                  <h5 className="label">{step.label}</h5>
+                <div className="ot-dot">
+                  {done ? <Check size={14} /> : <Icon size={16} />}
                 </div>
-                <span
-                  className="confirm-icon w-100"
-                  style={{ opacity: isActive ? "1" : "0" }}
-                >
-                  <img width={35} src={ConfirmPic} alt="" />
-                </span>
+                {index < steps.length - 1 && <div className="ot-line" />}
+                <span className="ot-label">{step.label}</span>
               </div>
             );
           })}
         </div>
-      </div>
+      )}
 
       {isAllInactive && (
-        <div className="mt-4">
-          <Button variant="danger" className="cancel-btn">
-            {t("order_tracking.cancel_order")}
-          </Button>
+        <div className="od-card ot-cancelled">
+          <Package size={22} />
+          <strong>{order_status}</strong>
         </div>
       )}
     </div>

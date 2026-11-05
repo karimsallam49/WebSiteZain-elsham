@@ -1,221 +1,187 @@
-.promo-container{
-    width:100%;
-    border:none;  
-      background: white;
-
+/* ---------- Coupons — V2 ticket design ---------- */
+.cp-page {
+  min-height: 60vh;
+  padding: 0.5rem 1rem 2rem;
+}
+@media (max-width: 992px) {
+  .cp-page {
+    padding-top: 4rem;
+    padding-bottom: 5rem;
+  }
+}
+.cp-head {
+  margin-bottom: 0.8rem;
 }
 
-.promocard{
-  background: white !important;
-
-}
-
-.promo-container {
-  width: 360px;
+/* سيرش V2 */
+.cp-search {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  border: 1px solid rgba(73, 67, 67, 0.4); 
-  padding: 1rem;
-  height: 100px;
-  position:relative;
-  direction:rtl
-}
-
-
-
-.promo-container::after,
-.promo-container::before {
-  content: "";
-  position: absolute;
-  background: white;
-  width: 20px;
-  height: 20px;
-  border-radius: 80%; 
-  left: 20%;
-  transform: translateX(-50%); 
-
-}
-
-.promo-container::after {
-  top: -15px;
-  border-bottom: 1px solid rgba(73, 67, 67, 0.4); 
-}
-
-.promo-container::before {
-  bottom: -10px; 
-  border-top: 1px solid rgba(73, 67, 67, 0.4); 
-}
-.promo-body{
-    display:flex;
-    width:100%;
-    height:100%;
-    justify-content:space-between
-
-}
-
-.promoimage{
-    height:100%;
-    width:60%;
-border-left: 1px dotted gray;
-
-}
-
-.promo-code{
-font-weight: bold;
-display:flex; 
-align-items:center;
-gap:5px;
-
-}
-.promo-info {
-    font-size:x-small
-}
-.search input {
-  border: 1px solid #ccc;
-  transition: all 0.3s ease;
-}
-
-.search input:focus {
-  border-color: #999;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  outline: none;
-}
-.copun-input-container {
-
-    width:40%;
-}
-.headtitle{
-      text-align:start !important;
-
-}
-
-@media screen and (max-width: 768px) {
-  .promo-container{
-    width:300px
-  }
-  .headtitle{
-    text-align:center !important;
-  }
-}
-
-@media (max-width: 992px) {
-  .coupon-page {
-    height: 100vh;
-    overflow-y: auto;
-    padding-top: 4rem !important;
-    padding-bottom: 5rem !important;
-  }
-}
-
-/* ---------- Coupon page — ثيم V2 ---------- */
-.coupon-page .promocard {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 1rem 0 !important;
-}
-.coupon-page .headtitle h4 {
-  font-weight: 800;
-  color: var(--v2-cream, #2a2f42);
-}
-.coupon-page .headtitle h4::after {
-  content: "";
-  display: block;
-  width: 42px;
-  height: 3px;
-  margin-top: 0.4rem;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--v2-gold, #c9a35b), transparent);
-}
-.coupon-page .copun-input-container input {
-  background: var(--v2-navy, #fff);
+  gap: 0.5rem;
   border: 1px solid var(--v2-hairline, #e8e2d5);
-  border-radius: 12px;
-  color: var(--v2-cream, #2a2f42);
-  box-shadow: none !important;
-}
-.coupon-page .copun-input-container input:focus {
-  border-color: var(--v2-gold, #c9a35b);
-  box-shadow: 0 0 0 3px rgba(201, 163, 91, 0.18) !important;
-}
-.coupon-page .copun-input-container input::placeholder {
+  border-radius: 999px;
+  background: var(--v2-navy, #fff);
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.1rem;
   color: var(--v2-cream-dim, #9c8a5c);
 }
-
-/* كارت الكوبون — ستايل تذكرة: بلوك ذهبي شمال + معلومات يمين */
-.coupone-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
+.cp-search svg {
+  flex-shrink: 0;
+  color: var(--v2-gold, #c9a35b);
 }
-.promo-container {
-  border-radius: 16px;
+/* theme-v2.css بيستايل input[type="text"] عالميًا بخلفية + radius —
+   لازم specificity أعلى عشان نلغيها جوا صندوق السيرش */
+html[data-theme] .cp-search input,
+.cp-search input {
+  flex: 1;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  min-width: 0;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--v2-cream, #2a2f42);
+  font-family: inherit;
+}
+.cp-search input::placeholder {
+  color: var(--v2-cream-dim, #9c8a5c);
+}
+/* Chrome autofill بيحط background بيج — بنغطيها بإن set بنفس لون الخلفية */
+.cp-search input:-webkit-autofill,
+.cp-search input:-webkit-autofill:hover,
+.cp-search input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--v2-navy, #fff) inset;
+  -webkit-text-fill-color: var(--v2-cream, #2a2f42);
+  caret-color: var(--v2-cream, #2a2f42);
+  transition: background-color 9999s ease-out;
+}
+.cp-search:focus-within {
+  border-color: var(--v2-gold, #c9a35b);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--v2-gold, #c9a35b) 15%, transparent);
+}
+
+.cp-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+@media (min-width: 768px) {
+  .cp-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* كوبون — تذكرة بفتحتين وخط مقطع */
+.cp-card {
+  position: relative;
+  display: flex;
   border: 1px solid var(--v2-hairline, #e8e2d5);
+  border-radius: 14px;
   background: var(--v2-navy, #fff);
   overflow: hidden;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-.promo-container:hover {
-  border-color: var(--v2-gold, #c9a35b);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
-}
-.promo-body {
-  display: flex;
-  align-items: stretch;
-}
-.promoimage {
-  width: 104px;
-  flex-shrink: 0;
-  padding: 0.8rem 0.6rem;
-  gap: 0.15rem;
-  background: rgba(201, 163, 91, 0.14);
-  border-inline-end: 1px dashed rgba(201, 163, 91, 0.55);
-}
-.promoimage img {
-  opacity: 0.9;
-}
-.promotitle {
-  color: var(--v2-gold, #a9813f);
-  font-size: 1.3rem;
-  line-height: 1.1;
-}
-.promoname {
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: var(--v2-cream-dim, #9c8a5c);
-  text-align: center;
-}
-.promodescrbition {
-  flex: 1;
-  padding: 0.75rem 0.9rem;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  gap: 0.3rem;
+  padding: 0;
   text-align: start;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.promo-code {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.28rem 0.7rem;
-  border-radius: 999px;
-  border: 1px dashed var(--v2-gold, #a9813f);
-  color: var(--v2-gold, #a9813f);
-  font-weight: 800;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
+.cp-card:hover {
+  border-color: var(--v2-gold, #c9a35b);
+  box-shadow: 0 8px 24px rgba(60, 40, 10, 0.08);
 }
-.promo-date,
-.promo-info {
-  font-size: 0.7rem;
-  color: var(--v2-cream-dim, #9c8a5c) !important;
+/* فتحات التذكرة فوق وتحت الخط المقطع */
+.cp-card::before,
+.cp-card::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--v2-bg, #faf7f0);
+  border: 1px solid var(--v2-hairline, #e8e2d5);
+  inset-inline-start: 88px;
+  translate: 50% 0;
+  z-index: 2;
+}
+[dir="ltr"] .cp-card::before,
+[dir="ltr"] .cp-card::after {
+  translate: -50% 0;
+}
+.cp-card::before {
+  top: -10px;
+}
+.cp-card::after {
+  bottom: -10px;
 }
 
-@media (max-width: 576px) {
-  .promoimage {
-    width: 84px;
-  }
+.cp-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: 90px;
+  padding: 0.9rem 0.5rem;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--v2-gold, #c9a35b) 18%, transparent),
+    color-mix(in srgb, var(--v2-gold, #c9a35b) 8%, transparent)
+  );
+  border-inline-end: 2px dashed var(--v2-gold, #c9a35b);
+}
+.cp-badge img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+.cp-disc {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--v2-gold, #a9813f);
+}
+.cp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.85rem 1rem;
+  min-width: 0;
+  flex: 1;
+}
+.cp-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--v2-cream, #2a2f42);
+}
+.cp-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--v2-gold, #a9813f);
+  letter-spacing: 0.04em;
+}
+.cp-code img {
+  width: 11px;
+  height: 11px;
+}
+.cp-meta {
+  font-size: 0.72rem;
+  color: var(--v2-cream-dim, #9c8a5c);
+}
+
+.cp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 4rem 1rem;
+  color: var(--v2-cream-dim, #9c8a5c);
+}
+.cp-empty svg {
+  color: var(--v2-gold, #c9a35b);
+  opacity: 0.6;
 }

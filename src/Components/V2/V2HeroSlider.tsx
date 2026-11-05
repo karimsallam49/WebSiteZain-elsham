@@ -46,12 +46,15 @@ const V2HeroSlider = () => {
 
   const handleBannerSelected = (banner: BannerDTO) => {
     if (banner.category_id) {
-      navigate(`/category/${banner.category_id}/${banner.title}`);
+      const slug = encodeURIComponent(banner.title?.trim() || "category");
+      navigate(`/category/${banner.category_id}/${slug}`);
     } else if (banner.product) {
       setSelectedProduct(banner.product);
       setShowModal(true);
     }
   };
+
+
 
   if (BannerLoading)
     return (

@@ -1,6 +1,8 @@
+html, body {
+  overflow-x: clip;
+}
 body {
   font-family: 'cairo', sans-serif;
-  overflow-x: hidden;
   font-size: medium;
 
 }

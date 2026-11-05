@@ -27,7 +27,8 @@ const DeliveryFeeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(actBanner.pending, (state) => {
-        state.BannerLoading = true;
+        // refetch (تغيير الفرع) — نسيب الداتا القديمة معروضة بدل ما السلايدر يتفك
+        state.BannerLoading = state.BannerData === null;
         state.error = null;
       })
       .addCase(actBanner.fulfilled, (state, action) => {
