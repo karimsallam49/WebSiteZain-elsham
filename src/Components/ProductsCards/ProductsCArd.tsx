@@ -105,7 +105,7 @@ records && records.status === 1 &&(
           <div style={{ position: "relative" }}>
             <img
             loading="lazy"
-              src={records.image ? `${ImageUrl}/${records.image}` : PlaceHolderImage}
+              src={(records as any).image_thumb_full_path ?? (records as any).image_md_full_path ?? (records.image ? `${ImageUrl}/${records.image}` : PlaceHolderImage)}
               onError={(e) => {
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = PlaceHolderImage;

@@ -1,4 +1,4 @@
-import logo from "../../assets/image/Zain El Sham - Transparent.webp";
+import logo from "../../assets/image/logo-320.webp";
 
 /* لودينج لوجو زين الشام — بيستخدم في كل الصفحات بدل السبينر */
 const LogoLoader = ({ size = 140 }: { size?: number }) => (

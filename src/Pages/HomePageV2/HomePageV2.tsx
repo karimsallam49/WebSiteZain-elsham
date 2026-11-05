@@ -23,6 +23,7 @@ import "./v2.css";
 const HomePageV2 = () => {
   const { t } = useTranslation();
   const { categories } = useAppSelector((state) => state.CategoriesSlice);
+  const { OTPToken } = useAppSelector((state) => state.OTPauthconfigration);
   // const { selectedBranch } = useAppSelector( // معطّل مع سكشن "العروض"
   //   (state) => state.restaurantSettingsSlice
   // );
@@ -58,7 +59,7 @@ const HomePageV2 = () => {
   };
 
   return (
-    <div className="v2-shell">
+    <div className="v2-shell" role="main">
       <div className="v2-inner">
         <V2TopBar />
         <V2AddressSearch />
@@ -72,11 +73,13 @@ const HomePageV2 = () => {
 
         {!menuVisible ? (
           <>
-            <LazyRender minHeight={200}>
-              <V2OrderAgain />
-            </LazyRender>
+            {OTPToken && (
+              <LazyRender minHeight={0}>
+                <V2OrderAgain />
+              </LazyRender>
+            )}
 
-            <LazyRender minHeight={220}>
+            <LazyRender minHeight={0}>
               <V2HappyHour />
             </LazyRender>
 

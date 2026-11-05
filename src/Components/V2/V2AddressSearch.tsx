@@ -130,9 +130,10 @@ const V2AddressSearch = () => {
                     ? Number(s.final_price)
                     : Math.max(computed, 0);
                 const img = s.image
-                  ? s.image.startsWith("http")
-                    ? s.image
-                    : `${ImageUrl}/${s.image}`
+                  ? (s as any).image_thumb_full_path ??
+                    (s.image.startsWith("http")
+                      ? s.image
+                      : `${ImageUrl}/${s.image}`)
                   : PlaceHolderImage;
                 return (
                   <div

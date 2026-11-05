@@ -1,7 +1,7 @@
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./CategoriesSideList.css";
 import type { Category } from "../../DTO/CategoriesDTO";
-import { FaChevronRight } from "react-icons/fa";
+import { ChevronRight } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -93,7 +93,7 @@ export const CategoriesSideList = ({ categories, onSelectCategory }: Props) => {
                         }}
                       >
                         {sub.name}
-                        <FaChevronRight size={14} className="text-muted" />
+                        <ChevronRight size={14} className="text-muted" />
                       </li>
                     ))}
                   </ul>

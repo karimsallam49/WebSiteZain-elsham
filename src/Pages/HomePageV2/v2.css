@@ -391,6 +391,24 @@ html[data-theme^="v2"] .v2-search input[type="text"]:focus {
   width: 26px;
 }
 
+/* حجز مساحة الـ hero أثناء التحميل (190px صورة + dots) لمنع CLS */
+.v2-hero-skeleton {
+  height: 226px;
+  border-radius: 16px;
+  background: var(--v2-hairline, rgba(128, 128, 128, 0.12));
+}
+@media (min-width: 992px) {
+  .v2-hero-skeleton {
+    height: 376px;
+  }
+}
+
+/* حجز مساحة الكاتيجوري rail لحد ما الـ API يرد */
+.v2-cat-skeleton {
+  min-height: 82px;
+  cursor: default;
+}
+
 /* ---------- Category rail (سلايدر أفقي) + grid ---------- */
 
 .v2-cat-rail {
@@ -873,7 +891,7 @@ html[data-theme="v2-light"] .v2-cat-tile::before {
   width: 52px;
   height: 52px;
   margin: 0 auto;
-  background: url("../../assets/image/Zain El Sham - Transparent.webp")
+  background: url("../../assets/image/logo-320.webp")
     center/contain no-repeat;
   animation: v2-logo-pulse 1.4s ease-in-out infinite;
 }

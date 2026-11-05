@@ -59,7 +59,7 @@ const V2ProductRow = ({ product, onOpen }: Props) => {
         <div className="v2-product-thumb">
           <img
             loading="lazy"
-            src={product.image ? `${ImageUrl}/${product.image}` : PlaceHolderImage}
+            src={(product as any).image_thumb_full_path ?? (product as any).image_md_full_path ?? (product.image ? `${ImageUrl}/${product.image}` : PlaceHolderImage)}
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = PlaceHolderImage;

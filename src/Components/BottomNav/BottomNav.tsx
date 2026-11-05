@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../Hooks/hooks";
 import { useCart } from "../../Hooks/useCart";
 import MobileSideBare from "../MobileSideBare/MobileSideBare";
-import CartImage from "../../assets/icon/shopping-cart.png";
+import CartImage from "../../assets/icon/cart-80.png";
 import { Heart, Home, User } from "lucide-react";
 import "./BottomNavStyle.css";
 

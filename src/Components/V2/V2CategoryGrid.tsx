@@ -19,7 +19,8 @@ const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) =>
   const railRef = useDragScroll<HTMLDivElement>();
   const parents = categories.filter((c) => c.parent_id?.toString() === "0");
 
-  if (parents.length === 0) return null;
+  if (parents.length === 0)
+    return <div className="v2-cat-rail v2-cat-skeleton" aria-hidden="true" />;
 
   const handleAll = () => {
     if (expanded) {
@@ -55,7 +56,7 @@ const V2CategoryGrid = ({ categories, activeId, allActive, onSelect }: Props) =>
       </div>
 
       {parents.map((cat, idx) => {
-        const img = cat.banner_image_full_path || cat.image_full_path;
+        const img = (cat as any).image_thumb_full_path || (cat as any).image_md_full_path || cat.banner_image_full_path || cat.image_full_path;
 
         return (
           <div

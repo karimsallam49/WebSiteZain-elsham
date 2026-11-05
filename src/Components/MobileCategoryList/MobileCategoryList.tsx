@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import type { Category } from "../../DTO/CategoriesDTO";
-import { FaChevronDown } from "react-icons/fa";
+import { ChevronDown } from "lucide-react";
 import "./MobileCategoriesList.css";
 import { useTranslation } from "react-i18next";
 
@@ -80,7 +80,7 @@ export const MobileCategoriesList = ({ categories, onSelectCategory }: Props) =>
                       toggleCategory(category.id);
                     }}
                   >
-                    <FaChevronDown
+                    <ChevronDown
                       size={14}
                       className={`chevron-icon ${isOpen ? "rotate" : ""}`}
                     />
@@ -97,7 +97,7 @@ export const MobileCategoriesList = ({ categories, onSelectCategory }: Props) =>
                       onClick={() => onSelectCategory(sub)}
                     >
                       <span>{sub.name}</span>
-                      <FaChevronDown size={12} className="chevron-icon small" />
+                      <ChevronDown size={12} className="chevron-icon small" />
                     </div>
                   ))}
                 </div>

@@ -68,7 +68,16 @@ const V2GoodTime = ({ title, url, pageSize = PAGE_SIZE }: Props) => {
           />
         ))}
         {isLoading && (
-          <div className="v2-loading-row">{t("v2.loadingDishes")}</div>
+          <div
+            className="v2-loading-row"
+            style={
+              items.length === 0
+                ? { minHeight: pageSize * 96, alignItems: "flex-start" }
+                : undefined
+            }
+          >
+            {t("v2.loadingDishes")}
+          </div>
         )}
       </div>
 

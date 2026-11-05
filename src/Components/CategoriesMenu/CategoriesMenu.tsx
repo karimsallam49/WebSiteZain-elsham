@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaBars, FaList, FaTh } from "react-icons/fa";
+import { Menu, List, LayoutGrid } from "lucide-react";
 import type { Category } from "../../DTO/CategoriesDTO";
 import { MobileCategoriesList } from "../MobileCategoryList/MobileCategoryList";
 import "./CategoriesMenu.css"
@@ -42,14 +42,14 @@ const direction = i18n.language === "ar" ? "rtl" : "ltr";
               onClick={() => toggleGrid(true)}
               title="Grid View"
             >
-              <FaTh />
+              <LayoutGrid />
             </button>
             <button
               className={`btn btn-sm ${!isGrid ? "btn-danger" : "btn-outline-danger"}`}
               onClick={() => toggleGrid(false)}
               title="List View"
             >
-              <FaList />
+              <List />
             </button>
           </div>
         </div>
@@ -60,7 +60,7 @@ const direction = i18n.language === "ar" ? "rtl" : "ltr";
           className="btn btn-outline-secondary TextMainColor border-0"
           onClick={() => setShowMenu(true)}
           >
-          <FaBars size={20} />
+          <Menu size={20} />
         </button>
            
           </div>

@@ -431,7 +431,7 @@ const ChatMealPanel = ({ onClose, onShowProduct }: Props) => {
               <div key={m.id} className="chat-msg bot product-card">
                 <div className="chat-product">
                   <img
-                    src={m.product.image ? `${ImageUrl}/${m.product.image}` : PlaceHolderImage}
+                    src={(m.product as any).image_thumb_full_path ?? (m.product as any).image_md_full_path ?? (m.product.image ? `${ImageUrl}/${m.product.image}` : PlaceHolderImage)}
                     onError={(e) => {
                       e.currentTarget.onerror = null;
                       e.currentTarget.src = PlaceHolderImage;

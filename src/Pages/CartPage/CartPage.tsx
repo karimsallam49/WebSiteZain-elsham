@@ -6,7 +6,7 @@ import {
   Col,
   Image,
 } from "react-bootstrap";
-import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { loadServerCart } from "../../store/Cart/serverCartSlice";
 import CartOffersPicker from "../../Components/CartOffersPicker/CartOffersPicker";
 import { useCart } from "../../Hooks/useCart";
@@ -250,7 +250,7 @@ const totalAmount =
                         className="text-danger p-0 mt-1 small"
                         onClick={() => remove(item)}
                       >
-                        <FaTrashAlt /> {t("remove")}
+                        <Trash2 size={16} /> {t("remove")}
                       </Button>
                     )}
                   </Col>
@@ -296,7 +296,7 @@ const totalAmount =
                             className="rounded-circle border"
                             onClick={() => decrease(item)}
                           >
-                            <FaMinus />
+                            <Minus />
                           </Button>
                           <span style={{ margin: "0 1rem", fontSize: "large" }}>
                             {item.quantity}
@@ -306,7 +306,7 @@ const totalAmount =
                             className="rounded-circle border backgroundMainColor text-light"
                             onClick={() => increase(item)}
                           >
-                            <FaPlus />
+                            <Plus />
                           </Button>
                         </>
                       )}

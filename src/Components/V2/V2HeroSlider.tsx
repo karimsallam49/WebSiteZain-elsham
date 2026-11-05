@@ -6,7 +6,6 @@ import { useAppSelector } from "../../Hooks/hooks";
 import type { BannerDTO } from "../../DTO/BannerDTO";
 import type { ProductDTO } from "../../DTO/ProductsDTO";
 import { ProductModal } from "../ProductsDetails/ProductModal";
-import BannerSkeleton from "../../scelton/BannerSkeleton";
 import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14.jpeg";
 
 const V2HeroSlider = () => {
@@ -54,7 +53,12 @@ const V2HeroSlider = () => {
     }
   };
 
-  if (BannerLoading) return <BannerSkeleton />;
+  if (BannerLoading)
+    return (
+      <section className="v2-hero" aria-hidden="true">
+        <div className="v2-hero-skeleton" />
+      </section>
+    );
   if (slides.length === 0) return null;
 
   const settings = {
@@ -90,11 +94,12 @@ const V2HeroSlider = () => {
               onClick={() => linked && handleBannerSelected(banner)}
             >
               <img
-                loading="lazy"
+                loading="eager"
+                fetchPriority="high"
                 src={
                   direction
-                    ? banner.image_ar_url ?? banner.image_url
-                    : banner.image_url
+                    ? (banner as any).image_ar_md ?? (banner as any).image_md ?? banner.image_ar_url ?? banner.image_url
+                    : (banner as any).image_md ?? banner.image_url
                 }
                 onError={(e) => {
                   e.currentTarget.onerror = null;

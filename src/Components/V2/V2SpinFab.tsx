@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import SpinWin from "../SpinWin/SpinWin";
-import iconWin from "../../assets/icon win.png";
+import iconWin from "../../assets/icon-win.webp";
 import { useAppSelector } from "../../Hooks/hooks";
 import { spinConfigUrl } from "../../EndPoints/EndPoints";
 import type { SpinConfigResponse } from "../../DTO/SpinWinDTO";

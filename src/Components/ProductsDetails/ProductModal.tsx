@@ -6,7 +6,7 @@ import PlaceHolderImage from "../../assets/WhatsApp Image 2025-10-08 at 16.02.14
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
 import { useCart } from "../../Hooks/useCart";
-import { FaPlus, FaMinus } from "react-icons/fa";
+import { Plus, Minus } from "lucide-react";
 import { actAddTowishList } from "../../store/WishList/actAddTowishList";
 import { actRemoveFromWishList } from "../../store/WishList/actRemoveFromWishList";
 import { actWishList } from "../../store/WishList/actWishList";
@@ -185,7 +185,7 @@ const totalPrice =
               e.currentTarget.onerror = null;
               e.currentTarget.src = PlaceHolderImage;
             }}
-            src={product.image ? `${ImageUrl}/${product.image}` : PlaceHolderImage}
+            src={(product as any).image_md_full_path ?? (product as any).image_thumb_full_path ?? (product.image ? `${ImageUrl}/${product.image}` : PlaceHolderImage)}
             alt={product.name}
             fluid
           />
@@ -404,7 +404,7 @@ const totalPrice =
               className="rounded-circle border"
               onClick={handleDecrease}
             >
-              <FaMinus />
+              <Minus />
             </Button>
             <span className="fw-bold fs-5">{quantity}</span>
             <Button
@@ -413,7 +413,7 @@ const totalPrice =
               className="rounded-circle border"
               onClick={handleIncrease}
             >
-              <FaPlus />
+              <Plus />
             </Button>
           </div>
 

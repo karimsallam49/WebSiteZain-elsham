@@ -15,7 +15,7 @@ import { useAppDispatch } from "../../Hooks/hooks";
 import { actOTPLogin } from "../../store/Auth/OTP/actOTPLogin";
 import { actVerifyPhone } from "../../store/Auth/OTP/actVerifiyPhone";
 import mobileCodePic from "../../assets/image/OTP.webp"
-import zainGif from "../../assets/image/Zain El Sham - Transparent.webp"
+import zainGif from "../../assets/image/logo-320.webp"
 import object3Png from "../../assets/image/object3.webp"
 import ButtonComponent from "../../Components/Button/ButtonComponent";
 import { useTranslation } from "react-i18next";
