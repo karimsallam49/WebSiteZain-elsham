@@ -2,13 +2,13 @@ import React, { useState, useRef } from "react";
 import { Form, Row, Col, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
-  FaCamera,
-  FaUser,
-  FaEnvelope,
-  FaPhone,
-  FaLock,
-  FaCheck,
-} from "react-icons/fa";
+  Camera,
+  User,
+  Mail,
+  Phone,
+  Lock,
+  Check,
+} from "lucide-react";
 import placeholderuser from "../../assets/image/placeholder_user.png";
 import "./profilePage.css";
 import { useAppDispatch, useAppSelector } from "../../Hooks/hooks";
@@ -118,7 +118,7 @@ const ProfilePage = () => {
               onClick={() => inputRef.current?.click()}
               aria-label="change photo"
             >
-              <FaCamera />
+              <Camera />
             </button>
             <input
               type="file"
@@ -134,7 +134,7 @@ const ProfilePage = () => {
           <span className="profile-sub">{profile.email}</span>
           {profile.phone && (
             <span className="profile-phone">
-              <FaCheck size={9} /> {profile.phone}
+              <Check size={9} /> {profile.phone}
             </span>
           )}
         </div>
@@ -151,7 +151,7 @@ const ProfilePage = () => {
               </Form.Label>
               <InputGroup dir={direction}>
                 <InputGroup.Text>
-                  <FaUser />
+                  <User />
                 </InputGroup.Text>
                 <Form.Control
                   name="firstName"
@@ -167,7 +167,7 @@ const ProfilePage = () => {
               </Form.Label>
               <InputGroup dir={direction}>
                 <InputGroup.Text>
-                  <FaUser />
+                  <User />
                 </InputGroup.Text>
                 <Form.Control
                   name="lastName"
@@ -181,7 +181,7 @@ const ProfilePage = () => {
               <Form.Label>{t("profile.email")}</Form.Label>
               <InputGroup dir={direction}>
                 <InputGroup.Text>
-                  <FaEnvelope />
+                  <Mail />
                 </InputGroup.Text>
                 <Form.Control
                   type="email"
@@ -205,11 +205,11 @@ const ProfilePage = () => {
                 <div>
                   <InputGroup dir={direction}>
                     <InputGroup.Text>
-                      <FaPhone />
+                      <Phone />
                     </InputGroup.Text>
                     <Form.Control value={profile.phone} readOnly />
                     <InputGroup.Text className="text-success">
-                      <FaCheck />
+                      <Check />
                     </InputGroup.Text>
                   </InputGroup>
                 </div>
@@ -220,7 +220,7 @@ const ProfilePage = () => {
               <Form.Label>{t("profile.password")}</Form.Label>
               <InputGroup dir={direction}>
                 <InputGroup.Text>
-                  <FaLock />
+                  <Lock />
                 </InputGroup.Text>
                 <Form.Control
                   type="password"
@@ -236,7 +236,7 @@ const ProfilePage = () => {
               <Form.Label>{t("profile.confirmPassword")}</Form.Label>
               <InputGroup dir={direction}>
                 <InputGroup.Text>
-                  <FaLock />
+                  <Lock />
                 </InputGroup.Text>
                 <Form.Control
                   type="password"
