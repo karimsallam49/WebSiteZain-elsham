@@ -1,3 +1,4 @@
+import DebugErrorsModal from "../DebugErrors/DebugErrorsModal";
 import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import { Outlet, useLocation } from "react-router";
 import { useEffect } from "react";
@@ -123,6 +124,7 @@ const {selectedBranch} =useAppSelector((state)=>state.restaurantSettingsSlice)
     <div className="w-100 all-layout">
 
       <ScrollToTop />
+      <DebugErrorsModal />
       <MobilePageHeader />
 
       <div className="w-100 container position-relative all-container" style={{ minHeight: "100vh" }}>
