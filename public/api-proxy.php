@@ -13,13 +13,34 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $body   = file_get_contents('php://input');
 
 // مرر الهيدرز المهمة (auth/branch/localization/content-type)
-$headers = [];
 $skip = ['host','connection','content-length','accept-encoding','expect'];
+$incoming = [];
 if (function_exists('getallheaders')) {
     foreach (getallheaders() as $k => $v) {
-        if (in_array(strtolower($k), $skip, true)) continue;
-        $headers[] = $k . ': ' . $v;
+        $incoming[strtolower($k)] = $v;
     }
+}
+foreach ($_SERVER as $k => $v) {
+    if (strpos($k, 'HTTP_') === 0) {
+        $name = strtolower(str_replace('_', '-', substr($k, 5)));
+        if (!isset($incoming[$name])) $incoming[$name] = $v;
+    }
+}
+if (!empty($_SERVER['CONTENT_TYPE']) && !isset($incoming['content-type'])) {
+    $incoming['content-type'] = $_SERVER['CONTENT_TYPE'];
+}
+if (!isset($incoming['authorization'])) {
+    $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+    if ($auth === '' && function_exists('apache_request_headers')) {
+        $ah = array_change_key_case(apache_request_headers(), CASE_LOWER);
+        $auth = $ah['authorization'] ?? '';
+    }
+    if ($auth !== '') $incoming['authorization'] = $auth;
+}
+$headers = [];
+foreach ($incoming as $k => $v) {
+    if (in_array($k, $skip, true)) continue;
+    $headers[] = $k . ': ' . $v;
 }
 
 $ch = curl_init($target);
